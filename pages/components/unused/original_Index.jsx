@@ -1,7 +1,7 @@
 //import '@picocss/pico'
 // index.html
 import styles from '../styles/mystyle.module.css'
-import myApplication from '../scripts/my-application.mjs'
+import myApplication from '../../../scripts/my-application.mjs'
 
 import { Inter } from 'next/font/google'
 const inter = Inter({ subsets: ['latin'] })

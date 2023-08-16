@@ -28,3 +28,4 @@ Edit config.json, evm0 values
 
 Go to /home/anish/WorkingDirectory/Code/CCXT/wormhole/end_to_end/nextjs
 Run the app: npm run dev
+ne
