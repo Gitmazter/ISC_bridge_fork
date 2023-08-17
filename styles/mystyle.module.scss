@@ -7,18 +7,24 @@
   }
 }
 .MetaMaskButton {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
   height: 3rem;
-  width: 6rem;
+  width: max-content;
   border-radius: 5px;
   border: 0px;
   background-color: orange;
   font-size: 1rem;
-  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-family:monospace;
   transition: 0.1s ease-in;
   cursor: pointer;
   &:hover {
     background-color: rgb(32, 32, 32);
     color: orange;
+  }
+  img {
+    height: 100%;
   }
 }
 

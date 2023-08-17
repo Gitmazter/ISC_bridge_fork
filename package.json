@@ -1,13 +1,13 @@
 {
   "name": "nextjs",
   "version": "1.0.0",
-  "description": "",
+  "description": "A bridge connecting ISC on solana to the Ethereum and layer 2 ecosystem",
   "main": "index.js",
   "scripts": {
     "dev": "next dev"
   },
   "keywords": [],
-  "author": "",
+  "author": "ISC",
   "license": "ISC",
   "dependencies": {
     "@certusone/wormhole-sdk": "^0.9.20",
