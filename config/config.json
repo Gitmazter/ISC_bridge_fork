@@ -9,7 +9,7 @@
         "tokenBridgeAddress": "0x0290FB167208Af455bB137780163b7B7a9a10C16",
         "isc": "0xD13ebb5C39fB00C06122827E1cbD389930C9E0E3",
         "xoil": "0x789733c6Cfd5EAa6c27bEAfD8bB7AF20aBe28500",
-        "swap_contract": "0x8914a9E5C5E234fDC3Ce9dc155ec19F43947ab59",
+        "swap_contract": "0x1aBE68277AE236083947f2551FEe8b885efCA8f5",
         "decimals": 9
     },
     "evm1": {

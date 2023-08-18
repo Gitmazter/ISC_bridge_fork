@@ -19,7 +19,7 @@ Run the following:
     - brownie console --network evm0
     - running ISCToken gives a list of previous deployments which should be []
     - a = accounts.load('wormhole')
-    - ISCToken.deploy({'from':accounts})
+    - ISCToken.deploy({'from':a})
     - Swap.deploy('0xC09C99332ea9A5Aa7DBe471fD2B9C674dFd25344', '0x8914a9E5C5E234fDC3Ce9dc155ec19F43947ab59', {'from':a})
     - ISCToken[0].mint('0x7231ECd1355a60251eE56Bf81f987969fc9bAe29', 1000, {'from':a})
 
@@ -28,4 +28,3 @@ Edit config.json, evm0 values
 
 Go to /home/anish/WorkingDirectory/Code/CCXT/wormhole/end_to_end/nextjs
 Run the app: npm run dev
-ne

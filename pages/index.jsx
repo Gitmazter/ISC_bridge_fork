@@ -1,4 +1,4 @@
-import HomePage from "./homePage";
+import HomePage from "./layout/homePage";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import styles from '../styles/mystyle.module.css'

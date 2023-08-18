@@ -6,7 +6,8 @@ import Wormhole from "./wormhole.mjs"
 import EthereumSwap from "./ethereum-swap.mjs"
 
 class myApplication {
-    constructor() {
+    constructor(myKeys) {
+        this.keys = myKeys
         this.value = 100;
         this.exter_module = new myModule()
         //this.config = JSON.parse(fs.readFileSync("./config/config.json").toString());
