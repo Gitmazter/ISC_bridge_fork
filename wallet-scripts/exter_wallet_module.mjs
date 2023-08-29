@@ -1,30 +1,39 @@
 //import fs from "fs"
-import config from "../config/config.json"
-import myModule from "../scripts/exter_module.mjs"
-import SolanaSwap from "../scripts/solana-swap.mjs"
-import Wormhole from "./wormhole.mjs"
-import EthereumSwap from "./ethereum-swap.mjs"
+//import config from "../config/config.json"
+//import SolanaSwap from "../scripts/solana-swap.mjs"
+//import Wormhole from "./wormhole.mjs"
+//import EthereumSwap from "./ethereum-swap.mjs"
 
-class myApplication {
-    constructor() {
-        this.value = 100;
-        this.exter_module = new myModule()
-        //this.config = JSON.parse(fs.readFileSync("./config/config.json").toString());
-        this.solana_swap = new SolanaSwap(config)
-        this.wormhole = new Wormhole(config)
-        this.ethereum_swap = new EthereumSwap(config)
-    }
+import { Keypair,
+  Transaction,
+  SystemProgram,
+  Connection,
+  sendAndConfirmTransaction,
+  TransactionInstruction,
+  PublicKey } from "@solana/web3.js";
+import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import borsh from 'borsh'
+//const borsh = require('borsh')
+//
 
-    print_balance() {
-        //console.log(await solana_swap.fetch_balance())
-        //console.log(await ethereum_swap.fetch_balance())
-        //console.log(this.value)
-        //this.exter_module.print_module()
-        console.log(this.solana_swap.fetch_balance())
-    }
+class myModule {
+constructor() {
+  this.value = 50;
+  //this.config = JSON.parse(fs.readFileSync("./config/config.json").toString());
+  //this.solana_swap = new SolanaSwap(config)
+  //this.wormhole = new Wormhole(config)
+  //this.ethereum_swap = new EthereumSwap(config)
 }
 
-export default myApplication
+print_module() {
+  console.log("Printing from myModule", this.value)
+  //console.log(await solana_swap.fetch_balance())
+  //console.log(await ethereum_swap.fetch_balance())
+  //console.log(config.solana)
+}
+}
+
+export default myWalletModule
 
 
 //async function main() {

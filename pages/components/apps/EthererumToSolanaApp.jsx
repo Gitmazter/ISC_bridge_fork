@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import Card from '../Card';
+
 export default function EthereumToSolanaApp({amount, curr_step, setBalance, setCurrStep, my_application}) {
   const [step0, setStep0] = useState(null);
   const [step1, setStep1] = useState(null);

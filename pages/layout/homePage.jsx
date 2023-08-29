@@ -15,19 +15,20 @@ export default function HomePage() {
     const [myKeys, setMyKeys] = useState({solana: null, ethereum: null})
     const { Accounts } = useConnectionInfo()
     const { publicKey } = useWallet()
+    const wallet = useWallet()
 
-    // const my_application = new myApplication();
-    //const my_application = new myApplication()
-    const [my_application, set_my_application] = useState(new myApplication(myKeys))
+    const [my_application, set_my_application] = useState(new myApplication())
     
 
     useEffect(() => {
-        const updateSolKey = () => {
+        const updateSolKey = async () => {
             if (publicKey !== null) {
                 let tempKeys = myKeys
                 console.log(publicKey.toString())
-                tempKeys.solana = publicKey.toString()
+                tempKeys.solana = wallet
                 setMyKeys(tempKeys)
+                set_my_application(new myApplication())
+                await updateBalance()
             }
         }
         updateSolKey()
@@ -53,7 +54,7 @@ export default function HomePage() {
         const update_my_application = () => {
             if (myKeys.solana !== null && myKeys.ethereum !== null) {
                 console.log("All necessary wallets connected");
-                const new_application = new myApplication(myKeys)
+                const new_application = new myApplication()
                 set_my_application(new_application)
             }    
             else {
@@ -86,7 +87,10 @@ export default function HomePage() {
 
     useEffect(() => {
         const fetchData = async () => {
-            await updateBalance();
+            if (myKeys.solana !== undefined && myKeys.ethereum != undefined) {
+                console.log(myKeys.solana);
+                await updateBalance();
+            }
         }
         fetchData()
     }, [myKeys])
