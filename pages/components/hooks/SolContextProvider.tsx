@@ -7,7 +7,8 @@ require('@solana/wallet-adapter-react-ui/styles.css')
 
 export const SolanaContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
     const endpoint = web3.clusterApiUrl('devnet')
-    const wallets = [new walletAdapterWallets.PhantomWalletAdapter()]
+    // const wallets = [new walletAdapterWallets.PhantomWalletAdapter()]
+    const wallets = [new walletAdapterWallets.BackpackWalletAdapter]
 
     return (
         <ConnectionProvider endpoint={endpoint}>

@@ -16,7 +16,7 @@ import borsh from 'borsh'
 //const borsh = require('borsh')
 //
 
-class myModule {
+class myWalletModule {
 constructor() {
   this.value = 50;
   //this.config = JSON.parse(fs.readFileSync("./config/config.json").toString());

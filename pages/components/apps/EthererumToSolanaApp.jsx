@@ -1,7 +1,12 @@
 import { useEffect, useState } from 'react';
 import Card from '../Card';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import useConnectionInfo from '../hooks/useConnectionInfo';
 
 export default function EthereumToSolanaApp({amount, curr_step, setBalance, setCurrStep, my_application}) {
+const { connection } = useConnection();
+const wallets = [useWallet(), useConnectionInfo()];
+
   const [step0, setStep0] = useState(null);
   const [step1, setStep1] = useState(null);
   const [step2, setStep2] = useState(null);
@@ -75,7 +80,11 @@ export default function EthereumToSolanaApp({amount, curr_step, setBalance, setC
           return
       }
       setCurrStep("step_4_busy")
-      const txid = await my_application.solana_swap.swap_oil_to_isc(amount)
+      const options = {
+        commitment: 'processed'
+      };
+      const tx = await my_application.solana_swap.swap_oil_to_isc(amount)
+      const txid = await wallets[0].sendTransaction(tx, connection, options);
       setStep4(txid)
       updateBalance()
       setCurrStep(null)

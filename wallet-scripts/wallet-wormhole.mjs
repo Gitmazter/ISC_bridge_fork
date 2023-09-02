@@ -17,23 +17,26 @@ import {
 import { PublicKey, Connection, Keypair} from "@solana/web3.js"
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 
-class Wormhole {
-    constructor(config) {
+class WalletWormhole {
+    constructor(config, wallets) {
         this.acc_info = null
         this.config = config
-        this.secretKey = Uint8Array.from(this.config.solana.privateKey);
+        this.wallets = wallets;
+        // this.secretKey = Uint8Array.from(this.config.solana.privateKey);
         this.SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID = new PublicKey(config.solana.spl_ata_program_id);
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
-        this.keypair = Keypair.fromSecretKey(this.secretKey);
+        // this.keypair = Keypair.fromSecretKey(this.secretKey);
         this.connection = new Connection("http://localhost:8899", "confirmed")
         this.options = {
             commitment: 'processed'
         }
         this.deployment = []
         this.wrappedTestTokenAddressFromSolana = null;
-        this.user_oil_ata = this.findAssociatedTokenAddress(this.keypair.publicKey, this.oil).toString()
+        if (this.wallets.solana !== null) {
+            this.user_oil_ata = this.findAssociatedTokenAddress(this.wallets.solana.publicKey, this.oil).toString()
+        }
     }
 
     async attest_from_solana() {
@@ -129,15 +132,16 @@ class Wormhole {
 
     async send_from_solana(amount) {
         amount = amount*(10**this.config.solana.decimals)
-
-        const secretKey = Uint8Array.from(this.config.solana.privateKey);
-        const keypair = Keypair.fromSecretKey(secretKey);
-        const targetRecepient = Buffer.from(tryNativeToHexString(this.config.evm0.publicKey, "ethereum"), 'hex');
-
+            
+        // const secretKey = Uint8Array.from(this.config.solana.privateKey);
+        const keypair = this.wallets.solana;
+        console.log("works til' here");
+        const targetRecepient = Buffer.from(tryNativeToHexString(this.wallets.ethereum, "ethereum"), 'hex');
+        console.log("works til' here");
         const transaction = await transferFromSolana(
             this.connection,
             this.config.solana.bridgeAddress,
-            this.config.solana.tokenBridgeAddress,
+            this.config.solana.tokenBridgeAddress, 
             keypair.publicKey.toString(),
             this.user_oil_ata,
             this.config.solana.testToken, //mintAddress
@@ -145,7 +149,9 @@ class Wormhole {
             targetRecepient, //config.networks[destination_chain].publicKey, //config.networks[destination_chain].tokenBridgeAddress, // targetAddress,
             this.config.evm0.wormholeChainId, //CHAIN_ID_ETH,
         );
-        transaction.partialSign(keypair)
+        // transaction.partialSign(keypair)
+        console.log('works til return');
+        return transaction;
         const txid = await this.connection.sendRawTransaction(transaction.serialize());
         console.log("Transfer from Solana to Wormhole", txid)
         // Somehow using this.connection instead of a new connection instiated inside the function is slow for this method
@@ -172,11 +178,9 @@ class Wormhole {
         return vaaBytes
     }
 
-    async complete_transfer_on_eth(vaaBytes) {
+    async complete_transfer_on_eth(vaaBytes, signer) {
         // Now create the Wrapped Version of the Token on the target chain
-        const targetSigner = new ethers.Wallet(this.config.evm0.privateKey).connect(
-            new ethers.providers.JsonRpcProvider(this.config.evm0.rpc)
-        );
+        const targetSigner = signer
         const targetTokenBridge = new ethers.Contract(
             this.config.evm0.tokenBridgeAddress,
             //JSON.parse(
@@ -206,15 +210,14 @@ class Wormhole {
     }
 
     async send_from_ethereum(amount) {
+        
         amount = amount*(10**this.config.evm0.decimals)
         const source_chain = 'evm0';
         const destination_chain = 'solana';
         let network = this.config[source_chain];
         const targetNetwork = this.config[destination_chain];
         const recipientAddress = Buffer.from(tryNativeToHexString(this.user_oil_ata, "solana"), "hex");
-        const signer = new ethers.Wallet(network.privateKey).connect(
-            new ethers.providers.JsonRpcProvider(network.rpc)
-        );
+        const signer = this.wallets.ethSigner
         const approval = await approveEth(network.tokenBridgeAddress, network.xoil, signer, amount)
         console.log("Approval limit set", approval['transactionHash'])
         const receipt = await transferFromEth(
@@ -248,14 +251,18 @@ class Wormhole {
     }
 
     async complete_transfer_on_solana(vaaBytes) {
+        const keypair = this.wallets.solana;
+        console.log(keypair);
         let txid = await postVaaSolanaWithRetry(
             this.connection,
             async (transaction) => {
-                transaction.partialSign(this.keypair);
+                console.log('signing tx');
+                transaction = await keypair.signTransaction(transaction)
+                // transaction.partialSign(keypair.sign);
                 return transaction;
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
-            this.keypair.publicKey.toString(), //srcKey.publicKey.toString(),
+            keypair.publicKey.toString(), //srcKey.publicKey.toString(),
             Buffer.from(vaaBytes.vaaBytes, "base64"),
             10
         );
@@ -265,11 +272,15 @@ class Wormhole {
             this.connection,
             this.config.solana.bridgeAddress, //SOL_BRIDGE_ADDRESS,
             this.config.solana.tokenBridgeAddress, //SOL_TOKEN_BRIDGE_ADDRESS,
-            this.keypair.publicKey.toString(), // payerAddress,
+            keypair.publicKey.toString(), // payerAddress,
             Buffer.from(vaaBytes.vaaBytes, "base64"), //vaaBytes, //signedVAA,
         );
-        transaction.partialSign(this.keypair)
-        txid = await this.connection.sendRawTransaction(transaction.serialize());
+        // keypair.sign(transaction)
+        //transaction.partialSign(keypair.signTransaction)
+        console.log('ready to send');
+        const signedTransaction = await keypair.signTransaction(transaction)
+        // txid = await keypair.sendTransaction(signedTransaction)
+        txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
         await this.connection.confirmTransaction(txid);
         console.log("Token redeemed", txid)
         return txid
@@ -285,4 +296,4 @@ class Wormhole {
 }
 
 //module.exports = Wormhole
-export default Wormhole
+export default WalletWormhole

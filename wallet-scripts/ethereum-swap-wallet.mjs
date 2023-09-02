@@ -6,7 +6,7 @@ import swap_json from "../config/Swap.json"
 BigNumber
 
 class EthereumWalletSwap {
-    constructor(config) {
+    constructor(config, wallets) {
         this.config = config.evm0
         //this.erc20_json_abi = JSON.parse(
         //            fs
@@ -22,8 +22,12 @@ class EthereumWalletSwap {
         this.swap_abi = swap_json.abi
         this.provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
         this.signer = new ethers.Wallet(this.config.privateKey, this.provider);
-        this.Swap = new ethers.Contract(this.config.swap_contract, this.swap_abi, this.provider)
-        this.SwapSigner = this.Swap.connect(this.signer)
+        if (wallets.ethSigner !== null) {
+            console.log('found signer');
+            this.signer = wallets.ethSigner
+        }
+        this.SwapContract = new ethers.Contract(this.config.swap_contract, this.swap_abi, this.provider)
+        this.SwapSigner = this.SwapContract.connect(this.signer)
         this.xOIL = new ethers.Contract(this.config.xoil, this.erc20_json_abi, this.provider)
         this.ISCToken = new ethers.Contract(this.config.isc, this.erc20_json_abi, this.provider)
         this.xOILSigner = this.xOIL.connect(this.signer)
@@ -123,6 +127,7 @@ class EthereumWalletSwap {
         let tx = await this.xOILSigner.approve(this.config.swap_contract, amount)
         await this.wait_until_finalized(tx)
         tx = await this.swap(amount, true)
+        console.log(tx);
         return tx['hash']
     }
 
