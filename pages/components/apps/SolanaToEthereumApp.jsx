@@ -3,12 +3,17 @@ import Card from '../Card';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import useConnectionInfo from '../hooks/useConnectionInfo';
 import { useWeb3React } from '@web3-react/core';
+import SwapCard from '../SwapCard';
+import styles from '../../../styles/mystyle.module.css'
+import useBalance from '../hooks/useBalance';
+import { IscIcon, OilIcon } from '../utils/IconImgs';
 
 export default function SolanaToEthereumApp({amount, curr_step, balance, setBalance, setCurrStep, my_application}) {
+  
+  const { saveBalance } = useBalance() 
+  const { active, library: provider } = useWeb3React();
   const { connection } = useConnection()
   const wallets = [useWallet(), useConnectionInfo()];
-
-  const { active, library: provider } = useWeb3React();
 
   const [step0, setStep0] = useState(null);
   const [step1, setStep1] = useState(null);
@@ -28,12 +33,14 @@ export default function SolanaToEthereumApp({amount, curr_step, balance, setBala
         result.push({'item':'Pool ISC', 'solana':solana_bal.pool_isc, 'ethereum':eth_bal.pool_isc})
         result.push({'item':'Pool OIL', 'solana':solana_bal.pool_oil, 'ethereum':eth_bal.pool_oil})
         result.push({'item':'User SOL', 'solana':solana_bal.user_sol, 'ethereum':0})
+        console.log(saveBalance);
+        saveBalance(result)
         setBalance(result)
     }
   }
 
   useEffect(() => {
-    console.log(balance);
+    console.log(balance[0]);
     if (balance[0] === undefined) {
         const fetchData = async () => {
             await updateBalance();
@@ -109,8 +116,11 @@ export default function SolanaToEthereumApp({amount, curr_step, balance, setBala
 
   const card_topics = [
       {
-          'title': 'Swap '+amount+' ISC to OIL',
-          'content': 'This step interacts with the swap contract on Solana to swap your ISC to OIL'
+        /* This step interacts with the swap contract on Solana to swap your ISC to OIL */
+          /* 'title': 'Swap '+amount+' ISC to OIL', */
+          'title': {'from':'ISC', 'to':'OIL'},
+          'titlev2': {'from': {'name':'ISC', 'icon': <IscIcon/> }, 'to':{'name':'Oil', 'icon': <OilIcon/> }},
+          'content': 'Swap your ISC to OIL; Our bridge token!'
       },
       {
           'title': 'Send OIL to Wormhole',
@@ -125,16 +135,19 @@ export default function SolanaToEthereumApp({amount, curr_step, balance, setBala
           'content': 'Interact with the Wormhole smart contract on Ethereum to receive the xOIL in your wallet'
       },
       {
-          'title': 'Swap '+amount+' xOIL to ISC',
-          'content': 'Interact with the swap contract on Ethereum to receive native ISC'
+        /* Interact with the swap contract on Ethereum to receive native ISC */
+/*           'title': 'Swap '+amount+' xOIL to ISC', */
+          'title': {'from':'xOil', 'to':'ISC'},
+          'titlev2': {'from': {'name':'xOil', 'icon': <OilIcon/> }, 'to':{'name':'ISC', 'icon': <IscIcon/> }},
+          'content': 'Swap your xOil to Ethereum-native* ISC!'
       },
   ];
 
-return <div>
-          <Card step={0} card_topic={card_topics[0]} data={step0} loading={curr_step=="step_0_busy"} enable={curr_step==null} click_handler={handleStep0}/>
+return <div className={styles.BridgeApp}>
+          <SwapCard step={0} card_topic={card_topics[0]} data={step0} loading={curr_step=="step_0_busy"} enable={curr_step==null} click_handler={handleStep0}/>
           <Card step={1} card_topic={card_topics[1]} data={step1} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
           <Card step={2} card_topic={card_topics[2]} data={step2} loading={curr_step=="step_2_busy"} enable={curr_step=="step1"} click_handler={handleStep2}/>
           <Card step={3} card_topic={card_topics[3]} data={step3} loading={curr_step=="step_3_busy"} enable={curr_step=="step2"} click_handler={handleStep3}/>
-          <Card step={4} card_topic={card_topics[4]} data={step4} loading={curr_step=="step_4_busy"} enable={curr_step=="step3"} click_handler={handleStep4}/>
+          <SwapCard step={4} card_topic={card_topics[4]} data={step4} loading={curr_step=="step_4_busy"} enable={curr_step=="step3"} click_handler={handleStep4}/>
       </div>
 }

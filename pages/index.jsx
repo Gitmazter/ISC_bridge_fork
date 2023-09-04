@@ -8,6 +8,8 @@ import { ConnectionInfoContextProvider } from "./components/contexts/ConnectionI
 import { Web3Provider } from '@ethersproject/providers'
 import { Web3ReactProvider } from "@web3-react/core";
 import { useEffect } from "react";
+import { AmountContextProvider } from "./components/contexts/AmountContext";
+import { BalanceContextProvider } from "./components/contexts/BalanceContext";
 
 
 export default function App () {
@@ -22,16 +24,20 @@ export default function App () {
 
 
   return (
-    <Web3ReactProvider getLibrary={getLibrary}>
-      <ConnectionInfoContextProvider>
-        <SolanaContextProvider>
-          <div className={styles.App}>
-            <Header/>
-            <HomePage/>
-            <Footer/>
-          </div>
-        </SolanaContextProvider>
-      </ConnectionInfoContextProvider>
-    </Web3ReactProvider>
+    <AmountContextProvider>
+      <BalanceContextProvider>
+        <Web3ReactProvider getLibrary={getLibrary}>
+          <ConnectionInfoContextProvider>
+            <SolanaContextProvider>
+              <div className={styles.App}>
+                <Header/>
+                <HomePage/>
+                <Footer/>
+              </div>
+            </SolanaContextProvider>
+          </ConnectionInfoContextProvider>
+        </Web3ReactProvider>
+      </BalanceContextProvider>
+    </AmountContextProvider>
   )
 }
