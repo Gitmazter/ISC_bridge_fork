@@ -7,14 +7,15 @@ import SwapCard from '../SwapCard';
 import styles from '../../../styles/mystyle.module.css'
 import useBalance from '../hooks/useBalance';
 import { IscIcon, OilIcon } from '../utils/IconImgs';
+import useAmount from '../hooks/useAmount';
 
-export default function SolanaToEthereumApp({amount, curr_step, balance, setBalance, setCurrStep, my_application}) {
+export default function SolanaToEthereumApp({ curr_step, balance, setBalance, setCurrStep, my_application}) {
   
   const { saveBalance } = useBalance() 
   const { active, library: provider } = useWeb3React();
   const { connection } = useConnection()
   const wallets = [useWallet(), useConnectionInfo()];
-
+  const {amount} = useAmount();
   const [step0, setStep0] = useState(null);
   const [step1, setStep1] = useState(null);
   const [step2, setStep2] = useState(null);
