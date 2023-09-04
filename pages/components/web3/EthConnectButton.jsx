@@ -1,44 +1,39 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from '../../../styles/mystyle.module.css'
 import useConnectionInfo from '../hooks/useConnectionInfo';
-
+import { useWeb3React } from '@web3-react/core';
+import {InjectedConnector} from '@web3-react/injected-connector'
+import ethers from 'ethers'
+const injected = new InjectedConnector()
 
 export default function EthModalButton () {
-  const { Accounts, saveAccounts } = useConnectionInfo()
-  const [ connected, setConnected ] = useState(false)
-  async function handleConnect () {
-    if (typeof window !== 'undefined') {
-      console.log('You are on the browser');
+  const { activate, active, account, deactivate } = useWeb3React();
 
-      // ✅ Can use window here
-      const ethereum = window.ethereum;
-      const accounts = await ethereum.request({ method: 'eth_requestAccounts', params: [] });
-      saveAccounts(accounts);
-      setConnected(true)
-    } else {
-
-      console.log('You are on the server');
-      // ⛔️ Don't use window here
+  const connect = async() => {
+    try {
+      await activate(injected)
+    }
+    catch(e){
+      console.log(e);
     }
   }
 
-  useEffect(() => {
-
-  },[Accounts])
-
-  function openModal () {
-    console.log("opening modal");
+  const disconnect = async() => {
+    if (active) {
+      try {
+        deactivate()
+      }
+      catch(e) {
+        console.log(e);
+      }
+    }
   }
 
   return (
-    connected
-    ?
-    <div>
-      <button className={styles.MetaMaskButton} onClick={openModal}><img src='MetaMask_Fox.svg'/>{Accounts[0].slice(0,5)}..{Accounts[0].slice(-4)}</button>
-    </div>
+    active 
+    ? 
+    <button className={styles.MetaMaskButton} onClick={disconnect}><img src='MetaMask_Fox.svg'/>Disconnect {account.substring(0,4)}..{account.substring(38)}</button>
     :
-    <div>
-      <button onClick={handleConnect} className={styles.MetaMaskButton}><img src='metamask-horizontal.svg'/></button>
-    </div>
+    <button className={styles.MetaMaskButton} onClick={connect}><img src='MetaMask_Fox.svg'/>Connect</button>
   )
 }

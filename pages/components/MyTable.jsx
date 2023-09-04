@@ -3,6 +3,7 @@ const inter = Inter({ subsets: ['latin'] })
 import styles from '../../styles/mystyle.module.css'
 export default function MyTable({value}) {
   return (
+    <div className={styles.MyTable}>
       <div className={inter.className}>
               <table className={styles.card}>
                   <thead>
@@ -25,5 +26,6 @@ export default function MyTable({value}) {
                   </tbody>
               </table>
       </div>
+    </div>
   );
 }

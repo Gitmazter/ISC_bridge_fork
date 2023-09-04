@@ -1,3 +1,18 @@
+.App {
+  background-color: #060818;
+}
+
+.SwapCard {
+  background-color: #313131;
+}
+
+.UI {
+  display: flex;
+  flex-direction: column;
+  height: -moz-max-content;
+  height: max-content;
+}
+
 .header {
   display: flex;
   flex-direction: row;
@@ -30,11 +45,17 @@
   height: 100%;
 }
 
+.BridgeApp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .plan {
   border-radius: 16px;
   box-shadow: 0 30px 30px -25px rgba(0, 38, 255, 0.205);
   padding: 10px;
-  background-color: #fff;
+  background-color: #1f1f1f;
   color: #697e91;
   max-width: 800px;
   width: 720px;
@@ -45,7 +66,7 @@
   border-radius: 8px;
   box-shadow: 0 30px 30px -25px rgba(0, 38, 255, 0.205);
   padding: 10px;
-  background-color: #fff;
+  background-color: #202020;
   color: #697e91;
   max-width: 100%;
   margin-top: 20px;
@@ -76,11 +97,15 @@
   color: #425275;
 }
 
+.info {
+  color: #ffffff;
+}
+
 .inner {
   align-items: center;
   padding: 20px;
   padding-top: 10px;
-  background-color: #ecf0ff;
+  background-color: #313131;
   border-radius: 12px;
   position: relative;
 }
@@ -108,7 +133,7 @@
 .plan .title {
   font-weight: 600;
   font-size: 1.25rem;
-  color: #425675;
+  color: #ffffff;
 }
 
 .plan .title + * {
@@ -116,6 +141,7 @@
 }
 
 .plan .info + * {
+  color: #ffffff;
   margin-top: 1rem;
   word-wrap: break-word;
 }
@@ -179,12 +205,12 @@
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: end;
+  justify-content: flex-end;
 }
 
 .plan .button {
   background-color: #6558d3;
-  border-radius: 6px;
+  border-radius: 999px;
   color: #fff;
   font-weight: 500;
   font-size: 1.125rem;
@@ -194,6 +220,7 @@
   width: 100%;
   padding: 0.625em 0.75em;
   text-decoration: none;
+  transition: all 0.2s ease-in-out;
 }
 
 .plan .button:hover {
@@ -304,10 +331,138 @@
   background-color: #f3f3f3;
 }
 
+.card :nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.349);
+}
+
 .card tbody tr:last-of-type {
   border-bottom: 2px solid #6558d3; /* #009879;*/
 }
 
 .form {
   line-height: 200%;
+}
+
+.MyTable {
+  left: 20px;
+  top: 220px;
+  position: fixed;
+}
+
+.card_line {
+  border-color: #313131;
+}
+
+.SwapTitle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.SwapTitle :last-child {
+  align-self: flex-end;
+}
+
+.SwapMax {
+  padding: 0px;
+}
+.SwapMax button {
+  cursor: pointer;
+  background-color: #202020;
+  color: white;
+  border: 1px solid #131313;
+  height: 30px;
+  width: 70px;
+  font-size: 18px;
+  font-weight: bolder;
+  border-radius: 999px;
+  margin-right: 10px;
+}
+.SwapMax button:hover {
+  color: #1FCAC5;
+  border: 2px solid #1FCAC5;
+}
+
+#outputField {
+  cursor: not-allowed;
+}
+#outputField input {
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.CardSwapUi .inputField {
+  background-color: #1f1f1f;
+  height: 72px;
+  border-radius: 10px;
+  transition: all 0.25s ease-in;
+}
+.CardSwapUi .inputField:focus-within {
+  box-shadow: 0 0 10px #9ecaed;
+}
+.CardSwapUi .inputField .flex {
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+.CardSwapUi .inputField .flex :nth-child(1) {
+  margin-left: 30px;
+  font-weight: bolder;
+}
+.CardSwapUi .inputField .flex :nth-child(2) {
+  margin-right: 30px;
+}
+.CardSwapUi .inputField .flex :nth-child(2) .text_end {
+  text-align: right;
+  font-size: 10px;
+  padding: 0px;
+  margin: 0px;
+}
+.CardSwapUi .inputField .flex input {
+  font-size: 25px;
+  font-weight: bolder;
+}
+
+.flex {
+  display: flex;
+}
+
+.flex_col {
+  display: flex;
+  flex-direction: column;
+}
+
+.swap_input {
+  height: -moz-max-content;
+  height: max-content;
+  width: -moz-max-content;
+  width: max-content;
+  text-align: end;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  outline: none;
+  color: white;
+}
+
+.text_end {
+  text-align: right;
+  padding: 0px;
+  margin: 0px;
+}
+
+.tokenCard {
+  background-color: #131313;
+  padding: 10px;
+  border-radius: 5px;
+  font-size: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+.tokenCard img {
+  margin: 0px;
+}
+.tokenCard p {
+  padding: 0px;
+  margin: 0px;
 }/*# sourceMappingURL=mystyle.module.css.map */
