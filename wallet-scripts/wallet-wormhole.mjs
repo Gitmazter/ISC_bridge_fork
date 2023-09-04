@@ -132,11 +132,11 @@ class WalletWormhole {
 
     async send_from_solana(amount) {
         amount = amount*(10**this.config.solana.decimals)
-            
         // const secretKey = Uint8Array.from(this.config.solana.privateKey);
         const keypair = this.wallets.solana;
         console.log("works til' here");
-        const targetRecepient = Buffer.from(tryNativeToHexString(this.wallets.ethereum, "ethereum"), 'hex');
+        const targetRecipient = Buffer.from(tryNativeToHexString(this.wallets.ethereum, "ethereum"), 'hex');
+        console.log(this.wallets.ethereum);                 
         console.log("works til' here");
         const transaction = await transferFromSolana(
             this.connection,
@@ -146,7 +146,7 @@ class WalletWormhole {
             this.user_oil_ata,
             this.config.solana.testToken, //mintAddress
             amount,
-            targetRecepient, //config.networks[destination_chain].publicKey, //config.networks[destination_chain].tokenBridgeAddress, // targetAddress,
+            targetRecipient, //config.networks[destination_chain].publicKey, //config.networks[destination_chain].tokenBridgeAddress, // targetAddress,
             this.config.evm0.wormholeChainId, //CHAIN_ID_ETH,
         );
         // transaction.partialSign(keypair)
@@ -181,15 +181,9 @@ class WalletWormhole {
     async complete_transfer_on_eth(vaaBytes, signer) {
         // Now create the Wrapped Version of the Token on the target chain
         const targetSigner = signer
+        console.log(targetSigner);
         const targetTokenBridge = new ethers.Contract(
             this.config.evm0.tokenBridgeAddress,
-            //JSON.parse(
-            //    fs
-            //        .readFileSync(
-            //            "./config/ITokenBridge.json"
-            //        )
-            //        .toString()
-            //).abi,
             token_bridge_json.abi,
             targetSigner
         );    
