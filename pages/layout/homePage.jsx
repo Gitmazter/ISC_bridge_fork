@@ -1,93 +1,42 @@
-//import '@picocss/pico'
-// index.html
 import styles from '../../styles/mystyle.module.css'
-import Form from '../components/Form';
-import MyTable from '../components/MyTable';
 import AppSelector from '../components/AppSelector';
 import { useEffect, useState } from 'react';
 import { useWallet } from '@solana/wallet-adapter-react';
-import useConnectionInfo from '../components/hooks/useConnectionInfo';
-import myApplication from '../../scripts/my-application.mjs'
 import myWalletApplication from '../../wallet-scripts/my-wallet-application.mjs';
 import { useWeb3React } from '@web3-react/core';
 import useBalance from '../components/hooks/useBalance';
 import useAmount from '../components/hooks/useAmount';
 
+import { ConnectionRequest } from '../components/ConnectionRequest';
+
 /* INDEX */
 export default function HomePage() {
-    
-    const [myKeys, setMyKeys] = useState({solana: null, ethereum: null, ethSigner:null});
-    const { active, library : provider , account} = useWeb3React();
-    const [ connected, setConnected ] = useState(false)
-    const { publicKey } = useWallet();
-    const wallet = useWallet();
-
-    //const [my_application, set_my_application] = useState(new myApplication())
-    const [my_application, set_my_application] = useState(new myWalletApplication({solana: null, ethereum: null}));
-    const { saveBalance } = useBalance();
-
-    useEffect(() => {
-        const updateSolKey = async () => {
-            if (publicKey !== null) {
-                let tempKeys = myKeys
-                console.log(publicKey.toString())
-                tempKeys.solana = wallet
-                setMyKeys(tempKeys)
-                set_my_application(new myWalletApplication(myKeys))
-                await updateBalance()
-            }
-        }
-        updateSolKey()
-        console.log(myKeys);
-    },[publicKey])
-
-    useEffect(() => {
-        console.log(provider);
-        const updateEthKey = () => {
-            if (active) {
-                let tempKeys = myKeys
-                tempKeys.ethereum = account
-                tempKeys.ethSigner = provider.getSigner()
-                setMyKeys(tempKeys)
-            }
-        }
-        updateEthKey()
-        console.log(myKeys);
-    },[account])
+      /* ////////////////////////////////////////////////////////////////////// */
+     /*                         STATES AND CONTEXTS                            */
+    /* ////////////////////////////////////////////////////////////////////// */
+    // ETHEREUM Context
+    const { active, library : provider , account}   = useWeb3React();
+    // SOLANA Context
+    const solWallet                                 = useWallet();    
+    // Contexts
+    const { saveBalance }                           = useBalance();
+    const { amount }                                = useAmount()
+    // States
+    const [ my_application, set_my_application ]    = useState(null);
+    const [ myKeys, setMyKeys ]                     = useState({solana: null, ethereum: null, ethSigner:null});
+    const [ connected, setConnected ]               = useState(false)
+    const [ curr_step, setCurrStep ]                = useState(null);
+    const [ direction, setDirection ]               = useState('sol_to_eth');
+    const [ balance, setBalance ]                   = useState([]);
 
 
-    useEffect(() => {
-        console.log('updating application');
-        const update_my_application = () => {
-            if (myKeys.solana !== null && myKeys.ethereum !== null) {
-                console.log("All necessary wallets connected");
-                // const new_application = new myWalletApplication()
-                const new_application = new myWalletApplication(myKeys)
-                set_my_application(new_application)
-                setConnected(true) 
-            }    
-            else {
-                console.log("Wallets for both chains not connected yet");
-                setConnected(false)
-            }
-        }
-        update_my_application()
-    }, [myKeys])
-
-
-    const [balance, setBalance] = useState([]);
-    // const [amount, setAmount] = useState(0.0001);
-    const { amount, setAmount } = useAmount()
-    const [direction, setDirection] = useState('sol_to_eth');
-    const [curr_step, setCurrStep] = useState(null);
-    const [accounts, setAccounts] = []
-
+      /* ////////////////////////////////////////////////////////////////////// */
+     /*                              FUNCTIONS                                 */
+    /* ////////////////////////////////////////////////////////////////////// */
     async function updateBalance() {
-        if (myKeys.solana !== null && myKeys.ethSigner !== null) {
+        if (myKeys.solana !== null && myKeys.ethSigner !== undefined) {
             const solana_bal = await my_application.solana_swap.fetch_balance()
             const eth_bal = await my_application.ethereum_swap.fetch_balance()
-            // console.log(solana_bal)
-            // console.log(eth_bal)
             const result = []
             result.push({'item':'User ISC', 'solana':solana_bal.user_isc, 'ethereum':eth_bal.user_isc})
             result.push({'item':'User OIL', 'solana':solana_bal.user_oil, 'ethereum':eth_bal.user_oil})
@@ -98,34 +47,75 @@ export default function HomePage() {
             saveBalance(result)
         }
     }
-
+      /* ////////////////////////////////////////////////////////////////////// */
+     /*                                 EFFECTS                                */
+    /* ////////////////////////////////////////////////////////////////////// */
     useEffect(() => {
-        const fetchData = async () => {
-            if (myKeys.solana !== undefined && myKeys.ethereum != undefined) {
-                console.log(myKeys.solana);
-                await updateBalance();
+        if(solWallet.connected) {
+            setMyKeys((keys) => ({...keys, solana:solWallet}))
+        }
+        else {
+            setMyKeys((keys) => ({...keys, solana:solWallet}))
+            if (connected) {
+                setConnected(false)
             }
         }
-        fetchData()
-    }, [myKeys])
+    },[solWallet])
 
+    useEffect(() => {
+        // console.log(active);
+        const updateKeys = async () => {
+            if (active === true) {
+                let signer = await provider.getSigner();
+                setMyKeys((keys) => ({...keys, ethereum: account, ethSigner: signer}))
+            }
+            else {
+                setMyKeys((keys) => ({...keys, ethereum: null, ethSigner: null}))
+                if (connected) {
+                    setConnected(false)
+                }
+            }
+        }
+        updateKeys()
+    }, [account])
 
-  return (
+    useEffect(() => {
+        // console.log(myKeys);
+        if(active && myKeys.solana.connected === true) {
+            console.log('activated');
+            const application = new myWalletApplication(myKeys)
+            set_my_application(application);
+        }
+        else {
+            setConnected(false)
+        }
+    }, [myKeys.solana, myKeys.ethSigner])
+
+    useEffect(() => {
+        console.log('application changed');
+        setConnected(true)
+    }, [my_application])
+
+      /* ////////////////////////////////////////////////////////////////////// */
+     /*                                 RETURN                                 */
+    /* ////////////////////////////////////////////////////////////////////// */
+
+    return (
         <div className={styles.main}>
-            <div>
-                <Form event_handler={setAmount} setDirection={setDirection} enabled={curr_step==null}/>
-            </div>
-            <MyTable value={balance} className={styles.MyTable}/>
-            <AppSelector
-                amount={amount}
-                curr_step={curr_step}
-                balance = {balance}
-                setBalance={setBalance}
-                setCurrStep={setCurrStep}
-                my_application={my_application}
-                direction={direction}
-            />
+            {/* connect wallets first */}
+            {!connected 
+                ? <ConnectionRequest />
+                : /* Direction selector then open AppSelector with direction */
+                <AppSelector
+                    amount={amount}
+                    curr_step={curr_step}
+                    balance = {balance}
+                    setBalance={setBalance}
+                    setCurrStep={setCurrStep}
+                    my_application={my_application}
+                    direction={direction}
+            />}
             <style jsx global>{" body { background: #e0e0e0; } "}</style>
         </div>
-        )
+    )
 }
