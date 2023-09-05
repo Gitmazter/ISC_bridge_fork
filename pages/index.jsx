@@ -19,7 +19,7 @@ export default function App () {
   }
   
   useEffect(() => {
-    document.querySelector("body").style.backgroundColor = '#000000';
+    document.querySelector("body").style.backgroundColor = '#060818';
     document.querySelector("body").style.margin = 0
   });
 
@@ -31,10 +31,12 @@ export default function App () {
           <ConnectionInfoContextProvider>
             <SolanaContextProvider>
               <Sidebar/>
-              <div className={styles.App}>
-                <Header/>
-                <HomePage/>
-                <Footer/>
+              <div className={styles.mainFg}>
+                <div className={styles.App}>
+                  <Header/>
+                  <HomePage/>
+                  <Footer/>
+                </div>
               </div>
             </SolanaContextProvider>
           </ConnectionInfoContextProvider>
