@@ -134,15 +134,15 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
           'content': 'Swap your ISC to OIL; Our bridge token!'
       },
       {
-          'title': 'Send OIL to Wormhole',
+          'title': '2. Send OIL to Wormhole',
           'content': 'Send the swapped OIL to Wormhole smart contract and request for a VAA'
       },
       {
-          'title': 'Get VAA Bytes',
+          'title': '3. Get VAA Bytes',
           'content': 'Check the Wormhole network for the verified message of solana transaction'
       },
       {
-          'title': 'Get xOIL on Ethereum',
+          'title': '4. Get xOIL on Ethereum',
           'content': 'Interact with the Wormhole smart contract on Ethereum to receive the xOIL in your wallet'
       },
       {
