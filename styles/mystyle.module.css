@@ -1,9 +1,29 @@
 .App {
-  background-color: #060818;
+  background-color: rgba(6, 8, 24, 0.7411764706);
 }
 
 .SwapCard {
   background-color: #313131;
+}
+
+.requestConn {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.innerRequestConn {
+  padding: 25px;
+  background-color: #000000;
+  height: 300px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
 }
 
 .UI {
@@ -96,8 +116,8 @@
 .plan {
   border-radius: 16px;
   box-shadow: 0 30px 30px -25px rgba(0, 38, 255, 0.205);
-  padding: 10px;
-  background-color: #1f1f1f;
+  padding: 3px;
+  background-color: #C0C0C0;
   color: #697e91;
   max-width: 800px;
   width: 720px;
@@ -125,10 +145,15 @@
   flex-direction: column;
 }
 
+.mainFg {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url("../public/ISC-logo.svg");
+}
+
 .main {
-  margin-left: 100px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0px;
 }
 
 .UI {
@@ -153,7 +178,7 @@
   align-items: center;
   padding: 20px;
   padding-top: 10px;
-  background-color: #313131;
+  background-color: #0f0113;
   border-radius: 12px;
   position: relative;
 }
@@ -301,7 +326,7 @@
 .ldsellipsis {
   display: inline-block;
   position: relative;
-  width: 20px;
+  width: 70px;
   height: 10px;
 }
 
@@ -366,6 +391,7 @@
   font-family: sans-serif;
   min-width: 400px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+  color: #ffffff;
 }
 
 .card thead tr {
@@ -407,7 +433,7 @@
 }
 
 .card_line {
-  border-color: #313131;
+  border-color: #C0C0C0;
 }
 
 .SwapTitle {
@@ -439,6 +465,10 @@
   border: 2px solid #1FCAC5;
 }
 
+.maxWalletIcon {
+  padding-right: 5px;
+}
+
 #outputField {
   cursor: not-allowed;
 }
@@ -448,12 +478,14 @@
 }
 
 .CardSwapUi .inputField {
-  background-color: #1f1f1f;
+  background-color: #333333;
   height: 72px;
   border-radius: 10px;
   transition: all 0.25s ease-in;
+  border: 1px solid rgba(0, 0, 0, 0);
 }
 .CardSwapUi .inputField:focus-within {
+  border: 1px solid #9ecaed;
   box-shadow: 0 0 10px #9ecaed;
 }
 .CardSwapUi .inputField .flex {
@@ -508,13 +540,16 @@
 }
 
 .tokenCard {
-  background-color: #131313;
+  background-color: #060818;
+  color: #ffffff;
   padding: 10px;
   border-radius: 5px;
   font-size: 20px;
   display: flex;
   flex-direction: row;
+  width: 120px;
   align-items: center;
+  justify-content: center;
 }
 .tokenCard img {
   margin: 0px;

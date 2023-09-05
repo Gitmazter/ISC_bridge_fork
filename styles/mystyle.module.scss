@@ -1,9 +1,10 @@
-$isc-bg: #060818;
+$isc-bg: #060818bd;
+$token-card-bg: #060818;
 
-$card-bg:#000000;
-$card-border:#000000;
-$card-text:#000000;
-$card-line:#000000;
+$card-border:#C0C0C0 ;
+$card-bg:#0f0113;
+$card-text:#ffffff;
+$card-line:#C0C0C0;
 $card-button-active-color:#000000;
 $card-button-disabled-color:#000000;
 
@@ -17,6 +18,26 @@ $card-button-width:50%;
 .SwapCard {
   background-color: #313131;
   
+}
+
+.requestConn {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.innerRequestConn {
+  padding: 25px;
+  background-color: #000000;
+  height: 300px;
+  min-width: 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
 }
 
 .UI {
@@ -108,8 +129,8 @@ $card-button-width:50%;
 .plan {
   border-radius: 16px;
   box-shadow: 0 30px 30px -25px rgba(0, 38, 255, 0.205);
-  padding: 10px;
-  background-color: #1f1f1f;
+  padding: 3px;
+  background-color: $card-border;
   color: #697e91;
   max-width: 800px;
   width: 720px;
@@ -136,10 +157,14 @@ white-space:nowrap;
     display: flex;
     flex-direction: column;
 }
+.mainFg {
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  background-image: url('../public/ISC-logo.svg');
+}
 .main {
-  margin-left: 100px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding: 0px;
 }
 .UI {
   display: flex;
@@ -162,7 +187,7 @@ white-space:nowrap;
   align-items: center;
   padding: 20px;
   padding-top: 10px;
-  background-color: #313131;
+  background-color: $card-bg;
   border-radius: 12px;
   position: relative;
 }
@@ -312,7 +337,7 @@ white-space:nowrap;
 .ldsellipsis {
   display: inline-block;
   position: relative;
-  width: 20px;
+  width: 70px;
   height: 10px;
 }
 .ldsellipsis div {
@@ -372,6 +397,7 @@ white-space:nowrap;
     font-family: sans-serif;
     min-width: 400px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    color: $card-text;
 }
 
 .card thead tr {
@@ -414,7 +440,7 @@ white-space:nowrap;
 }
 
 .card_line {
-  border-color: #313131;
+  border-color: $card-line;
 }
 
 .SwapTitle {
@@ -446,6 +472,10 @@ white-space:nowrap;
   }
 }
 
+.maxWalletIcon {
+  padding-right: 5px;
+}
+
 #outputField {
   cursor: not-allowed;
   input {
@@ -456,11 +486,13 @@ white-space:nowrap;
 
 .CardSwapUi {
   .inputField {
-    background-color: #1f1f1f;
+    background-color: #333333;
     height: 72px;
     border-radius: 10px;
     transition: all 0.25s ease-in;
+    border:1px solid #00000000;
     &:focus-within{
+      border:1px solid #9ecaed;
       box-shadow: 0 0 10px #9ecaed;
     }
     .flex {
@@ -515,13 +547,16 @@ white-space:nowrap;
 }
 
 .tokenCard {
-  background-color: #131313;
+  background-color: $token-card-bg;
+  color: $card-text;
   padding: 10px;
   border-radius: 5px;
   font-size: 20px;
   display: flex;
   flex-direction: row;
+  width: 120px;
   align-items: center;
+  justify-content: center;
   img {
     margin: 0px;
   }
