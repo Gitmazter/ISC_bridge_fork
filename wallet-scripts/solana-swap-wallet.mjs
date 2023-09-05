@@ -9,7 +9,6 @@ import borsh from 'borsh'
 
 class Parameters {
   constructor(instruction, amount) {
-    console.log(amount);
     this.instruction = instruction;
     this.amount = amount;
   }
@@ -89,6 +88,7 @@ constructor(config, accounts) {
   updateAccounts() {
     // Only updates solana accounts if a wallet has been connected
     if (this.accounts.solana !== null) {
+      console.log(this.accounts);
       const acc_info_initializer = this.accounts.solana.publicKey;
       const acc_info_initializer_isc_ata = this.findAssociatedTokenAddress(this.accounts.solana.publicKey, this.isc);
       const acc_info_initializer_oil_ata = this.findAssociatedTokenAddress(this.accounts.solana.publicKey, this.oil);

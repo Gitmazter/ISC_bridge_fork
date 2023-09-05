@@ -23,7 +23,7 @@ class EthereumWalletSwap {
         this.provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
         this.signer = new ethers.Wallet(this.config.privateKey, this.provider);
         if (wallets.ethSigner !== null) {
-            console.log('found signer');
+            // console.log('found signer');
             this.signer = wallets.ethSigner
         }
         this.SwapContract = new ethers.Contract(this.config.swap_contract, this.swap_abi, this.provider)
