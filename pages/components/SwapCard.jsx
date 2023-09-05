@@ -8,11 +8,11 @@ import CardTitle from "./cardComponents/CardTitle"
 import { Inter } from 'next/font/google'
 import { SwapCardMax } from './cardComponents/SwapCardMax'
 import useAmount from './hooks/useAmount'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function SwapCard({step, card_topic, data, loading, enable, click_handler}) {
-  const [ maxAmount, setMaxAmount ] = useState({'ISC':'??', 'xOil':'??', 'eIsc':'??', 'Oil':'??'})
+  const [ maxAmount, setMaxAmount ] = useState({'ISC':<Loading/>, 'xOil':<Loading/>, 'eIsc':<Loading/>, 'Oil':<Loading/>})
 
   let info
   if (step == "2" && data!=null) {
@@ -23,20 +23,19 @@ export default function SwapCard({step, card_topic, data, loading, enable, click
       info = data
   }
 
-  const {amount} = useAmount()
   const currencies = card_topic.title
   const fromTo = card_topic.titlev2
-//   console.log(fromTo);
-  //const info = step == "2" && data!=null ? data.vaaBytes : data
+
+
   return <div className={inter.className}>
           <div className={styles.plan}>
               <div className={styles.inner}>
+              <CardTitle value={card_topic.title}/>
               <div className={styles.SwapTitle}>
-                <CardTitle value={`Swap ${amount} ${currencies.from} to ${amount} ${currencies.to}`}/>
+                <CardParagraph value={card_topic.content}/> 
                 <SwapCardMax max={{ maxAmount, setMaxAmount }} fromTo={ fromTo } currencies={ currencies } />
               </div>
               <CardSwapUi maxAmount={maxAmount} fromTo = {fromTo} />
-              <CardParagraph value={card_topic.content}/>
               <hr className={styles.card_line}></hr>
               {loading && <Loading/>}
               <CardData value={info}/>
@@ -45,13 +44,3 @@ export default function SwapCard({step, card_topic, data, loading, enable, click
           </div>
       </div>
 }
-
-
-/* 
-0x789733c6Cfd5EAa6c27bEAfD8bB7AF20aBe28500 xOIL
-0x0000000000000000000000000000000000000000
-'0xD13ebb5C39fB00C06122827E1cbD389930C9E0E3'ISC 
-Swap.deploy('0x789733c6Cfd5EAa6c27bEAfD8bB7AF20aBe28500', '0xD13ebb5C39fB00C06122827E1cbD389930C9E0E3', {'from':a})
-0x8914a9E5C5E234fDC3Ce9dc155ec19F43947ab59
-ISCToken[0].mint('0x8914a9E5C5E234fDC3Ce9dc155ec19F43947ab59', 500000000, {'from':a})
-*/
