@@ -26,22 +26,22 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
     if(wallets[0].publicKey && wallets[1]) {
         const solana_bal = await my_application.solana_swap.fetch_balance()
         const eth_bal = await my_application.ethereum_swap.fetch_balance()
-        console.log(solana_bal)
-        console.log(eth_bal)
+        //console.log(solana_bal)
+        //console.log(eth_bal)
         const result = []
         result.push({'item':'User ISC', 'solana':solana_bal.user_isc, 'ethereum':eth_bal.user_isc})
         result.push({'item':'User OIL', 'solana':solana_bal.user_oil, 'ethereum':eth_bal.user_oil})
         result.push({'item':'Pool ISC', 'solana':solana_bal.pool_isc, 'ethereum':eth_bal.pool_isc})
         result.push({'item':'Pool OIL', 'solana':solana_bal.pool_oil, 'ethereum':eth_bal.pool_oil})
         result.push({'item':'User SOL', 'solana':solana_bal.user_sol, 'ethereum':0})
-        console.log(saveBalance);
+        //console.log(saveBalance);
         saveBalance(result)
         setBalance(result)
     }
   }
 
   useEffect(() => {
-    console.log(balance[0]);
+    //console.log(balance[0]);
     if (balance[0] === undefined) {
         const fetchData = async () => {
             await updateBalance();
@@ -51,7 +51,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
   }, [wallets])
 
   async function handleStep0(e) {
-    console.log("AMOUNT: "+amount);
+    //console.log("AMOUNT: "+amount);
     e.preventDefault()
       if (curr_step != null) {
           return
@@ -67,7 +67,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       setCurrStep("step0")
   }
   async function handleStep1(e) {
-    console.log("AMOUNT: "+ amount);
+    //console.log("AMOUNT: "+ amount);
     e.preventDefault()
       if (curr_step != "step0") {
           return
@@ -83,7 +83,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       setCurrStep("step1");
   }
   async function handleStep2(e) {
-    console.log("AMOUNT: "+ amount);
+    //console.log("AMOUNT: "+ amount);
     e.preventDefault()
       if (curr_step != "step1") {
           return
@@ -95,7 +95,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       setCurrStep("step2")
   }
   async function handleStep3(e) {
-    console.log("AMOUNT: "+ amount);
+    //console.log("AMOUNT: "+ amount);
     e.preventDefault()
       if(active) {
         const signer = provider.getSigner()
@@ -110,7 +110,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       }
   }
   async function handleStep4(e) {
-    console.log("AMOUNT: " + amount);
+    //console.log("AMOUNT: " + amount);
     e.preventDefault()
     if (active ) {
         const signer = provider.getSigner()
@@ -129,7 +129,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       {
         /* This step interacts with the swap contract on Solana to swap your ISC to OIL */
           /* 'title': 'Swap '+amount+' ISC to OIL', */
-          'title': {'from':'ISC', 'to':'OIL'},
+          'title': '1. Swap ISC for OIL',
           'titlev2': {'from': {'name':'ISC', 'icon': <IscIcon/> }, 'to':{'name':'Oil', 'icon': <OilIcon/> }},
           'content': 'Swap your ISC to OIL; Our bridge token!'
       },
@@ -148,7 +148,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       {
         /* Interact with the swap contract on Ethereum to receive native ISC */
         /*           'title': 'Swap '+amount+' xOIL to ISC', */
-          'title': {'from':'xOil', 'to':'ISC'},
+          'title': '5. Swap xOil for ISC',
           'titlev2': {'from': {'name':'xOil', 'icon': <OilIcon/> }, 'to':{'name':'ISC', 'icon': <IscIcon/> }},
           'content': 'Swap your xOil to Ethereum-native* ISC!'
       },
