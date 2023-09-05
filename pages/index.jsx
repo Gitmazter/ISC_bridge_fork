@@ -10,6 +10,7 @@ import { Web3ReactProvider } from "@web3-react/core";
 import { useEffect } from "react";
 import { AmountContextProvider } from "./components/contexts/AmountContext";
 import { BalanceContextProvider } from "./components/contexts/BalanceContext";
+import { Sidebar } from "./layout/Sidebar";
 
 
 export default function App () {
@@ -29,6 +30,7 @@ export default function App () {
         <Web3ReactProvider getLibrary={getLibrary}>
           <ConnectionInfoContextProvider>
             <SolanaContextProvider>
+              <Sidebar/>
               <div className={styles.App}>
                 <Header/>
                 <HomePage/>

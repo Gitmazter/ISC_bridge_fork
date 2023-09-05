@@ -15,7 +15,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
   const { active, library: provider } = useWeb3React();
   const { connection } = useConnection()
   const wallets = [useWallet(), useConnectionInfo()];
-  const {amount} = useAmount();
+  const { amount } = useAmount();
   const [step0, setStep0] = useState(null);
   const [step1, setStep1] = useState(null);
   const [step2, setStep2] = useState(null);
@@ -50,7 +50,9 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
     }
   }, [wallets])
 
-  async function handleStep0() {
+  async function handleStep0(e) {
+    console.log("AMOUNT: "+amount);
+    e.preventDefault()
       if (curr_step != null) {
           return
       }
@@ -64,7 +66,9 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       updateBalance()
       setCurrStep("step0")
   }
-  async function handleStep1() {
+  async function handleStep1(e) {
+    console.log("AMOUNT: "+ amount);
+    e.preventDefault()
       if (curr_step != "step0") {
           return
       };
@@ -78,7 +82,9 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       updateBalance();
       setCurrStep("step1");
   }
-  async function handleStep2() {
+  async function handleStep2(e) {
+    console.log("AMOUNT: "+ amount);
+    e.preventDefault()
       if (curr_step != "step1") {
           return
       }
@@ -88,7 +94,9 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       updateBalance()
       setCurrStep("step2")
   }
-  async function handleStep3() {
+  async function handleStep3(e) {
+    console.log("AMOUNT: "+ amount);
+    e.preventDefault()
       if(active) {
         const signer = provider.getSigner()
         if (curr_step != "step2") {
@@ -101,7 +109,9 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
         setCurrStep("step3")
       }
   }
-  async function handleStep4() {
+  async function handleStep4(e) {
+    console.log("AMOUNT: " + amount);
+    e.preventDefault()
     if (active ) {
         const signer = provider.getSigner()
         if (curr_step != "step3") {
@@ -137,7 +147,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       },
       {
         /* Interact with the swap contract on Ethereum to receive native ISC */
-/*           'title': 'Swap '+amount+' xOIL to ISC', */
+        /*           'title': 'Swap '+amount+' xOIL to ISC', */
           'title': {'from':'xOil', 'to':'ISC'},
           'titlev2': {'from': {'name':'xOil', 'icon': <OilIcon/> }, 'to':{'name':'ISC', 'icon': <IscIcon/> }},
           'content': 'Swap your xOil to Ethereum-native* ISC!'

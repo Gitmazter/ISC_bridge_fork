@@ -1,5 +1,17 @@
+$isc-bg: #060818;
+
+$card-bg:#000000;
+$card-border:#000000;
+$card-text:#000000;
+$card-line:#000000;
+$card-button-active-color:#000000;
+$card-button-disabled-color:#000000;
+
+$card-button-width:50%;
+
+
 .App {
-  background-color:#060818;
+  background-color:$isc-bg;
 }
 
 .SwapCard {
@@ -14,12 +26,36 @@
 }
 
 .header {
+  padding-top: 20px;
+  padding-bottom: 20px;
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: space-between;
+  background-color: #000000;
+  z-index: 999;
   h1 {
     color: white;
   }
+  .logo {
+    padding-left: 40px;
+  }
+}
+
+.headerInfo {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  h1 {
+    margin: 0;
+    font-size: 50px;
+  }
+}
+
+.walletContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  padding-right: 40px;
 }
 
 .MetaMaskButton {
@@ -43,6 +79,25 @@
     height: 100%;
   }
 }
+
+.sidebar {
+  width: 100px;
+  height: 100vh;
+  background-color: black;
+  color: white;
+  left: 0;
+  top: 0;
+  position: fixed;
+  z-index: 998;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 50px;
+  :first-child {
+    margin-top: 200px;
+  }
+}
+
 
 .BridgeApp {
   display: flex;
@@ -81,7 +136,11 @@ white-space:nowrap;
     display: flex;
     flex-direction: column;
 }
-
+.main {
+  margin-left: 100px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
 .UI {
   display: flex;
   flex-direction: row;
@@ -144,11 +203,20 @@ white-space:nowrap;
   word-wrap:break-word;
 }
 
-.plan .data {
+.plan .cardData {
+    border: 1px white solid;
+    padding: 10px;
+    border-radius: 10px;
+    background-color: #06081828;
+    color: white;
     font-family: monospace, monospace;
+    word-wrap:break-word;
+    a {
+      color: white;
+    }
 }
 
-.plan .data + * {
+.plan .cardData + * {
   margin-top: 1rem;
   word-wrap:break-word;
 }
@@ -203,7 +271,7 @@ white-space:nowrap;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center
 }
 
 .plan .button {
@@ -215,7 +283,8 @@ white-space:nowrap;
   text-align: center;
   border: 0;
   outline: 0;
-  width: 100%;
+  width: $card-button-width;
+
   padding: 0.625em 0.75em;
   text-decoration: none;
   transition: all 0.2s ease-in-out;
@@ -228,14 +297,14 @@ white-space:nowrap;
 
 .plan .button_disabled {
   background-color: #888888;
-  border-radius: 6px;
+  border-radius: 999px;
   color: #fff;
   font-weight: 500;
   font-size: 1.125rem;
   text-align: center;
   border: 0;
   outline: 0;
-  width: 100%;
+  width: $card-button-width;
   padding: 0.625em 0.75em;
   text-decoration: none;
 }
@@ -340,8 +409,8 @@ white-space:nowrap;
 
 
 .MyTable {
-  left:20px;
-  top: 220px;
+  left:120px;
+  top: 250px;
   position: fixed;
 }
 

@@ -385,7 +385,7 @@ function AppSelector({amount, curr_step, setBalance, setCurrStep, my_application
 export default function HomePage() {
     const my_application = new myApplication();
     const [balance, setBalance] = useState([]);
-    const [amount, setAmount] = useState(0.0001);
+    //const [amount, setAmount] = useState(0.0001);
     const [direction, setDirection] = useState('sol_to_eth');
     const [curr_step, setCurrStep] = useState(null);
 
@@ -436,7 +436,7 @@ async function swap_fully() {
     //console.log(my_application.print_balance())
     console.log(my_application.solana_swap.fetch_balance())
     //console.log("STARTING SOL -> ETH")
-    const amount = 0.0001
+    // const amount = 0.0001
     let txid = await my_application.solana_swap.swap_isc_to_oil(amount)
     //console.log(await wormhole.bridge_from_solana(amount))
     txid = await my_application.wormhole.send_from_solana(amount)

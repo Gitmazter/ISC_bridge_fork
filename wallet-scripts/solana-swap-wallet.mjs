@@ -9,6 +9,7 @@ import borsh from 'borsh'
 
 class Parameters {
   constructor(instruction, amount) {
+    console.log(amount);
     this.instruction = instruction;
     this.amount = amount;
   }

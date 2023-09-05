@@ -131,7 +131,8 @@ class WalletWormhole {
     }
 
     async send_from_solana(amount) {
-        amount = amount*(10**this.config.solana.decimals)
+        const bigAmount = amount*(10**this.config.solana.decimals)
+        console.log("BIG AMOUNT:  ", bigAmount);
         // const secretKey = Uint8Array.from(this.config.solana.privateKey);
         const keypair = this.wallets.solana;
         console.log("works til' here");
@@ -145,7 +146,7 @@ class WalletWormhole {
             keypair.publicKey.toString(),
             this.user_oil_ata,
             this.config.solana.testToken, //mintAddress
-            amount,
+            bigAmount,
             targetRecipient, //config.networks[destination_chain].publicKey, //config.networks[destination_chain].tokenBridgeAddress, // targetAddress,
             this.config.evm0.wormholeChainId, //CHAIN_ID_ETH,
         );

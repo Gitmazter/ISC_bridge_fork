@@ -8,11 +8,14 @@ import { CheckSolConnection } from '../components/web3/ethUtils/CheckSolConnecti
 export default function Header () {
   return (
     <header className={styles.header}>
-      <p>ISC Bridge Header</p>
-      <WalletMultiButton />
-      <EthModalButton />
-      <CheckConnectionButton/>
-      <CheckSolConnection/>
+      <div className={styles.headerInfo}> 
+        <img src='./ISC-logo.svg' height={50} className={styles.logo}></img>
+        <h1>ISC BRIDGE</h1>
+      </div>
+      <div className={styles.walletContainer}>
+        <WalletMultiButton />
+        <EthModalButton />
+      </div>
     </header>
   )
 }
