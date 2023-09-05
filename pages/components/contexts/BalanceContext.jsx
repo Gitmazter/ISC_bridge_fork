@@ -5,12 +5,12 @@ const BalanceContext = createContext()
 export const BalanceContextProvider = ({children}) => {
   const [balance, setBalance] = useState([]);
   const saveBalance = (val) => {
-    console.log('updating balance');
+    //console.log('updating balance');
     // console.log(val);
     setBalance(val)
   }
 
-  useEffect(() => {console.log("balance updated")} , [balance])
+  useEffect(() => {/* console.log("balance updated") */} , [balance])
 
   return (
     <BalanceContext.Provider value={{ balance, saveBalance }}>
