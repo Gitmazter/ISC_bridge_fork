@@ -18,6 +18,7 @@ export default function HomePage() {
     
     const [myKeys, setMyKeys] = useState({solana: null, ethereum: null, ethSigner:null});
     const { active, library : provider , account} = useWeb3React();
+    const [ connected, setConnected ] = useState(false)
     const { publicKey } = useWallet();
     const wallet = useWallet();
 
@@ -63,9 +64,11 @@ export default function HomePage() {
                 // const new_application = new myWalletApplication()
                 const new_application = new myWalletApplication(myKeys)
                 set_my_application(new_application)
+                setConnected(true) 
             }    
             else {
                 console.log("Wallets for both chains not connected yet");
+                setConnected(false)
             }
         }
         update_my_application()
