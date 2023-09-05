@@ -20,8 +20,8 @@ export const CardSwapUi = ({maxAmount, fromTo}) => {
 
 
   useEffect(() => {/* console.log(iscPrice) */}, [iscPrice])
-    
   const updateAmount = async (e) => {
+    console.log(maxAmount);
     let inputAmount = e.target.value
       //console.log(Number(inputAmount));
     if (NaN) {
@@ -57,7 +57,7 @@ export const CardSwapUi = ({maxAmount, fromTo}) => {
           <div className={styles.flex}>
             <div className={styles.tokenCard}>
               {/* <img src='./ISC-logo.svg' height={20}/> */}  
-              {fromTo.to.icon}
+              {fromTo.to.icon} 
               <p>{fromTo.to.name}</p>         
             </div>
             <div className={styles.flex_col}>
