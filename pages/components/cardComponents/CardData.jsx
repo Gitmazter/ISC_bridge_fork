@@ -2,7 +2,7 @@ import styles from '../../../styles/mystyle.module.css'
 
 
 export default function CardData({value}) {
-  console.log(value);
+  //console.log(value);
   return(
      value 
      ?
