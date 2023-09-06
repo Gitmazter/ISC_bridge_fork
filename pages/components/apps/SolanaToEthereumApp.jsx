@@ -1,13 +1,14 @@
+import styles from '../../../styles/mystyle.module.css'
 import { useEffect, useState } from 'react';
 import Card from '../Card';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import useConnectionInfo from '../hooks/useConnectionInfo';
 import { useWeb3React } from '@web3-react/core';
 import SwapCard from '../SwapCard';
-import styles from '../../../styles/mystyle.module.css'
 import useBalance from '../hooks/useBalance';
 import { IscIcon, OilIcon } from '../utils/IconImgs';
 import useAmount from '../hooks/useAmount';
+import SendCard from '../SendCard';
 
 export default function SolanaToEthereumApp({ curr_step, balance, setBalance, setCurrStep, my_application}) {
   
@@ -16,6 +17,8 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
   const { connection } = useConnection()
   const wallets = [useWallet(), useConnectionInfo()];
   const { amount } = useAmount();
+
+  
   const [step0, setStep0] = useState(null);
   const [step1, setStep1] = useState(null);
   const [step2, setStep2] = useState(null);
@@ -79,21 +82,28 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       const transaction = await my_application.wormhole.send_from_solana(amount);
       const txid = await wallets[0].sendTransaction(transaction, connection, options);
       setStep1(txid);
-      updateBalance();
-      setCurrStep("step1");
+      let VAA = ''
+      // Timeout to solve meta error "CONFIRM TIMEOUT TIME FOR MAINNET"
+      setTimeout(async() => {
+        VAA = await my_application.wormhole.get_vaa_bytes_solana(txid)
+        console.log(VAA);
+        setStep2(VAA)
+        updateBalance();
+        setCurrStep("step2");
+      }, 1000);
   }
-  async function handleStep2(e) {
-    //console.log("AMOUNT: "+ amount);
-    e.preventDefault()
-      if (curr_step != "step1") {
-          return
-      }
-      setCurrStep("step_2_busy")
-      const vaa = await my_application.wormhole.get_vaa_bytes_solana(step1)
-      setStep2(vaa)
-      updateBalance()
-      setCurrStep("step2")
-  }
+  // async function handleStep2(e) {
+  //   //console.log("AMOUNT: "+ amount);
+  //   e.preventDefault()
+  //     if (curr_step != "step1") {
+  //         return
+  //     }
+  //     setCurrStep("step_2_busy")
+  //     //const vaa = await my_application.wormhole.get_vaa_bytes_solana(step1)
+  //     //setStep2(vaa)
+  //     updateBalance()
+  //     setCurrStep("step2")
+  // }
   async function handleStep3(e) {
     //console.log("AMOUNT: "+ amount);
     e.preventDefault()
@@ -134,30 +144,33 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
           'content': 'Swap your ISC to OIL; Our bridge token!'
       },
       {
-          'title': '2. Send OIL to Wormhole',
-          'content': 'Send the swapped OIL to Wormhole smart contract and request for a VAA'
+          'title': '2. Send OIL to Wormhole and fetch VAA bytes',
+          'content': 'Send the swapped OIL to Wormhole smart contract and request for a VAA receipt'
       },
       {
-          'title': '3. Get VAA Bytes',
+          'title': '3. VAA bytes',
           'content': 'Check the Wormhole network for the verified message of solana transaction'
       },
       {
-          'title': '4. Get xOIL on Ethereum',
+          'title': '3. Get xOIL on Ethereum',
           'content': 'Interact with the Wormhole smart contract on Ethereum to receive the xOIL in your wallet'
       },
       {
         /* Interact with the swap contract on Ethereum to receive native ISC */
         /*           'title': 'Swap '+amount+' xOIL to ISC', */
-          'title': '5. Swap xOil for ISC',
-          'titlev2': {'from': {'name':'xOil', 'icon': <OilIcon/> }, 'to':{'name':'ISC', 'icon': <IscIcon/> }},
+          'title': '4. Swap xOil for ISC',
+          'titlev2': {'from': {'name':'xOil', 'icon': <OilIcon/> }, 'to':{'name':'eISC', 'icon': <IscIcon/> }},
           'content': 'Swap your xOil to Ethereum-native* ISC!'
       },
   ];
 
 return <div className={styles.BridgeApp}>
           <SwapCard step={0} card_topic={card_topics[0]} data={step0} loading={curr_step=="step_0_busy"} enable={curr_step==null} click_handler={handleStep0}/>
-          <Card step={1} card_topic={card_topics[1]} data={step1} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
-          <Card step={2} card_topic={card_topics[2]} data={step2} loading={curr_step=="step_2_busy"} enable={curr_step=="step1"} click_handler={handleStep2}/>
+{/*           <Card step={1} card_topic={card_topics[1]} data={step1} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
+          <Card step={2} card_topic={card_topics[2]} data={step2} loading={curr_step=="step_2_busy"} enable={curr_step=="step1"} click_handler={handleStep2}/> */}
+          
+          <SendCard step={1} card_topic={card_topics[1]} txid={step1} vaa={step2} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
+          
           <Card step={3} card_topic={card_topics[3]} data={step3} loading={curr_step=="step_3_busy"} enable={curr_step=="step2"} click_handler={handleStep3}/>
           <SwapCard step={4} card_topic={card_topics[4]} data={step4} loading={curr_step=="step_4_busy"} enable={curr_step=="step3"} click_handler={handleStep4}/>
       </div>

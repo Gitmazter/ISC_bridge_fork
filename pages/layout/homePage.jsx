@@ -10,6 +10,8 @@ import useAmount from '../components/hooks/useAmount';
 import { ConnectionRequest } from '../components/ConnectionRequest';
 import useBrideDirection from '../components/hooks/useBrideDirection';
 import { DirSelector } from '../components/DirSelector';
+import { BackToTop } from '../components/utils/BackToTop';
+import { ReturnDirection } from '../components/utils/ReturnDirection';
 
 /* INDEX */
 export default function HomePage() {
@@ -111,16 +113,20 @@ export default function HomePage() {
                 !direction 
                     ? <DirSelector/>
                     :
-                
-                <AppSelector
-                    amount={amount}
-                    curr_step={curr_step}
-                    balance = {balance}
-                    setBalance={setBalance}
-                    setCurrStep={setCurrStep}
-                    my_application={my_application}
-                    direction={direction}
-            />}
+                <>
+                    <ReturnDirection/>
+                    <AppSelector
+                        amount={amount}
+                        curr_step={curr_step}
+                        balance = {balance}
+                        setBalance={setBalance}
+                        setCurrStep={setCurrStep}
+                        my_application={my_application}
+                        direction={direction}
+                    />
+                    <BackToTop />
+                </>
+            }
             <style jsx global>{" body { background: #e0e0e0; } "}</style>
         </div>
     )

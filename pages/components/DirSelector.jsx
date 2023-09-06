@@ -18,15 +18,15 @@ export const DirSelector = () => {
   return (
     <div className={styles.requestDirection}>
       <div className={styles.innerRequestDirection}>
+        <h2>Select Direction</h2>
         <div className={styles.DirSelectorIcons}>
           <img src="./solana.svg"/>
+          <p>⇔</p>
           <img src="./ethereum.svg"/>
         </div>
-        <h2>Select Direction</h2>
         <button onClick={setSol2Eth}>{"SOLANA -> ETHEREUM"}</button>
         <button onClick={setEth2Sol}>{"ETHEREUM -> SOLANA"}</button>
       </div>
     </div>
-    
   )
 }

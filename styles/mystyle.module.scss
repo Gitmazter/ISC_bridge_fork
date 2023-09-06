@@ -70,8 +70,18 @@ $card-button-width:50%;
 .DirSelectorIcons {
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  p {
+    font-size: 64px;
+  }
+  img {
+    border:2px solid black;
+    border-radius: 999px;
+  }
   :last-child {
-    margin-left: -20px;
+    opacity: 1;
   }
 }
 
@@ -287,6 +297,21 @@ white-space:nowrap;
     a {
       color: white;
     }
+}
+
+.plan .copyButton {
+  cursor: pointer;
+  background-color: #00000000;
+  font-size: 24px;
+  color: white;
+  padding: 0.3rem;
+  border-radius: 5px;
+  border: 1px solid white;
+  transition: all 0.08s ease-in-out;
+  &:hover {
+    background-color: white;
+    color: black;
+  }
 }
 
 .plan .cardData + * {
@@ -639,3 +664,39 @@ white-space:nowrap;
 .noDisplay {
   display: none;
 }
+
+.BackToTop {
+  cursor: pointer;
+  height: 50px;
+  width: 50px;
+  z-index: 2000;
+  position: fixed;
+  bottom: 5%;
+  right: 5%;
+  opacity: 0.3;
+  border-radius: 999px;
+}
+
+.returnDirection {
+  cursor: pointer;
+  z-index: 2000;
+  position: fixed;
+  top: 10%;
+  left: 15%;
+  opacity: 1;
+  border-radius: 999px;
+  border: 3px solid white;
+  background-color: #425275;
+  padding: 1rem;
+  .returnDirectionIcon {
+    height: 50px;
+    width: 80px;
+  }
+  p {
+    width: 80px;
+    text-align: center;
+    color: white;
+    word-wrap: break-word;
+  }
+}
+

@@ -1,11 +1,17 @@
+import styles from '../../../styles/mystyle.module.css'
 import { useEffect, useState } from 'react';
 import Card from '../Card';
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import useConnectionInfo from '../hooks/useConnectionInfo';
+import { IscIcon, OilIcon } from '../utils/IconImgs';
+import useBalance from '../hooks/useBalance';
+import SwapCard from '../SwapCard';
+import SendCard from '../SendCard';
 
 export default function EthereumToSolanaApp({amount, curr_step, setBalance, setCurrStep, my_application}) {
 const { connection } = useConnection();
 const wallets = [useWallet(), useConnectionInfo()];
+const { saveBalance } = useBalance()
 
   const [step0, setStep0] = useState(null);
   const [step1, setStep1] = useState(null);
@@ -14,6 +20,7 @@ const wallets = [useWallet(), useConnectionInfo()];
   const [step4, setStep4] = useState(null);
 
   async function updateBalance() {
+    if(wallets[0].publicKey && wallets[1]) {
       const solana_bal = await my_application.solana_swap.fetch_balance()
       const eth_bal = await my_application.ethereum_swap.fetch_balance()
       console.log(solana_bal)
@@ -25,6 +32,8 @@ const wallets = [useWallet(), useConnectionInfo()];
       result.push({'item':'Pool OIL', 'solana':solana_bal.pool_oil, 'ethereum':eth_bal.pool_oil})
       result.push({'item':'User SOL', 'solana':solana_bal.user_sol, 'ethereum':0})
       setBalance(result)
+      saveBalance(result)
+    }
   }
 
   useEffect(() => {
@@ -51,20 +60,30 @@ const wallets = [useWallet(), useConnectionInfo()];
       }
       setCurrStep("step_1_busy")
       const txid = await my_application.wormhole.send_from_ethereum(amount)
-      setStep1(txid)
-      updateBalance()
-      setCurrStep("step1")
+      setStep1(txid.transactionHash)
+      //updateBalance()
+      //setCurrStep("step1")
+      let VAA = ''
+      // Timeout to solve meta error "CONFIRM TIMEOUT TIME FOR MAINNET"
+      setTimeout(async() => {
+        console.log(txid.transactionHash);
+        VAA = await my_application.wormhole.get_vaa_bytes_ethereum(txid)
+        console.log(VAA);
+        setStep2(VAA)
+        updateBalance();
+        setCurrStep("step2");
+      }, 5000);
   }
-  async function handleStep2() {
-      if (curr_step != "step1") {
-          return
-      }
-      setCurrStep("step_2_busy")
-      const vaa = await my_application.wormhole.get_vaa_bytes_ethereum(step1)
-      setStep2(vaa)
-      updateBalance()
-      setCurrStep("step2")
-  }
+//   async function handleStep2() {
+//       if (curr_step != "step1") {
+//           return
+//       }
+//       setCurrStep("step_2_busy")
+//       const vaa = await my_application.wormhole.get_vaa_bytes_ethereum(step1)
+//       setStep2(vaa)
+//       updateBalance()
+//       setCurrStep("step2")
+//   }
   async function handleStep3() {
       if (curr_step != "step2") {
           return
@@ -108,32 +127,35 @@ const wallets = [useWallet(), useConnectionInfo()];
   }
   const card_topics = [
       {
-          'title': 'Swap '+amount+' ISC to xOIL',
-          'content': 'This step interacts with the swap contract on Solana to swap your ISC to OIL'
+          'title': '1. Swap eISC for xOIL',
+          'titlev2': {'from': {'name':'eIsc', 'icon': <IscIcon/> }, 'to':{'name':'xOil', 'icon': <OilIcon/> }},
+          'content': 'Swap your Ethereum-Native ISC for xOIL'
       },
       {
-          'title': 'Send xOIL to Wormhole',
+          'title': '2. Send xOIL to Wormhole and request VAA receipt',
           'content': 'Send the swapped OIL to Wormhole smart contract and request for a VAA'
       },
       {
-          'title': 'Get VAA Bytes',
+          'title': '3. Get VAA Bytes',
           'content': 'Check the Wormhole network for the verified message of solana transaction'
       },
       {
-          'title': 'Get OIL on Solana',
+          'title': '3. Get OIL on Solana (3 signatures required) ',
           'content': 'Interact with the Wormhole smart contract on Ethereum to receive the xOIL in your wallet'
       },
       {
-          'title': 'Swap '+amount+' OIL to ISC',
-          'content': 'Interact with the swap contract on Ethereum to receive native ISC'
+          'title': '4. Swap OIL For ISC',
+          'titlev2': {'from': {'name':'Oil', 'icon': <OilIcon/> }, 'to':{'name':'ISC', 'icon': <IscIcon/> }},
+          'content': 'Swap Your Oil for Solana native ISC'
       },
   ];
 
-return <div>
-          <Card step={0} card_topic={card_topics[0]} data={step0} loading={curr_step=="step_0_busy"} enable={curr_step==null} click_handler={handleStep0}/>
-          <Card step={1} card_topic={card_topics[1]} data={step1} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
-          <Card step={2} card_topic={card_topics[2]} data={step2} loading={curr_step=="step_2_busy"} enable={curr_step=="step1"} click_handler={handleStep2}/>
+return <div className={styles.BridgeApp}>
+          <SwapCard step={0} card_topic={card_topics[0]} data={step0} loading={curr_step=="step_0_busy"} enable={curr_step==null} click_handler={handleStep0}/>
+{/*           <Card step={1} card_topic={card_topics[1]} data={step1} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
+          <Card step={2} card_topic={card_topics[2]} data={step2} loading={curr_step=="step_2_busy"} enable={curr_step=="step1"} click_handler={handleStep2}/> */}
+          <SendCard step={1} card_topic={card_topics[1]} txid={step1} vaa={step2} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
           <Card step={3} card_topic={card_topics[3]} data={step3} loading={curr_step=="step_3_busy"} enable={curr_step=="step2"} click_handler={handleStep3}/>
-          <Card step={4} card_topic={card_topics[4]} data={step4} loading={curr_step=="step_4_busy"} enable={curr_step=="step3"} click_handler={handleStep4}/>
+          <SwapCard step={4} card_topic={card_topics[4]} data={step4} loading={curr_step=="step_4_busy"} enable={curr_step=="step3"} click_handler={handleStep4}/>
       </div>
 }
