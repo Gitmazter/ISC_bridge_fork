@@ -9,6 +9,7 @@ import { Inter } from 'next/font/google'
 import { SwapCardMax } from './cardComponents/SwapCardMax'
 import useAmount from './hooks/useAmount'
 import { useEffect, useState } from 'react'
+import { IscIcon } from './utils/IconImgs'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function SwapCard({step, card_topic, data, loading, enable, click_handler}) {
@@ -29,18 +30,18 @@ export default function SwapCard({step, card_topic, data, loading, enable, click
 
   return <div className={inter.className}>
           <div className={styles.plan}>
-              <div className={styles.inner}>
-              <CardTitle value={card_topic.title}/>
-              <div className={styles.SwapTitle}>
-                <CardParagraph value={card_topic.content}/> 
-                <SwapCardMax max={{ maxAmount, setMaxAmount }} fromTo={ fromTo } currencies={ currencies } />
-              </div>
-              <CardSwapUi maxAmount={maxAmount} fromTo = {fromTo} />
-              <hr className={styles.card_line}></hr>
-              {loading && <Loading/>}
-              <CardData value={info}/>
-              <CardButton value="Swap" enable={enable} click_handler={click_handler}/>
-              </div>
+                <div className={styles.inner}>
+                    <CardTitle value={card_topic.title}/>
+                    <div className={styles.SwapTitle}>
+                        <CardParagraph value={card_topic.content}/> 
+                        <SwapCardMax max={{ maxAmount, setMaxAmount }} fromTo={ fromTo } currencies={ currencies } />
+                    </div>
+                    <CardSwapUi maxAmount={maxAmount} fromTo = {fromTo} />
+                    <hr className={styles.card_line}></hr>
+                    {loading && <Loading/>}
+                    <CardButton value="Swap" enable={enable} click_handler={click_handler}/>
+                    <CardData value={info}/>
+                </div>
           </div>
       </div>
 }

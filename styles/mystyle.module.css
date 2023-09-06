@@ -14,6 +14,53 @@
   color: white;
 }
 
+.requestDirection {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.innerRequestDirection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #060818;
+  border: 3px solid silver;
+  border-radius: 10px;
+  padding: 3rem;
+  gap: 10px;
+  box-shadow: 0px 0px 10px 15px silver;
+}
+.innerRequestDirection button {
+  cursor: pointer;
+  height: 30px;
+  color: white;
+  background-color: #425275;
+  border: none;
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  border-radius: 0.5rem;
+  box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.199);
+  transition: all 0.3s ease-in-out;
+}
+.innerRequestDirection button:hover {
+  background-color: #737e96;
+  box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.199);
+}
+
+.DirSelectorIcons {
+  display: flex;
+  flex-direction: row;
+}
+.DirSelectorIcons :last-child {
+  margin-left: -20px;
+}
+
 .innerRequestConn {
   padding: 25px;
   background-color: #000000;
@@ -181,6 +228,7 @@
   background-color: #0f0113;
   border-radius: 12px;
   position: relative;
+  transition: all 0.2s ease-in;
 }
 
 .plan .pricing {
@@ -289,9 +337,22 @@
   align-items: center;
   justify-content: center;
 }
+.plan .action .button {
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px;
+  margin: 30px;
+  background: #6558d3;
+  cursor: pointer;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  border: 1px solid #C0C0C0;
+  box-shadow: 0px 0px 10px #C0C0C0;
+}
 
 .plan .button {
-  background-color: #6558d3;
+  background-color: rgba(6, 8, 24, 0.7411764706);
   border-radius: 999px;
   color: #fff;
   font-weight: 500;
@@ -302,15 +363,17 @@
   width: 50%;
   padding: 0.625em 0.75em;
   text-decoration: none;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 .plan .button:hover {
-  background-color: #4133B7;
+  background-color: rgba(37, 50, 145, 0.368627451);
 }
 
 .plan .button_disabled {
-  background-color: #888888;
+  background-color: rgba(86, 88, 105, 0.368627451);
+  box-shadow: -5px -5px 10px -1px rgba(37, 50, 145, 0.368627451), 5px 5px 10px -1px rgba(37, 50, 145, 0.368627451);
+  cursor: not-allowed;
   border-radius: 999px;
   color: #fff;
   font-weight: 500;
@@ -461,6 +524,7 @@
   margin-right: 10px;
 }
 .SwapMax button:hover {
+  transition: all 0.2s ease-in-out;
   color: #1FCAC5;
   border: 2px solid #1FCAC5;
 }
@@ -557,4 +621,8 @@
 .tokenCard p {
   padding: 0px;
   margin: 0px;
+}
+
+.noDisplay {
+  display: none;
 }/*# sourceMappingURL=mystyle.module.css.map */

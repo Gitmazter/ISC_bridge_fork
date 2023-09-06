@@ -25,8 +25,8 @@ export default function Card({step, card_topic, data, loading, enable, click_han
               <CardParagraph value={card_topic.content}/>
               <hr className={styles.card_line}></hr>
               {loading && <Loading/>}
-              <CardData value={info}  />
               <CardButton value="Initiate" enable={enable} click_handler={click_handler}/>
+              <CardData value={info}  />
               </div>
           </div>
       </div>

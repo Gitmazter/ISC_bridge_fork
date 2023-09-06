@@ -28,6 +28,53 @@ $card-button-width:50%;
   color: white;
 }
 
+.requestDirection {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+}
+
+.innerRequestDirection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $token-card-bg;
+  border: 3px solid silver;
+  border-radius: 10px;
+  padding: 3rem;
+  gap: 10px;
+  box-shadow: 0px 0px 10px 15px silver;
+  button {
+    cursor: pointer;
+    height: 30px;
+    color: white;
+    background-color: #425275;
+    border: none;
+    padding: 1.5rem;
+    display: flex;
+    align-items: center;
+    border-radius: 0.5rem;
+    box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.199);
+    transition: all 0.3s ease-in-out;
+    &:hover {
+      background-color: #737e96;
+      box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.199);
+    }
+  }
+}
+.DirSelectorIcons {
+  display: flex;
+  flex-direction: row;
+  :last-child {
+    margin-left: -20px;
+  }
+}
+
 .innerRequestConn {
   padding: 25px;
   background-color: #000000;
@@ -190,6 +237,7 @@ white-space:nowrap;
   background-color: $card-bg;
   border-radius: 12px;
   position: relative;
+  transition: all 0.2s ease-in;
 }
 
 .plan .pricing {
@@ -296,11 +344,27 @@ white-space:nowrap;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: center
+  justify-content: center;
+  
+  .button {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px;
+    margin: 30px;
+    background:#6558d3;
+    cursor: pointer;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    border: 1px solid #C0C0C0;
+    box-shadow: 0px 0px 10px #C0C0C0;
+    // box-shadow: -10px -10px 10px -1px rgba(255, 255, 255, 0.349);
+    // box-shadow: -10px -10px 10px -1px rgba(255, 255, 255, 0.349);/* #060818 */
+  }
 }
 
 .plan .button {
-  background-color: #6558d3;
+  background-color: $isc-bg;
   border-radius: 999px;
   color: #fff;
   font-weight: 500;
@@ -311,16 +375,18 @@ white-space:nowrap;
   width: $card-button-width;
   padding: 0.625em 0.75em;
   text-decoration: none;
-  transition: all 0.2s ease-in-out;
+  transition: all 0.1s ease-in-out;
 }
 
 .plan .button:hover {
   
-  background-color: #4133B7;
+  background-color: #2532915e;
 }
 
 .plan .button_disabled {
-  background-color: #888888;
+  background-color: #5658695e;
+  box-shadow: -5px -5px 10px -1px #2532915e,5px 5px 10px -1px #2532915e  ;
+  cursor: not-allowed;
   border-radius: 999px;
   color: #fff;
   font-weight: 500;
@@ -466,6 +532,7 @@ white-space:nowrap;
     border-radius: 999px;
     margin-right: 10px;
     &:hover {
+      transition: all 0.2s ease-in-out;
       color: #1FCAC5;
       border: 2px solid #1FCAC5;
     }
@@ -564,4 +631,11 @@ white-space:nowrap;
     padding: 0px;
     margin: 0px;
   }
+}
+
+.display {
+  
+}
+.noDisplay {
+  display: none;
 }

@@ -8,6 +8,8 @@ import useBalance from '../components/hooks/useBalance';
 import useAmount from '../components/hooks/useAmount';
 
 import { ConnectionRequest } from '../components/ConnectionRequest';
+import useBrideDirection from '../components/hooks/useBrideDirection';
+import { DirSelector } from '../components/DirSelector';
 
 /* INDEX */
 export default function HomePage() {
@@ -21,12 +23,12 @@ export default function HomePage() {
     // Contexts
     const { saveBalance }                           = useBalance();
     const { amount }                                = useAmount()
+    const { direction, setDirection }               = useBrideDirection();
     // States
     const [ my_application, set_my_application ]    = useState(null);
     const [ myKeys, setMyKeys ]                     = useState({solana: null, ethereum: null, ethSigner:null});
     const [ connected, setConnected ]               = useState(false)
     const [ curr_step, setCurrStep ]                = useState(null);
-    const [ direction, setDirection ]               = useState('sol_to_eth');
     const [ balance, setBalance ]                   = useState([]);
 
 
@@ -106,6 +108,10 @@ export default function HomePage() {
             {!connected 
                 ? <ConnectionRequest />
                 : /* Direction selector then open AppSelector with direction */
+                !direction 
+                    ? <DirSelector/>
+                    :
+                
                 <AppSelector
                     amount={amount}
                     curr_step={curr_step}

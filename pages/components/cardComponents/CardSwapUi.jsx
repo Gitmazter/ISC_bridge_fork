@@ -61,7 +61,7 @@ export const CardSwapUi = ({maxAmount, fromTo}) => {
               <p>{fromTo.to.name}</p>         
             </div>
             <div className={styles.flex_col}>
-              <input inputMode='decimal' placeholder={amount} value={amount} autoComplete='off' className={styles.swap_input}/> 
+              <input  id='swapInput' inputMode='decimal' placeholder={amount} value={amount} autoComplete='off' className={styles.swap_input}/> 
               <p className={styles.text_end}>${ ((amount * iscPrice)).toLocaleString('fullwide', {useGrouping : false}) }</p>
             </div>          
           </div> 

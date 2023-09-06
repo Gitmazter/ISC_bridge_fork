@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { AmountContextProvider } from "./components/contexts/AmountContext";
 import { BalanceContextProvider } from "./components/contexts/BalanceContext";
 import { Sidebar } from "./layout/Sidebar";
+import { BridgeDirectionContextProvider } from "./components/contexts/BridgeDirectionContext";
 
 
 export default function App () {
@@ -26,22 +27,24 @@ export default function App () {
 
   return (
     <AmountContextProvider>
-      <BalanceContextProvider>
-        <Web3ReactProvider getLibrary={getLibrary}>
-          <ConnectionInfoContextProvider>
-            <SolanaContextProvider>
-              <Sidebar/>
-              <div className={styles.mainFg}>
-                <div className={styles.App}>
-                  <Header/>
-                  <HomePage/>
-                  <Footer/>
+      <BridgeDirectionContextProvider>
+        <BalanceContextProvider>
+          <Web3ReactProvider getLibrary={getLibrary}>
+            <ConnectionInfoContextProvider>
+              <SolanaContextProvider>
+                <Sidebar/>
+                <div className={styles.mainFg}>
+                  <div className={styles.App}>
+                    <Header/>
+                    <HomePage/>
+                    <Footer/>
+                  </div>
                 </div>
-              </div>
-            </SolanaContextProvider>
-          </ConnectionInfoContextProvider>
-        </Web3ReactProvider>
-      </BalanceContextProvider>
+              </SolanaContextProvider>
+            </ConnectionInfoContextProvider>
+          </Web3ReactProvider>
+        </BalanceContextProvider>
+      </BridgeDirectionContextProvider>
     </AmountContextProvider>
   )
 }
