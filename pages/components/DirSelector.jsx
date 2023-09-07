@@ -6,11 +6,15 @@ export const DirSelector = () => {
   const { direction, setDirection } = useBrideDirection()
 
   const setSol2Eth = () => {
-    setDirection('sol_to_eth')
+    setTimeout(()=> {
+      setDirection('sol_to_eth')
+    }, 100)
   }
 
   const setEth2Sol = () => {
-    setDirection('eth_to_sol')
+    setTimeout(()=> {
+      setDirection('eth_to_sol')
+    }, 100)
   }
 
   useEffect(() => {console.log(direction);}, [direction])
