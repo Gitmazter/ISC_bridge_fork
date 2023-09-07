@@ -10,6 +10,7 @@ import { SwapCardMax } from './cardComponents/SwapCardMax'
 import useAmount from './hooks/useAmount'
 import { useEffect, useState } from 'react'
 import { IscIcon } from './utils/IconImgs'
+import { Progressbar } from './cardComponents/Progressbar'
 const inter = Inter({ subsets: ['latin'] })
 
 export default function SwapCard({step, card_topic, data, loading, enable, click_handler}) {
@@ -38,10 +39,20 @@ export default function SwapCard({step, card_topic, data, loading, enable, click
                     </div>
                     <CardSwapUi maxAmount={maxAmount} fromTo = {fromTo} />
                     <hr className={styles.card_line}></hr>
-                    {loading && <Loading/>}
+                    {loading && <Progressbar isRunning={loading} averageTimeMilliSeconds={3000}/>}
                     <CardButton value="Swap" enable={enable} click_handler={click_handler}/>
                     <CardData value={info}/>
                 </div>
           </div>
       </div>
 }
+
+
+/* 
+xoil '0x789733c6Cfd5EAa6c27bEAfD8bB7AF20aBe28500'
+ISCToken Contract '0xD13ebb5C39fB00C06122827E1cbD389930C9E0E3'
+Swap.deploy('0x789733c6Cfd5EAa6c27bEAfD8bB7AF20aBe28500', '0xD13ebb5C39fB00C06122827E1cbD389930C9E0E3', {'from':a})
+<Swap Contract '0x8914a9E5C5E234fDC3Ce9dc155ec19F43947ab59'>
+ISCToken[0].mint('0x8914a9E5C5E234fDC3Ce9dc155ec19F43947ab59', 500000000, {'from':a})
+
+*/
