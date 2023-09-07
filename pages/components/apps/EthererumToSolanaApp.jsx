@@ -53,8 +53,8 @@ const solConnection = new Connection("http://localhost:8899", "confirmed");
         setCurrStep("step_0_busy")
         await my_application.ethereum_swap.wait_until_finalized(txid)
         await updateBalance()
-        console.log(txid)
         setStep0(txid['hash'])
+        console.log(txid)
         setCurrStep("step0")
       }
       catch(e) {
