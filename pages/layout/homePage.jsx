@@ -32,6 +32,7 @@ export default function HomePage() {
     const [ connected, setConnected ]               = useState(false)
     const [ curr_step, setCurrStep ]                = useState(null);
     const [ balance, setBalance ]                   = useState([]);
+    const [ loading, setLoading ]                   = useState(false)
 
 
       /* ////////////////////////////////////////////////////////////////////// */
@@ -96,8 +97,13 @@ export default function HomePage() {
     }, [myKeys.solana, myKeys.ethSigner])
 
     useEffect(() => {
-        console.log('application changed');
-        setConnected(true)
+        console.log(my_application);
+        if (my_application) {
+            setTimeout(()=> {
+                setConnected(true)
+            }, 200)
+        }
+        // setConnected(true)
     }, [my_application])
 
       /* ////////////////////////////////////////////////////////////////////// */
@@ -108,7 +114,7 @@ export default function HomePage() {
         <div className={styles.main}>
             {/* connect wallets first */}
             {!connected 
-                ? <ConnectionRequest />
+                ? <ConnectionRequest/>
                 : /* Direction selector then open AppSelector with direction */
                 !direction 
                     ? <DirSelector/>
