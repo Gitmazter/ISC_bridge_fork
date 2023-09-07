@@ -32,8 +32,8 @@ export default function EthModalButton () {
   return (
     active 
     ? 
-    <button className={styles.MetaMaskButton} onClick={disconnect}><img src='MetaMask_Fox.svg'/>Disconnect {account.substring(0,4)}..{account.substring(38)}</button>
+    <button className={styles.MetaMaskButton} onClick={disconnect} type='button'><img src='MetaMask_Fox.svg'/>Disconnect {account.substring(0,4)}..{account.substring(38)}</button>
     :
-    <button className={styles.MetaMaskButton} onClick={connect}><img src='MetaMask_Fox.svg'/>Connect</button>
+    <button className={styles.MetaMaskButton} onClick={connect} type='button'><img src='MetaMask_Fox.svg'/>Connect</button>
   )
 }
