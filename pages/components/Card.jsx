@@ -5,6 +5,7 @@ import CardData from "./cardComponents/CardData"
 import CardParagraph from "./cardComponents/CardParagraph"
 import CardTitle from "./cardComponents/CardTitle"
 import { Inter } from 'next/font/google'
+import { Progressbar } from './cardComponents/Progressbar'
 const inter = Inter({ subsets: ['latin'] })
 
 
@@ -24,7 +25,7 @@ export default function Card({step, card_topic, data, loading, enable, click_han
               <CardTitle value={card_topic.title}/>
               <CardParagraph value={card_topic.content}/>
               <hr className={styles.card_line}></hr>
-              {loading && <Loading/>}
+              {loading && <Progressbar isRunning={loading} averageTimeMilliSeconds={5000}/>}
               <CardButton value="Initiate" enable={enable} click_handler={click_handler}/>
               <CardData value={info}  />
               </div>
