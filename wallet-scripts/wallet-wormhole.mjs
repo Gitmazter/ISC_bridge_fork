@@ -189,6 +189,10 @@ class WalletWormhole {
             targetSigner
         );    
         const completeTransferTx = await targetTokenBridge.completeTransfer(Buffer.from(vaaBytes.vaaBytes, "base64"));
+        return completeTransferTx
+    }
+
+    async await_tx_completion_eth(completeTransferTx) {
         const tx_log = await completeTransferTx.wait();
         console.log("Complete Transfer TX: ", tx_log['transactionHash']);
         return tx_log['transactionHash']
@@ -276,7 +280,8 @@ class WalletWormhole {
         const signedTransaction = await keypair.signTransaction(transaction)
         // txid = await keypair.sendTransaction(signedTransaction)
         txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
-        await this.connection.confirmTransaction(txid);
+        console.log(txid);
+        // await this.connection.confirmTransaction(txid);
         console.log("Token redeemed", txid)
         return txid
     }

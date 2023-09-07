@@ -3,7 +3,8 @@ import {
   SystemProgram,
   Connection,
   TransactionInstruction,
-  PublicKey } from "@solana/web3.js";
+  PublicKey, 
+  VersionedTransaction} from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import borsh from 'borsh'
 
@@ -152,6 +153,10 @@ constructor(config, accounts) {
     const param = new Parameters(1, scaled_amount);
     return await this.createTransaction(param);
   };
+
+  async send_transaction(tx) {
+    
+  }
 };
 
 export default SolanaWalletSwap;

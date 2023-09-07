@@ -123,12 +123,16 @@ class EthereumWalletSwap {
     }
     
     async swap_oil_to_isc(amount) {
-        amount = amount * (10**this.config.decimals)
-        let tx = await this.xOILSigner.approve(this.config.swap_contract, amount)
-        await this.wait_until_finalized(tx)
-        tx = await this.swap(amount, true)
+        amount = amount * (10**this.config.decimals);
+        let tx = await this.xOILSigner.approve(this.config.swap_contract, amount);
+        await this.wait_until_finalized(tx);
+        tx = await this.swap(amount, true);
         console.log(tx);
-        return tx['hash']
+        return tx;
+    }
+    async approve_oil_to_isc(amount) {
+        let tx = await this.xOILSigner.approve(this.config.swap_contract, amount);
+        return tx()
     }
 
     async swap_isc_to_oil(amount) {
@@ -136,7 +140,7 @@ class EthereumWalletSwap {
         let tx = await this.ISCTokenSigner.approve(this.config.swap_contract, amount)
         await this.wait_until_finalized(tx)
         tx = await this.swap(amount, false)
-        return tx['hash']
+        return tx
     }
 
     async mint_isc(amount) {
