@@ -388,6 +388,29 @@ white-space:nowrap;
   }
 }
 
+.plan .action_waiting {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  .button {
+    font-size: 18px;
+    font-weight: 500;
+    padding: 10px;
+    margin: 30px;
+    background:#303030;
+    cursor:not-allowed;
+    border: none;
+    border-radius: 50px;
+    color: white;
+    border: 1px solid #C0C0C0;
+    // box-shadow: -10px -10px 10px -1px rgba(255, 255, 255, 0.349);
+    // box-shadow: -10px -10px 10px -1px rgba(255, 255, 255, 0.349);/* #060818 */
+  }
+
+}
+
 .plan .button {
   background-color: $isc-bg;
   border-radius: 999px;
@@ -403,7 +426,7 @@ white-space:nowrap;
   transition: all 0.1s ease-in-out;
 }
 
-.plan .button:hover {
+.plan .action .button:hover {
   
   background-color: #2532915e;
 }

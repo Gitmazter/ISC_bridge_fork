@@ -376,6 +376,25 @@
   box-shadow: 0px 0px 10px #C0C0C0;
 }
 
+.plan .action_waiting {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.plan .action_waiting .button {
+  font-size: 18px;
+  font-weight: 500;
+  padding: 10px;
+  margin: 30px;
+  background: #303030;
+  cursor: not-allowed;
+  border: none;
+  border-radius: 50px;
+  color: white;
+  border: 1px solid #C0C0C0;
+}
+
 .plan .button {
   background-color: rgba(6, 8, 24, 0.7411764706);
   border-radius: 999px;
@@ -391,7 +410,7 @@
   transition: all 0.1s ease-in-out;
 }
 
-.plan .button:hover {
+.plan .action .button:hover {
   background-color: rgba(37, 50, 145, 0.368627451);
 }
 
