@@ -9,7 +9,7 @@ import { Progressbar } from './cardComponents/Progressbar'
 const inter = Inter({ subsets: ['latin'] })
 
 
-export default function SendCard({step, card_topic, txid, vaa, loading, enable, click_handler}) {
+export default function SendCard({step, card_topic, txid, vaa, loading, enable, click_handler, waiting}) {
   console.log(vaa);
   vaa != undefined ? vaa = vaa.vaaBytes : vaa = vaa
 return <div className={inter.className}>
@@ -18,10 +18,10 @@ return <div className={inter.className}>
               <CardTitle value={card_topic.title}/>
               <CardParagraph value={card_topic.content}/>
               <hr className={styles.card_line}></hr>
-              <CardButton value="Initiate" enable={enable} click_handler={click_handler}/>
+              <CardButton value="Initiate" enable={enable} click_handler={click_handler} waiting={waiting}/>
               <CardData value={txid} type={'txid'} />
               <CardData value={vaa} type={'vaa'} />
-              {loading && <Progressbar isRunning={loading} averageTimeMilliSeconds={20000}/>}
+              {loading  && <Progressbar isRunning={loading} averageTimeMilliSeconds={20000}/>}
               </div>
           </div>
       </div>

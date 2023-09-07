@@ -9,7 +9,7 @@ import { Progressbar } from './cardComponents/Progressbar'
 const inter = Inter({ subsets: ['latin'] })
 
 
-export default function Card({step, card_topic, data, loading, enable, click_handler}) {
+export default function Card({step, card_topic, data, loading, enable, click_handler, waiting}) {
   let info
   if (step == "2" && data!=null) {
       info = data.vaaBytes
@@ -26,7 +26,7 @@ export default function Card({step, card_topic, data, loading, enable, click_han
               <CardParagraph value={card_topic.content}/>
               <hr className={styles.card_line}></hr>
               {loading && <Progressbar isRunning={loading} averageTimeMilliSeconds={5000}/>}
-              <CardButton value="Initiate" enable={enable} click_handler={click_handler}/>
+              <CardButton value="Initiate" enable={enable} click_handler={click_handler} waiting={waiting}/>
               <CardData value={info}  />
               </div>
           </div>

@@ -66,6 +66,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
       };
       
       try {
+        setCurrStep('step_0_waiting');
         const tx = await my_application.solana_swap.swap_isc_to_oil(amount);
         const txid = await wallets[0].sendTransaction(tx, connection, options);
         setCurrStep("step_0_busy") 
@@ -90,6 +91,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
         commitment: 'processed'
       };
       try {
+        setCurrStep('step_1_waiting');
         const transaction = await my_application.wormhole.send_from_solana(amount);
         const txid = await wallets[0].sendTransaction(transaction,connection, options);
         setCurrStep("step_1_busy");
@@ -139,6 +141,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
             return
         }
         try {
+          setCurrStep('step_3_waiting');
           const tx = await my_application.wormhole.complete_transfer_on_eth(step2, signer)
           setCurrStep("step_3_busy")
           console.log(tx);
@@ -162,6 +165,7 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
             return
         }
         try {
+          setCurrStep('step_4_waiting');
           const tx = await my_application.ethereum_swap.swap_oil_to_isc(amount, signer)
           setCurrStep("step_4_busy")
           await my_application.ethereum_swap.wait_until_finalized(tx)
@@ -206,13 +210,13 @@ export default function SolanaToEthereumApp({ curr_step, balance, setBalance, se
   ];
 
 return <div className={styles.BridgeApp}>
-          <SwapCard step={0} card_topic={card_topics[0]} data={step0} loading={curr_step=="step_0_busy"} enable={curr_step==null} click_handler={handleStep0}/>
+          <SwapCard step={0} card_topic={card_topics[0]} data={step0} loading={curr_step=="step_0_busy"} enable={curr_step==null} click_handler={handleStep0} waiting={curr_step == 'step_0_waiting'}/>
 {/*           <Card step={1} card_topic={card_topics[1]} data={step1} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
           <Card step={2} card_topic={card_topics[2]} data={step2} loading={curr_step=="step_2_busy"} enable={curr_step=="step1"} click_handler={handleStep2}/> */}
           
-          <SendCard step={1} card_topic={card_topics[1]} txid={step1} vaa={step2} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
+          <SendCard step={1} card_topic={card_topics[1]} txid={step1} vaa={step2} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1} waiting={curr_step == 'step_1_waiting'}/>
           
-          <Card step={3} card_topic={card_topics[3]} data={step3} loading={curr_step=="step_3_busy"} enable={curr_step=="step2"} click_handler={handleStep3}/>
-          <SwapCard step={4} card_topic={card_topics[4]} data={step4} loading={curr_step=="step_4_busy"} enable={curr_step=="step3"} click_handler={handleStep4}/>
+          <Card step={3} card_topic={card_topics[3]} data={step3} loading={curr_step=="step_3_busy"} enable={curr_step=="step2"} click_handler={handleStep3} waiting={curr_step == 'step_3_waiting'}/>
+          <SwapCard step={4} card_topic={card_topics[4]} data={step4} loading={curr_step=="step_4_busy"} enable={curr_step=="step3"} click_handler={handleStep4} waiting={curr_step == 'step_4_waiting'}/>
       </div>
 }

@@ -13,7 +13,7 @@ import { IscIcon } from './utils/IconImgs'
 import { Progressbar } from './cardComponents/Progressbar'
 const inter = Inter({ subsets: ['latin'] })
 
-export default function SwapCard({step, card_topic, data, loading, enable, click_handler}) {
+export default function SwapCard({step, card_topic, data, loading, enable, click_handler, waiting}) {
   const [ maxAmount, setMaxAmount ] = useState({'ISC':<Loading/>, 'xOil':<Loading/>, 'eIsc':<Loading/>, 'Oil':<Loading/>})
 
   let info
@@ -40,7 +40,7 @@ export default function SwapCard({step, card_topic, data, loading, enable, click
                     <CardSwapUi maxAmount={maxAmount} fromTo = {fromTo} />
                     <hr className={styles.card_line}></hr>
                     {loading && <Progressbar isRunning={loading} averageTimeMilliSeconds={3000}/>}
-                    <CardButton value="Swap" enable={enable} click_handler={click_handler}/>
+                    <CardButton value="Swap" enable={enable} click_handler={click_handler} waiting={waiting}/>
                     <CardData value={info}/>
                 </div>
           </div>
