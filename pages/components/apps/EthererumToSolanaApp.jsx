@@ -7,12 +7,13 @@ import { IscIcon, OilIcon } from '../utils/IconImgs';
 import useBalance from '../hooks/useBalance';
 import SwapCard from '../SwapCard';
 import SendCard from '../SendCard';
+import { Connection } from '@solana/web3.js';
 
 export default function EthereumToSolanaApp({amount, curr_step, setBalance, setCurrStep, my_application}) {
 const { connection } = useConnection();
 const wallets = [useWallet(), useConnectionInfo()];
 const { saveBalance } = useBalance()
-
+const solConnection = new Connection("http://localhost:8899", "confirmed");
   const [step0, setStep0] = useState(null);
   const [step1, setStep1] = useState(null);
   const [step2, setStep2] = useState(null);
@@ -47,32 +48,47 @@ const { saveBalance } = useBalance()
       if (curr_step != null) {
           return
       }
-      setCurrStep("step_0_busy")
-      const txid = await my_application.ethereum_swap.swap_isc_to_oil(amount)
-      setStep0(txid)
-      console.log(txid)
-      updateBalance()
-      setCurrStep("step0")
+      try {
+        const txid = await my_application.ethereum_swap.swap_isc_to_oil(amount)
+        setCurrStep("step_0_busy")
+        await my_application.ethereum_swap.wait_until_finalized(txid)
+        await updateBalance()
+        console.log(txid)
+        setStep0(txid['hash'])
+        setCurrStep("step0")
+      }
+      catch(e) {
+        // handle reject / fail
+        console.log(e);
+        setCurrStep(null)
+      }
   }
   async function handleStep1() {
       if (curr_step != "step0") {
           return
       }
-      setCurrStep("step_1_busy")
-      const txid = await my_application.wormhole.send_from_ethereum(amount)
-      setStep1(txid.transactionHash)
-      //updateBalance()
-      //setCurrStep("step1")
-      let VAA = ''
-      // Timeout to solve meta error "CONFIRM TIMEOUT TIME FOR MAINNET"
-      setTimeout(async() => {
-        console.log(txid.transactionHash);
-        VAA = await my_application.wormhole.get_vaa_bytes_ethereum(txid)
-        console.log(VAA);
-        setStep2(VAA)
-        updateBalance();
-        setCurrStep("step2");
-      }, 5000);
+      try {
+        const txid = await my_application.wormhole.send_from_ethereum(amount)
+        setCurrStep("step_1_busy")
+        //await my_application.ethereum_swap.wait_until_finalized(txid)
+        setStep1(txid.transactionHash)
+        //updateBalance()
+        //setCurrStep("step1")
+        let VAA = ''
+        // Timeout to solve meta error "CONFIRM TIMEOUT TIME FOR MAINNET"
+        setTimeout(async() => {
+            console.log(txid.transactionHash);
+            VAA = await my_application.wormhole.get_vaa_bytes_ethereum(txid)
+            console.log(VAA);
+            setStep2(VAA)
+            updateBalance();
+            setCurrStep("step2");
+        }, 5000);
+      }
+      catch(e){
+        console.log(e);
+        setCurrStep("step0")
+      }
   }
 //   async function handleStep2() {
 //       if (curr_step != "step1") {
@@ -88,25 +104,40 @@ const { saveBalance } = useBalance()
       if (curr_step != "step2") {
           return
       }
-      setCurrStep("step_3_busy")
-      const tx = await my_application.wormhole.complete_transfer_on_solana(step2)
-      setStep3(tx)
-      updateBalance()
-      setCurrStep("step3")
+
+      try {
+        const tx = await my_application.wormhole.complete_transfer_on_solana(step2)
+        setCurrStep("step_3_busy")
+        await solConnection.confirmTransaction(tx)
+        setStep3(tx)
+        updateBalance()
+        setCurrStep("step3")
+      }
+      catch(e) {
+        console.log(e);
+        setCurrStep('step2')
+      }
   }
   async function handleStep4() {
       if (curr_step != "step3") {
           return
       }
-      setCurrStep("step_4_busy")
       const options = {
         commitment: 'processed'
       };
-      const tx = await my_application.solana_swap.swap_oil_to_isc(amount)
-      const txid = await wallets[0].sendTransaction(tx, connection, options);
-      setStep4(txid)
-      updateBalance()
-      setCurrStep(null)
+      try {
+        const tx = await my_application.solana_swap.swap_oil_to_isc(amount)
+        const txid = await wallets[0].sendTransaction(tx, connection, options);
+        setCurrStep("step_4_busy")
+        await solConnection.confirmTransaction(txid)
+        setStep4(txid)
+        updateBalance()
+        setCurrStep(null)
+      }
+      catch(e){
+        console.log(e);
+        setCurrStep('step3')
+      }
   }
   function AppSelector({amount, curr_step, setBalance, setCurrStep, my_application, direction}) {
       if (direction == 'sol_to_eth') {
@@ -129,11 +160,13 @@ const { saveBalance } = useBalance()
       {
           'title': '1. Swap eISC for xOIL',
           'titlev2': {'from': {'name':'eIsc', 'icon': <IscIcon/> }, 'to':{'name':'xOil', 'icon': <OilIcon/> }},
-          'content': 'Swap your Ethereum-Native ISC for xOIL'
+          'content': 'Swap your Ethereum-Native ISC for xOIL',
+          'skip': 'I already have xOil'
       },
       {
           'title': '2. Send xOIL to Wormhole and request VAA receipt',
-          'content': 'Send the swapped OIL to Wormhole smart contract and request for a VAA'
+          'content': 'Send the swapped OIL to Wormhole smart contract and request for a VAA',
+          'skip' : 'I already have a Transaction Hash or VAA'
       },
       {
           'title': '3. Get VAA Bytes',
@@ -141,7 +174,8 @@ const { saveBalance } = useBalance()
       },
       {
           'title': '3. Get OIL on Solana (3 signatures required) ',
-          'content': 'Interact with the Wormhole smart contract on Ethereum to receive the xOIL in your wallet'
+          'content': 'Interact with the Wormhole smart contract on Ethereum to receive the xOIL in your wallet',
+          'skip' : 'I already have OIL'
       },
       {
           'title': '4. Swap OIL For ISC',
