@@ -6,6 +6,8 @@ export default function CardButton({value, enable, click_handler, waiting}) {
   const waitingMessageBase = 'Waiting for signature....'
   const [ waitingMessage, setWaitingMessage ] = useState(waitingMessageBase)
 
+
+  // Waiting animation
   useEffect(()=>{
     let interval = undefined
     let i = 21
