@@ -5,6 +5,7 @@ import CardData from "./cardComponents/CardData"
 import CardParagraph from "./cardComponents/CardParagraph"
 import CardTitle from "./cardComponents/CardTitle"
 import { Inter } from 'next/font/google'
+import { Progressbar } from './cardComponents/Progressbar'
 const inter = Inter({ subsets: ['latin'] })
 
 
@@ -20,7 +21,7 @@ return <div className={inter.className}>
               <CardButton value="Initiate" enable={enable} click_handler={click_handler}/>
               <CardData value={txid} type={'txid'} />
               <CardData value={vaa} type={'vaa'} />
-              {loading && <Loading/>}
+              {loading && <Progressbar isRunning={loading} averageTimeMilliSeconds={20000}/>}
               </div>
           </div>
       </div>
