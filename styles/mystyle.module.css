@@ -685,4 +685,15 @@
   text-align: center;
   color: white;
   word-wrap: break-word;
+}
+
+.Progressbar {
+  border-radius: 5px;
+  background-color: white;
+  height: 30px;
+  width: 100%;
+}
+.Progressbar div {
+  border-radius: 5px;
+  background: linear-gradient(#a66cff, #341e55);
 }/*# sourceMappingURL=mystyle.module.css.map */
