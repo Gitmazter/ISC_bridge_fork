@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import styles from '../../../styles/mystyle.module.css'
 
 export default function CardButton({value, enable, click_handler, waiting}) {
-  const [ display, setDisplay ] = useState(false);
   const waitingMessageBase = 'Waiting for signature....'
   const [ waitingMessage, setWaitingMessage ] = useState(waitingMessageBase)
 
