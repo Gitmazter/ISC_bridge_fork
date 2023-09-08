@@ -23,7 +23,7 @@ export default function HomePage() {
     // SOLANA Context
     const solWallet                                 = useWallet();    
     // Contexts
-    const { saveBalance }                           = useBalance();
+    const { balance, saveBalance }                           = useBalance();
     const { amount }                                = useAmount()
     const { direction, setDirection }               = useBrideDirection();
     // States
@@ -31,7 +31,7 @@ export default function HomePage() {
     const [ myKeys, setMyKeys ]                     = useState({solana: null, ethereum: null, ethSigner:null});
     const [ connected, setConnected ]               = useState(false)
     const [ curr_step, setCurrStep ]                = useState(null);
-    const [ balance, setBalance ]                   = useState([]);
+    // const [ balance, setBalance ]                   = useState([]);
     const [ loading, setLoading ]                   = useState(false)
 
 
@@ -48,7 +48,7 @@ export default function HomePage() {
             result.push({'item':'Pool ISC', 'solana':solana_bal.pool_isc, 'ethereum':eth_bal.pool_isc})
             result.push({'item':'Pool OIL', 'solana':solana_bal.pool_oil, 'ethereum':eth_bal.pool_oil})
             result.push({'item':'User SOL', 'solana':solana_bal.user_sol, 'ethereum':0})
-            setBalance(result)
+            // setBalance(result)
             saveBalance(result)
         }
     }
@@ -99,7 +99,8 @@ export default function HomePage() {
     useEffect(() => {
         console.log(my_application);
         if (my_application) {
-            setTimeout(()=> {
+            setTimeout(async ()=> {
+                updateBalance()
                 setConnected(true)
             }, 200)
         }
@@ -125,7 +126,7 @@ export default function HomePage() {
                         amount={amount}
                         curr_step={curr_step}
                         balance = {balance}
-                        setBalance={setBalance}
+                        setBalance={saveBalance}
                         setCurrStep={setCurrStep}
                         my_application={my_application}
                         direction={direction}
