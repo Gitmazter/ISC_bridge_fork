@@ -7,15 +7,20 @@ import { CardSwapUi } from './cardComponents/CardSwapUi'
 import CardTitle from "./cardComponents/CardTitle"
 import { Inter } from 'next/font/google'
 import { SwapCardMax } from './cardComponents/SwapCardMax'
-import useAmount from './hooks/useAmount'
 import { useEffect, useState } from 'react'
-import { IscIcon } from './utils/IconImgs'
 import { Progressbar } from './cardComponents/Progressbar'
+import useBalance from './hooks/useBalance'
+import { CardSkip, SwapSkip } from './cardComponents/SwapSkip'
+import useBrideDirection from './hooks/useBrideDirection'
 const inter = Inter({ subsets: ['latin'] })
 
-export default function SwapCard({step, card_topic, data, loading, enable, click_handler, waiting}) {
+export default function SwapCard({step, card_topic, data, loading, enable, click_handler, waiting, setCurrStep}) {
   const [ maxAmount, setMaxAmount ] = useState({'ISC':<Loading/>, 'xOil':<Loading/>, 'eIsc':<Loading/>, 'Oil':<Loading/>})
+  const [ skipAvailable, setSkipAvailable ] = useState(false)
 
+
+  const {balance} = useBalance();
+  const {direction} = useBrideDirection()
   let info
   if (step == "2" && data!=null) {
       info = data.vaaBytes
@@ -25,9 +30,41 @@ export default function SwapCard({step, card_topic, data, loading, enable, click
       info = data
   }
 
+  useEffect(() => {
+    if (balance[0]) {
+        if (step == 0 && direction == 'sol_to_eth' && enable) {
+            if (balance[1].solana > 0) {
+                setSkipAvailable(true)
+            }
+        }
+        else if (step == 0 && direction == 'eth_to_sol' && enable) {
+            if (balance[1].ethereum > 0) {
+                setSkipAvailable(true)
+            }
+        }
+        else if (step == 4 && direction == 'sol_to_eth') {
+            if (balance[1].ethereum > 0) {
+                setSkipAvailable(true)
+            }
+        }
+        else if (step == 4 && direction  == 'eth_to_sol') {
+            if (balance[1].solana > 0) {
+                setSkipAvailable(true)
+            }
+        }
+        else {
+            setSkipAvailable(false)
+        }
+    }
+  },[balance, direction, enable])
+
+  useEffect(() => {
+    console.log('Skip Available: ', skipAvailable, ' For Direction: ', direction, ' At Step: ', step);
+  },[skipAvailable])
+
   const currencies = card_topic.title
   const fromTo = card_topic.titlev2
-
+  console.log(balance);
 
   return <div className={inter.className}>
           <div className={styles.plan}>
@@ -40,6 +77,9 @@ export default function SwapCard({step, card_topic, data, loading, enable, click
                     <CardSwapUi maxAmount={maxAmount} fromTo = {fromTo} />
                     <hr className={styles.card_line}></hr>
                     {loading && <Progressbar isRunning={loading} averageTimeMilliSeconds={3000}/>}
+                    {skipAvailable 
+                    ? <SwapSkip enable={enable} skipAvailable={skipAvailable} setCurrStep={setCurrStep} step={step}/>
+                    : <></>}
                     <CardButton value="Swap" enable={enable} click_handler={click_handler} waiting={waiting}/>
                     <CardData value={info}/>
                 </div>
