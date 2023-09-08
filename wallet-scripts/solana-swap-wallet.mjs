@@ -55,7 +55,7 @@ constructor(config, accounts) {
 
   async fetch_balance() {
     // Only updates balances if a wallet has been connected
-    if (this.accounts.solana !== null) {
+    if (this.accounts.solana !== null && this.accounts.ethSigner !== null) {
       this.updateAccounts()
       let user_isc = await this.connection.getTokenAccountBalance(this.user_isc_ata, "processed");
       let user_oil = await this.connection.getTokenAccountBalance(this.user_oil_ata, "processed");

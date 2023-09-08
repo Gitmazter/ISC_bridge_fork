@@ -192,6 +192,20 @@ class WalletWormhole {
         return completeTransferTx
     }
 
+
+    async complete_transfer_on_eth_resume(vaaBytes, signer) {
+        // Now create the Wrapped Version of the Token on the target chain
+        const targetSigner = signer
+        console.log(targetSigner);
+        const targetTokenBridge = new ethers.Contract(
+            this.config.evm0.tokenBridgeAddress,
+            token_bridge_json.abi,
+            targetSigner
+        );    
+        const completeTransferTx = await targetTokenBridge.completeTransfer(Buffer.from(vaaBytes, "base64"));
+        return completeTransferTx
+    }
+
     async await_tx_completion_eth(completeTransferTx) {
         const tx_log = await completeTransferTx.wait();
         console.log("Complete Transfer TX: ", tx_log['transactionHash']);
@@ -209,7 +223,6 @@ class WalletWormhole {
     }
 
     async send_from_ethereum(amount) {
-        
         amount = amount*(10**this.config.evm0.decimals)
         const source_chain = 'evm0';
         const destination_chain = 'solana';
@@ -262,7 +275,7 @@ class WalletWormhole {
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
             keypair.publicKey.toString(), //srcKey.publicKey.toString(),
-            Buffer.from(vaaBytes.vaaBytes, "base64"),
+            Buffer.from(vaaBytes, "base64"),
             10
         );
         console.log("Posted VAA to Solana \n", txid[0]['signature'], "\n", txid[1]['signature'])
@@ -272,7 +285,7 @@ class WalletWormhole {
             this.config.solana.bridgeAddress, //SOL_BRIDGE_ADDRESS,
             this.config.solana.tokenBridgeAddress, //SOL_TOKEN_BRIDGE_ADDRESS,
             keypair.publicKey.toString(), // payerAddress,
-            Buffer.from(vaaBytes.vaaBytes, "base64"), //vaaBytes, //signedVAA,
+            Buffer.from(vaaBytes, "base64"), //vaaBytes, //signedVAA,
         );
         // keypair.sign(transaction)
         //transaction.partialSign(keypair.signTransaction)
