@@ -5,10 +5,7 @@ import useAmount from '../hooks/useAmount'
 
 export const CardSwapUi = ({maxAmount, fromTo}) => {
   const [iscPrice, setIscPrice] = useState(0.00)
-  // const [amount, setAmount] = useState(null)
   const {amount, saveAmount} = useAmount()
-  
-  // console.log(fromTo);
 
   useEffect(() => {
     const getPrice = async() => {
@@ -19,11 +16,10 @@ export const CardSwapUi = ({maxAmount, fromTo}) => {
   },[])
 
 
-  useEffect(() => {/* console.log(iscPrice) */}, [iscPrice])
+  useEffect(() => {}, [iscPrice])
   const updateAmount = async (e) => {
     console.log(maxAmount);
     let inputAmount = e.target.value
-      //console.log(Number(inputAmount));
     if (NaN) {
       //console.log("not a number");
     }
@@ -55,8 +51,7 @@ export const CardSwapUi = ({maxAmount, fromTo}) => {
         {/* Post Swap Output */}
         <div className={styles.inputField} id={styles.outputField}>
           <div className={styles.flex}>
-            <div className={styles.tokenCard}>
-              {/* <img src='./ISC-logo.svg' height={20}/> */}  
+            <div className={styles.tokenCard}>  
               {fromTo.to.icon} 
               <p>{fromTo.to.name}</p>         
             </div>
