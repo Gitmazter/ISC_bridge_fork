@@ -395,6 +395,12 @@
   border: 1px solid #C0C0C0;
 }
 
+.plan .skip {
+  cursor: pointer;
+  text-decoration: underline;
+  color: rgb(239, 245, 162);
+}
+
 .plan .button {
   background-color: rgba(6, 8, 24, 0.7411764706);
   border-radius: 999px;

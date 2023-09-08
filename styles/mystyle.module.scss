@@ -410,6 +410,11 @@ white-space:nowrap;
   }
 
 }
+.plan .skip {
+  cursor: pointer;
+  text-decoration: underline;
+  color: rgb(239, 245, 162);
+}
 
 .plan .button {
   background-color: $isc-bg;
