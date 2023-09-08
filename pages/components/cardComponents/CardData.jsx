@@ -22,7 +22,7 @@ export default function CardData({value, type}) {
     }
   }
   let chain = checkChain()
-  console.log(chain);
+  // console.log(chain);
 
   const makeUrl = () => {
     switch (chain) {
