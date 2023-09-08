@@ -8,9 +8,11 @@ import useBalance from '../hooks/useBalance';
 import SwapCard from '../SwapCard';
 import SendCard from '../SendCard';
 import { Connection } from '@solana/web3.js';
+import { JsonRpcProvider, Provider } from '@ethersproject/providers';
 
 export default function EthereumToSolanaApp({amount, curr_step, setBalance, setCurrStep, my_application}) {
   const solConnection = new Connection("http://localhost:8899", "confirmed");
+  const ethConnection = new JsonRpcProvider('http://localhost:8545')
   const wallets = [useWallet(), useConnectionInfo()];
   const { connection } = useConnection();
   const { saveBalance } = useBalance();
@@ -71,15 +73,30 @@ export default function EthereumToSolanaApp({amount, curr_step, setBalance, setC
       }
       try {
         setCurrStep('step_1_waiting');
-        const txid = await my_application.wormhole.send_from_ethereum(amount)
+        const txid = await my_application.wormhole.send_from_ethereum(amount);
+        console.log(txid);
         setCurrStep("step_1_busy")
         //await my_application.ethereum_swap.wait_until_finalized(txid)
         setStep1(txid.transactionHash)
         //updateBalance()
         //setCurrStep("step1")
+      }
+      catch(e){
+        console.log(e);
+        setCurrStep("step0")
+      }
+  }
+
+  useEffect(() => {
+    if (step1 !== null && step2 == null) {
+      const fetchVaa = async () => {
         let VAA = ''
         // Timeout to solve meta error "CONFIRM TIMEOUT TIME FOR MAINNET"
-        setTimeout(async() => {
+        try {
+          setTimeout(async() => {
+            setCurrStep("step_1_busy")
+            const txid = await ethConnection.getTransactionReceipt(step1)
+            console.log(txid);
             console.log(txid.transactionHash);
             VAA = await my_application.wormhole.get_vaa_bytes_ethereum(txid)
             console.log(VAA);
@@ -87,12 +104,15 @@ export default function EthereumToSolanaApp({amount, curr_step, setBalance, setC
             updateBalance();
             setCurrStep("step2");
         }, 5000);
-      }
-      catch(e){
-        console.log(e);
-        setCurrStep("step0")
-      }
-  }
+        }
+        catch(e) {
+          console.log(e);
+          setCurrStep('step0')
+        }
+      } 
+      fetchVaa()
+    }
+  },[step1])
 //   async function handleStep2() {
 //       if (curr_step != "step1") {
 //           return
@@ -110,7 +130,7 @@ export default function EthereumToSolanaApp({amount, curr_step, setBalance, setC
 
       try {
         setCurrStep('step_3_waiting');
-        const tx = await my_application.wormhole.complete_transfer_on_solana(step2)
+        const tx = await my_application.wormhole.complete_transfer_on_solana(step2.vaaBytes)
         setCurrStep("step_3_busy")
         await solConnection.confirmTransaction(tx)
         setStep3(tx)
@@ -122,6 +142,30 @@ export default function EthereumToSolanaApp({amount, curr_step, setBalance, setC
         setCurrStep('step2')
       }
   }
+
+  useEffect(() => {
+    console.log(step2);
+    if (step2 != null) {
+      const completeTransfer = async () => {
+        try {
+          setCurrStep('step_3_waiting');
+          const tx = await my_application.wormhole.complete_transfer_on_solana(step2)
+          setCurrStep("step_3_busy")
+          await solConnection.confirmTransaction(tx)
+          setStep3(tx)
+          updateBalance()
+          setCurrStep("step3")
+        }
+        catch(e) {
+          console.log(e);
+          setCurrStep('step2')
+        }
+
+      }
+      completeTransfer()
+    }
+  }, [step2])
+
   async function handleStep4() {
       if (curr_step != "step3") {
           return
@@ -190,11 +234,49 @@ export default function EthereumToSolanaApp({amount, curr_step, setBalance, setC
   ];
 
 return <div className={styles.BridgeApp}>
-          <SwapCard step={0} card_topic={card_topics[0]} data={step0} loading={curr_step=="step_0_busy"} enable={curr_step==null} click_handler={handleStep0} waiting={curr_step == 'step_0_waiting'}/>
-{/*           <Card step={1} card_topic={card_topics[1]} data={step1} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1}/>
-          <Card step={2} card_topic={card_topics[2]} data={step2} loading={curr_step=="step_2_busy"} enable={curr_step=="step1"} click_handler={handleStep2}/> */}
-          <SendCard step={1} card_topic={card_topics[1]} txid={step1} vaa={step2} loading={curr_step=="step_1_busy"} enable={curr_step=="step0"} click_handler={handleStep1} waiting={curr_step == 'step_1_waiting'}/>
-          <Card step={3} card_topic={card_topics[3]} data={step3} loading={curr_step=="step_3_busy"} enable={curr_step=="step2"} click_handler={handleStep3} waiting={curr_step == 'step_3_waiting'}/>
-          <SwapCard step={4} card_topic={card_topics[4]} data={step4} loading={curr_step=="step_4_busy"} enable={curr_step=="step3"} click_handler={handleStep4} waiting={curr_step == 'step_4_waiting'}/>
-      </div>
+          <SwapCard 
+            step={0} 
+            card_topic={card_topics[0]} 
+            setCurrStep={setCurrStep} 
+            data={step0} 
+            loading={curr_step=="step_0_busy"} 
+            enable={curr_step==null}    
+            click_handler={handleStep0} 
+            waiting={curr_step == 'step_0_waiting'}
+          />
+          <SendCard 
+            step={1} 
+            card_topic={card_topics[1]} 
+            setCurrStep={setCurrStep}              
+            loading={curr_step=="step_1_busy"} 
+            enable={curr_step=="step0"} 
+            click_handler={handleStep1} 
+            waiting={curr_step == 'step_1_waiting'}  
+            txid={step1} vaa={step2}  
+            my_application={my_application}
+            setStep1={setStep1}
+            setStep2={setStep2}
+            curr_step={curr_step}
+          />
+          <Card
+            step={3} 
+            card_topic={card_topics[3]} 
+            setCurrStep={setCurrStep} 
+            data={step3} 
+            loading={curr_step=="step_3_busy"} 
+            enable={curr_step=="step2"} 
+            click_handler={handleStep3} 
+            waiting={curr_step == 'step_3_waiting'} 
+            setStep2={setStep2}
+          />
+          <SwapCard 
+            step={4} 
+            card_topic={card_topics[4]} 
+            setCurrStep={setCurrStep} 
+            data={step4} 
+            loading={curr_step=="step_4_busy"} 
+            enable={curr_step=="step3"} 
+            click_handler={handleStep4} 
+            waiting={curr_step == 'step_4_waiting'}
+          />        </div>
 }
