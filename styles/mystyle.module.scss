@@ -1,5 +1,10 @@
 $isc-bg: #060818bd;
 $token-card-bg: #060818;
+$resume-submit-bg: #273285;
+$resume-submit-bg-hover: #515781;
+$resume-close-bg: #191c35;
+$skip-text-color: rgb(239, 245, 162);
+
 
 $card-border:#C0C0C0 ;
 $card-bg:#0f0113;
@@ -413,7 +418,7 @@ white-space:nowrap;
 .plan .skip {
   cursor: pointer;
   text-decoration: underline;
-  color: rgb(239, 245, 162);
+  color: $skip-text-color;
 }
 
 .plan .button {
@@ -429,6 +434,75 @@ white-space:nowrap;
   padding: 0.625em 0.75em;
   text-decoration: none;
   transition: all 0.1s ease-in-out;
+}
+
+.plan .resumeStep {
+  button {
+    background-color: $token-card-bg;
+    color: white;
+    border: 1px white solid;
+    border-radius: 99px;
+    width: 10%;
+    transition: all 0.15s ease-in-out;
+  }
+  .resumeP {
+    cursor: pointer;
+    color: $skip-text-color;
+    text-decoration: underline;
+    display: inline-block;
+  }
+  .resumeOk {
+      cursor: pointer;
+      width: 6%;
+      display: inline;
+      background-color: $resume-submit-bg;
+      margin-left: 1rem;
+      &:hover {
+        background-color: $resume-submit-bg-hover;
+        border-color: black;
+      }
+  }
+  form {
+    display:  flex;
+    flex-direction: column;
+    .resumeBtns {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      align-items: flex-end;
+      gap: 5%;
+    }
+    .resumeClose {
+      cursor: pointer;
+      padding: 0.5rem;
+      background-color:$resume-close-bg ;
+      &:hover {
+        border-color: black;
+        background-color: rgb(95, 0, 0);
+      }
+    }
+    .resumeSubmit {
+      cursor: pointer;
+      padding: 0.5rem;
+      background-color:$resume-submit-bg ;
+      &:hover {
+        background-color: $resume-submit-bg-hover;
+        border-color: black;
+      }
+    }
+    .resumePrompt {
+      align-self:center;
+      justify-self: center;
+    }
+    textarea {
+
+      opacity: 0.3;
+      
+      border-radius: 5px;
+    }
+  }
+
 }
 
 .plan .action .button:hover {
@@ -601,6 +675,23 @@ white-space:nowrap;
   input {
     cursor: not-allowed;
     pointer-events: none;
+  }
+}
+.sendInput .inputField {
+  background-color: #333333;
+  height: 72px;
+  border-radius: 10px;
+  transition: all 0.25s ease-in;
+  border:1px solid #00000000;
+  &:focus-within{
+    border:1px solid #9ecaed;
+    box-shadow: 0 0 10px #9ecaed;
+  }
+  input {
+    height: 100%;
+    width: 100%;
+    font-size: 25px;
+    font-weight: bolder;
   }
 }
 

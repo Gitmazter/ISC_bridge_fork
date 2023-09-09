@@ -416,6 +416,70 @@
   transition: all 0.1s ease-in-out;
 }
 
+.plan .resumeStep button {
+  background-color: #060818;
+  color: white;
+  border: 1px white solid;
+  border-radius: 99px;
+  width: 10%;
+  transition: all 0.15s ease-in-out;
+}
+.plan .resumeStep .resumeP {
+  cursor: pointer;
+  color: rgb(239, 245, 162);
+  text-decoration: underline;
+  display: inline-block;
+}
+.plan .resumeStep .resumeOk {
+  cursor: pointer;
+  width: 6%;
+  display: inline;
+  background-color: #273285;
+  margin-left: 1rem;
+}
+.plan .resumeStep .resumeOk:hover {
+  background-color: #515781;
+  border-color: black;
+}
+.plan .resumeStep form {
+  display: flex;
+  flex-direction: column;
+}
+.plan .resumeStep form .resumeBtns {
+  margin-top: 0.5rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: flex-end;
+  gap: 5%;
+}
+.plan .resumeStep form .resumeClose {
+  cursor: pointer;
+  padding: 0.5rem;
+  background-color: #191c35;
+}
+.plan .resumeStep form .resumeClose:hover {
+  border-color: black;
+  background-color: rgb(95, 0, 0);
+}
+.plan .resumeStep form .resumeSubmit {
+  cursor: pointer;
+  padding: 0.5rem;
+  background-color: #273285;
+}
+.plan .resumeStep form .resumeSubmit:hover {
+  background-color: #515781;
+  border-color: black;
+}
+.plan .resumeStep form .resumePrompt {
+  align-self: center;
+  justify-self: center;
+}
+.plan .resumeStep form textarea {
+  opacity: 0.3;
+  border-radius: 5px;
+}
+
 .plan .action .button:hover {
   background-color: rgba(37, 50, 145, 0.368627451);
 }
@@ -589,6 +653,24 @@
 #outputField input {
   cursor: not-allowed;
   pointer-events: none;
+}
+
+.sendInput .inputField {
+  background-color: #333333;
+  height: 72px;
+  border-radius: 10px;
+  transition: all 0.25s ease-in;
+  border: 1px solid rgba(0, 0, 0, 0);
+}
+.sendInput .inputField:focus-within {
+  border: 1px solid #9ecaed;
+  box-shadow: 0 0 10px #9ecaed;
+}
+.sendInput .inputField input {
+  height: 100%;
+  width: 100%;
+  font-size: 25px;
+  font-weight: bolder;
 }
 
 .CardSwapUi .inputField {
