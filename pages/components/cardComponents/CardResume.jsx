@@ -7,79 +7,98 @@ import { Connection } from '@solana/web3.js'
 
 export const CardResumeSend = ({setStep1}) => {
   const [ expand, setExpand ] = useState(false)
-  const [ value, setValue ] = useState('')
-  const [ type, setType ] = useState(null)
-  const {connection} = useConnection()
-  const {direction} = useBrideDirection()
-  const solConnection = new Connection("http://localhost:8899", "confirmed")
-
+  const [ value, setValue ] = useState(undefined)
+  const [ showPrompt, SetShowPrompt ] = useState(false)
 
   const toggleExpand = () => {
     setExpand(!expand);
   }
 
-  const handleSubmit = () => {
-    setStep1(value)
+  // const handleSubmit = () => {
+  //   setStep1(value)
+  // }
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    if (value == undefined){
+      console.log('please input a txhash');
+      SetShowPrompt(true)
+      return
+    }
+    else {
+      // verify hash
+      SetShowPrompt(false)
+      setStep1(value);
+    }
   }
-
   return(
     <>
-      <div>
-        Resume With Tx Hash? 
+      <div className={styles.resumeStep}>
+        <p className={styles.resumeP} onClick={toggleExpand}>Resume With Tx Hash?</p>
         
         {
           expand
           ? 
           <> 
             <form onSubmit={handleSubmit}>
-                <textarea rows={3} cols={70} name='input' placeholder='txHash/vaa'onChange={(e) => setValue(e.target.value)} ></textarea>
-                <button type='submit' value='submit'>Submit</button>
+                <textarea rows={3} cols={70} name='input' placeholder='txHash'onChange={(e) => setValue(e.target.value)} ></textarea>
+                {showPrompt ? <i className={styles.resumePrompt}>Please Input a TxHash</i> : <></>}
+                <div className={styles.resumeBtns}>
+                  <button type='button' onClick={toggleExpand} className={styles.resumeClose}>Close</button>
+                  <button type='submit' value='submit' className={styles.resumeSubmit}>Submit</button>
+                </div>
             </form>
-            <button type='button' onClick={toggleExpand}>Close</button>
           </>
           :
-          <button type='button' onClick={toggleExpand}>OK</button>
+          <></>
         }
       </div>
     </>
   )
 }
 
-
-
-
-
 export const CardResumeReceive = ({setStep2}) => {
-  const [expand, setExpand] = useState(false);
-  const [ value, setValue ] = useState('');
- 
+  const [ showPrompt, SetShowPrompt ] = useState(false);
+  const [ value, setValue ]           = useState(undefined);
+  const [ expand, setExpand ]         = useState(false);
+
+
   const toggleExpand = () => {
     setExpand(!expand);
   }
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    setStep2(value);
+    if (value == undefined){
+      console.log('please input a Vaa');
+      SetShowPrompt(true)
+      return
+    }
+    else {
+      // verify vaa
+      SetShowPrompt(false)
+      setStep2(value);
+    }
   }
-
-  useEffect(()=>{console.log(value);},[value])
 
   return(
     <>
-      <div>
-        Resume Step With VAA?
+      <div className={styles.resumeStep}>
+        <p className={styles.resumeP} onClick={toggleExpand}>Resume Step With VAA?</p>
         {
           expand
           ? 
           <> 
             <form onSubmit={handleSubmit}>
-                <textarea rows={3} cols={70} name='input' placeholder='txHash/vaa'onChange={(e) => setValue(e.target.value)} ></textarea>
-                <button type='submit' value='submit'>Submit</button>
+                <textarea rows={3} cols={70} name='input' placeholder='vaa'onChange={(e) => setValue(e.target.value)} ></textarea>
+                {showPrompt ? <i className={styles.resumePrompt}>Please Input a TxHash</i> : <></>}
+                <div className={styles.resumeBtns}>
+                  <button type='button' onClick={toggleExpand} className={styles.resumeClose}>Close</button>
+                  <button type='submit' value='submit' className={styles.resumeSubmit}>Submit</button>
+                </div>
             </form>
-            <button type='button' onClick={toggleExpand}>Close</button>
           </>
           :
-          <button type='button' onClick={toggleExpand}>OK</button>
+          <></>
         }
       </div>
     </>
