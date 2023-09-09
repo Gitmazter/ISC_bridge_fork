@@ -59,12 +59,12 @@ export default function SwapCard({step, card_topic, data, loading, enable, click
   },[balance, direction, enable])
 
   useEffect(() => {
-    console.log('Skip Available: ', skipAvailable, ' For Direction: ', direction, ' At Step: ', step);
+    // console.log('Skip Available: ', skipAvailable, ' For Direction: ', direction, ' At Step: ', step);
   },[skipAvailable])
 
   const currencies = card_topic.title
   const fromTo = card_topic.titlev2
-  console.log(balance);
+//   console.log(balance);
 
   return <div className={inter.className}>
           <div className={styles.plan}>
