@@ -1,6 +1,10 @@
 import styles from '../../../styles/mystyle.module.css'
 
 const CardBody = () => {
+  // TODO
+  // Max Amounts
+  // 
+
 
   return (
     <div className={styles.CardBody}>
