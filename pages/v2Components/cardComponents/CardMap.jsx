@@ -1,10 +1,15 @@
 import styles from '../../../styles/mystyle.module.css'
+import Map from './mapComponents/Map'
+import MapInfo from './mapComponents/MapInfo'
 
-const CardMap = () => {
+const CardMap = ({step}) => {
 
   return (
     <div className={styles.CardMap}>
-      Map
+      <div className={styles.mapInner}>
+        <Map step={step}/>
+        <MapInfo step={step}/>
+      </div>
     </div>
   )
 }
