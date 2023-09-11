@@ -1,3 +1,5 @@
+
+
 $isc-bg: #060818bd;
 $token-card-bg: #060818;
 $resume-submit-bg: #273285;
@@ -855,12 +857,10 @@ white-space:nowrap;
 /* NEW STUFF */
 /* NEW STUFF */
 
-$global-font-family:Inter;
-
 $background:#181F27;
 
-$ellipseBorder:#51565C;
-$ellipseFill: linear-gradient(90deg, #86A2FF 0%, #2DD7FF 100%); // Linear Gradient
+$defaultTextColor: white;
+$accentTextColor:#51565C; 
 
 $tokenCardBg:#2A394B;
 
@@ -869,5 +869,28 @@ $inputInactiveBg:#222E3D;
 
 
 .v2App {
-  font-family: $global-font-family;
+  background-color: $background;
+  color: $defaultTextColor;
+  
+  display: flex;
+  width: 578px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 80px;
+}
+.CardTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+  .TitleHeading {
+    color: $defaultTextColor;
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+    .greyText {
+      color: $accentTextColor;
+    }
+  }
 }

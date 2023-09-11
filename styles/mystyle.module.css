@@ -829,5 +829,28 @@
 /* NEW STUFF */
 /* NEW STUFF */
 .v2App {
-  font-family: Inter;
+  background-color: #181F27;
+  color: white;
+  display: flex;
+  width: 578px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 80px;
+}
+
+.CardTitle {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+.CardTitle .TitleHeading {
+  color: white;
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.CardTitle .TitleHeading .greyText {
+  color: #51565C;
 }/*# sourceMappingURL=mystyle.module.css.map */
