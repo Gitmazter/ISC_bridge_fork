@@ -4,7 +4,14 @@ const CardBody = () => {
 
   return (
     <div className={styles.CardBody}>
-      Body
+      <div className={styles.CardBodyInner}> 
+        <div>
+          <div>TOKEN 1</div>
+          <div>ARROW DOWN</div>
+          <div>TOKEN 2</div>
+        </div>
+        <div>BUTTON</div>
+      </div>
     </div>
   )
 }
