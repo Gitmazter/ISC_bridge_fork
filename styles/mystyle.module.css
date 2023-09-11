@@ -229,6 +229,8 @@
 
 .info {
   color: #ffffff;
+  width: 50%;
+  word-wrap: normal;
 }
 
 .inner {
@@ -617,6 +619,7 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
 }
 .SwapTitle :last-child {
   align-self: flex-end;
@@ -624,6 +627,8 @@
 
 .SwapMax {
   padding: 0px;
+  margin-bottom: 12px;
+  width: 50%;
 }
 .SwapMax button {
   cursor: pointer;
@@ -661,6 +666,11 @@
   border-radius: 10px;
   transition: all 0.25s ease-in;
   border: 1px solid rgba(0, 0, 0, 0);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 .sendInput .inputField:focus-within {
   border: 1px solid #9ecaed;
@@ -671,6 +681,9 @@
   width: 100%;
   font-size: 25px;
   font-weight: bolder;
+}
+.sendInput .inputField .tokenCard {
+  height: 30%;
 }
 
 .CardSwapUi .inputField {
@@ -803,4 +816,18 @@
 .Progressbar div {
   border-radius: 5px;
   background: linear-gradient(#a66cff, #341e55);
+}
+
+/* NEW STUFF */
+/* NEW STUFF */
+/* NEW STUFF */
+/* NEW STUFF */
+/* NEW STUFF */
+/* NEW STUFF */
+/* NEW STUFF */
+/* NEW STUFF */
+/* NEW STUFF */
+/* NEW STUFF */
+.v2App {
+  font-family: Inter;
 }/*# sourceMappingURL=mystyle.module.css.map */

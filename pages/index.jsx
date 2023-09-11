@@ -12,6 +12,7 @@ import { AmountContextProvider } from "./components/contexts/AmountContext";
 import { BalanceContextProvider } from "./components/contexts/BalanceContext";
 import { Sidebar } from "./layout/Sidebar";
 import { BridgeDirectionContextProvider } from "./components/contexts/BridgeDirectionContext";
+import { MaxAmountsContextProvider } from "./components/contexts/MaxAmountsContext";
 
 
 export default function App () {
@@ -27,24 +28,26 @@ export default function App () {
 
   return (
     <AmountContextProvider>
-      <BridgeDirectionContextProvider>
-        <BalanceContextProvider>
-          <Web3ReactProvider getLibrary={getLibrary}>
-            <ConnectionInfoContextProvider>
-              <SolanaContextProvider>
-                <Sidebar/>
-                <div className={styles.mainFg}>
-                  <div className={styles.App}>
-                    <Header/>
-                    <HomePage/>
-                    <Footer/>
-                  </div>
-                </div>
-              </SolanaContextProvider>
-            </ConnectionInfoContextProvider>
-          </Web3ReactProvider>
-        </BalanceContextProvider>
-      </BridgeDirectionContextProvider>
-    </AmountContextProvider>
+        <BridgeDirectionContextProvider>
+          <BalanceContextProvider>
+            <MaxAmountsContextProvider>
+              <Web3ReactProvider getLibrary={getLibrary}>
+                <ConnectionInfoContextProvider>
+                  <SolanaContextProvider>
+                    <Sidebar/>
+                    <div className={styles.mainFg}>
+                      <div className={styles.App}>
+                        <Header/>
+                        <HomePage/>
+                        <Footer/>
+                      </div>
+                    </div>
+                  </SolanaContextProvider>
+                </ConnectionInfoContextProvider>
+              </Web3ReactProvider>
+            </MaxAmountsContextProvider>
+          </BalanceContextProvider>
+        </BridgeDirectionContextProvider>
+      </AmountContextProvider>
   )
 }

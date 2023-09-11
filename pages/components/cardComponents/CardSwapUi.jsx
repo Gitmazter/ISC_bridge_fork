@@ -15,7 +15,6 @@ export const CardSwapUi = ({maxAmount, fromTo}) => {
     getPrice()
   },[])
 
-
   useEffect(() => {}, [iscPrice])
   const updateAmount = async (e) => {
     console.log(maxAmount);
@@ -24,7 +23,6 @@ export const CardSwapUi = ({maxAmount, fromTo}) => {
       //console.log("not a number");
     }
     if (inputAmount > maxAmount[fromTo.from.name]) {
-      // console.log(maxAmount);
       document.getElementById('swapInput').value = maxAmount[fromTo.from.name]
       inputAmount = maxAmount[fromTo.from.name];
     }

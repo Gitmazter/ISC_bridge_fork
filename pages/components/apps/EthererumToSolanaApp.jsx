@@ -278,5 +278,6 @@ return <div className={styles.BridgeApp}>
             enable={curr_step=="step3"} 
             click_handler={handleStep4} 
             waiting={curr_step == 'step_4_waiting'}
-          />        </div>
+          />       
+        </div>
 }

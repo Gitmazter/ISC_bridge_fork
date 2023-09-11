@@ -6,26 +6,44 @@ import CardParagraph from "./cardComponents/CardParagraph"
 import CardTitle from "./cardComponents/CardTitle"
 import { Inter } from 'next/font/google'
 import { Progressbar } from './cardComponents/Progressbar'
-import { CardSkip } from './cardComponents/SwapSkip'
-import { CardResume, CardResumeSend } from './cardComponents/CardResume'
+import { CardResumeSend } from './cardComponents/CardResume'
 import { CardSendUi } from './cardComponents/CardSendUi'
 import { SwapCardMax } from './cardComponents/SwapCardMax'
 import { useEffect, useState } from 'react'
 import useBrideDirection from './hooks/useBrideDirection'
+import { OilIcon } from './utils/IconImgs'
+import useMaxAmounts from './hooks/useMaxAmounts'
+import { CardSwapUi } from './cardComponents/CardSwapUi'
 const inter = Inter({ subsets: ['latin'] })
 
 
 export default function SendCard({step, card_topic, txid, vaa, loading, enable, click_handler, waiting, my_application ,setCurrStep, setStep1, setStep2, curr_step}) {
   vaa != undefined ? vaa = vaa.vaaBytes : vaa = vaa; 
-  const [ maxAmount, setMaxAmount ] = useState({'ISC':<Loading/>, 'xOil':<Loading/>, 'eIsc':<Loading/>, 'Oil':<Loading/>})
+  const {maxAmounts} = useMaxAmounts()
+  const [fromTo, setFromTo] = useState(null)
+  const {direction} = useBrideDirection()
+
+  useEffect(() => {
+    if (direction == 'sol_to_eth') {
+      const fromToTemp = {from:{name:'Oil', icon:<OilIcon/>}, to:{name:'xOil', icon:<OilIcon/>}}
+      setFromTo(fromToTemp)
+    }
+    else if (direction == 'eth_to_sol') {
+      const fromToTemp = {from:{name:'xOil', icon:<OilIcon/>}, to:{name:'Oil', icon:<OilIcon/>}}
+      setFromTo(fromToTemp)
+    }
+  }, [direction]);
+
 return <div className={inter.className}>
           <div className={styles.plan}>
               <div className={styles.inner}>
                 <CardTitle value={card_topic.title}/>
-                <CardParagraph value={card_topic.content}/>
-                <SwapCardMax max={{ maxAmount, setMaxAmount }} fromTo={ fromTo } currencies={ currencies } />
+                <div className={styles.SwapTitle}>
+                  <CardParagraph value={card_topic.content}/>
+                  <SwapCardMax fromTo={ fromTo } /> 
+                </div>
                 <div className={styles.sendInput}>
-                  <CardSendUi />
+                {fromTo !== null ? <CardSwapUi maxAmount={ maxAmounts } fromTo={ fromTo } /> : <></>}
                 </div>
                 <hr className={styles.card_line}></hr>
                 <CardButton value="Initiate" enable={enable} click_handler={click_handler} waiting={waiting}/>

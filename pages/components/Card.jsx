@@ -1,12 +1,11 @@
 import styles from '../../styles/mystyle.module.css'
-import Loading from "./Loading"
 import CardButton from "./cardComponents/CardButton"
 import CardData from "./cardComponents/CardData"
 import CardParagraph from "./cardComponents/CardParagraph"
 import CardTitle from "./cardComponents/CardTitle"
 import { Inter } from 'next/font/google'
 import { Progressbar } from './cardComponents/Progressbar'
-import { CardResume, CardResumeReceive } from './cardComponents/CardResume'
+import { CardResumeReceive } from './cardComponents/CardResume'
 const inter = Inter({ subsets: ['latin'] })
 
 
@@ -19,6 +18,7 @@ export default function Card({step, card_topic, data, loading, enable, click_han
   } else {
       info = data
   }
+
   //const info = step == "2" && data!=null ? data.vaaBytes : data
   return <div className={inter.className}>
           <div className={styles.plan}>
