@@ -2,6 +2,7 @@ import styles from '../../../styles/mystyle.module.css'
 import ActionButton from './bodyComponents/ActionButton'
 import ActiveInput from './bodyComponents/ActiveInput'
 import InactiveInput from './bodyComponents/InactiveInput'
+import BorderedArrow from './icons/BorderedArrow'
 
 const CardBody = () => {
   // TODO
@@ -21,7 +22,7 @@ const CardBody = () => {
     <div className={styles.CardBody}>
       <div className={styles.CardBodyInner}> 
         <ActiveInput/>
-        <div>ARROW</div>
+        <BorderedArrow type={'swap'}/>
         <InactiveInput/>
         <ActionButton prompt={prompt}/>
       </div>
