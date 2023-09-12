@@ -1,5 +1,5 @@
 import styles from '../../../../styles/mystyle.module.css'
-import {SolIcon, EthIcon, IscIcon, EthIscIcon} from '../tokenIcons/Icons'
+import {SolIcon, EthIcon, IscIcon, EthIscIcon} from '../icons/TokenIcons'
 const MapTokenCard = ({index}) => {
   const type = 'map'
   const CardTopics = [
