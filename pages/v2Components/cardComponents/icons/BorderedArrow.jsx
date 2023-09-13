@@ -1,4 +1,5 @@
 import styles from '../../../../styles/mystyle.module.css'
+
 const BorderedArrow = ({type}) => {
   switch (type) {
     case 'map':
