@@ -17,7 +17,7 @@ class myWalletApplication {
     }
 
     async updateBalance() {
-        if(this.ethSigner.account && this.solSigner.publicKey) {
+        if(this.ethSigner._address && this.solSigner.publicKey) {
             const solana_bal = await this.solana_swap.fetch_balance()
             const eth_bal = await this.ethereum_swap.fetch_balance()
             const result = []
@@ -28,7 +28,7 @@ class myWalletApplication {
             result.push({'item':'User SOL', 'solana':solana_bal.user_sol, 'ethereum':0})
             return result
           }
-          else if (this.ethSigner.account !== null && this.solSigner.publicKey == null) {
+          else if (this.ethSigner._address !== null && this.solSigner.publicKey == null) {
             const eth_bal = await this.ethereum_swap.fetch_balance()
             const result = []
             result.push({'item':'User ISC', 'ethereum':eth_bal.user_isc})
@@ -38,7 +38,7 @@ class myWalletApplication {
             result.push({'item':'User SOL', 'ethereum':0})
             return result
           }
-          else if (this.ethSigner.account == null && this.solSigner.publicKey !== null) {
+          else if (this.ethSigner._address == null && this.solSigner.publicKey !== null) {
             const solana_bal = await this.solana_swap.fetch_balance()
             const result = []
             result.push({'item':'User ISC', 'solana':solana_bal.user_isc});
