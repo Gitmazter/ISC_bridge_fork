@@ -156,6 +156,7 @@ const ActionButton = () => {
     console.log(txid2);
     setPrompt("Bridging Complete!")
     // Set bridge state
+    await application.updateBalance()
   }
 
   const handleBridgeEthToSol = async () => { /* Tested and ready to roll */
@@ -191,6 +192,7 @@ const ActionButton = () => {
     catch(e) {
       console.log(e);
     }
+    await application.updateBalance()
     setChecksPassed(true)
   }
 
@@ -208,6 +210,7 @@ const ActionButton = () => {
       console.log(e);
     }
     console.log(tx);
+    await application.updateBalance()
   }
 
 
@@ -227,6 +230,7 @@ const ActionButton = () => {
           handleSwapEth();
       }
     }
+    
     else {
       switch (step) {
         case 1:
