@@ -56,7 +56,7 @@ constructor(config, solSigner) {
 
   async fetch_balance() {
     // Only updates balances if a wallet has been connected
-    console.log(this.signer);
+    // console.log(this.signer);
     if (this.signer.publicKey !== null) {
       this.updateAccounts()
       let user_isc = await this.connection.getTokenAccountBalance(this.user_isc_ata, "processed");
