@@ -50,7 +50,6 @@ const ActionButton = () => {
     return false
   }
 
-
   useEffect(() => {
     if (direction === 'solToEth'){
       switch (step) {
@@ -155,9 +154,6 @@ const ActionButton = () => {
   }
 
   const handleBridgeEthToSol = async () => { /* Tested and ready to roll */
-    const options = {
-      commitment: 'finalized'
-    };
     let txid;
     try {
       setChecksPassed(false)
