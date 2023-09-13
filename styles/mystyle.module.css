@@ -870,9 +870,25 @@
 }
 
 .mapIcon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+.swapIcon {
   width: 23px;
   height: 23px;
   flex-shrink: 0;
+}
+
+.ActiveInput {
+  background-color: #181F27;
+  border-radius: 10px;
+}
+
+.InactiveInput {
+  border-radius: 10px;
+  background: #222E3D;
 }
 
 .v2App {
@@ -911,12 +927,6 @@
 .v2TokenCardMap :last-child {
   position: relative;
   left: -5px;
-}
-
-.mapIcon {
-  width: 18px;
-  height: 18px;
-  flex-shrink: 0;
 }
 
 .CardTitle {
@@ -1006,6 +1016,7 @@
   gap: 10px;
 }
 .CardBody .CardBodyInner .ActionButton {
+  cursor: pointer;
   display: flex;
   width: 440px;
   padding: 24px 97px;
@@ -1026,4 +1037,88 @@
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.inputTitle {
+  display: flex;
+  width: 480px;
+  justify-content: space-between;
+  align-items: center;
+  align-self: stretch;
+}
+.inputTitle .maxDisplay {
+  display: flex;
+}
+
+.inputField {
+  display: flex;
+  flex-direction: row;
+  padding: 15px 17px;
+  justify-content: space-between;
+  align-items: center;
+}
+.inputField input {
+  background-color: rgba(0, 0, 0, 0);
+  width: 200px;
+  border: none;
+  text-align: end;
+  color: white;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+}
+.inputField input :focus {
+  border: rgba(0, 0, 0, 0) 0px solid;
+}
+
+.v2TokenCard {
+  display: flex;
+  flex-direction: row;
+  padding: 8px;
+  align-items: center;
+  gap: 4px;
+  border-radius: 10px;
+  background-color: #2A394B;
+}
+.v2TokenCard .iconsWrapper {
+  display: flex;
+}
+.v2TokenCard .iconsWrapper :last-child {
+  margin-left: -5px;
+}
+.v2TokenCard .tokenCardText {
+  width: -moz-max-content;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+}
+
+.maxDisplay {
+  color: #617989;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+}
+.maxDisplay button {
+  cursor: pointer;
+  background-color: #263343;
+  border: 0.5px solid #617989;
+  color: #617989;
+  display: flex;
+  padding: 2px 6px;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  transition: all 0.2s ease-in-out;
+}
+.maxDisplay button:hover {
+  background-color: #617989;
+  border-color: white;
+  color: #263343;
 }/*# sourceMappingURL=mystyle.module.css.map */

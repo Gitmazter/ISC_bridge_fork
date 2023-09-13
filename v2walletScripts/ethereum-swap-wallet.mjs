@@ -6,61 +6,56 @@ import swap_json from "../config/Swap.json"
 BigNumber
 
 class EthereumWalletSwap {
-    constructor(config, wallets) {
+    constructor(config, ethSigner) {
         this.config = config.evm0
-        //this.erc20_json_abi = JSON.parse(
-        //            fs
-        //            .readFileSync( "./config/ERC20.json")
-        //            .toString())
-        //        .abi
-        //this.swap_abi = JSON.parse(
-        //            fs
-        //            .readFileSync( "./config/Swap.json")
-        //            .toString())
-        //        .abi
         this.erc20_json_abi = erc20_json.abi
         this.swap_abi = swap_json.abi
         this.provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
-        this.signer = new ethers.Wallet(this.config.privateKey, this.provider);
-        if (wallets.ethSigner !== null) {
-            // console.log('found signer');
-            this.signer = wallets.ethSigner
-        }
+        this.signer = ethSigner
+        this.localSigner = new ethers.Wallet(this.config.privateKey, this.provider);
         this.SwapContract = new ethers.Contract(this.config.swap_contract, this.swap_abi, this.provider)
-        this.SwapSigner = this.SwapContract.connect(this.signer)
-        this.xOIL =     new ethers.Contract(this.config.xoil, this.erc20_json_abi, this.provider)
+        this.SwapSigner = this.SwapContract.connect(this.localSigner)
+        this.xOIL = new ethers.Contract(this.config.xoil, this.erc20_json_abi, this.provider)
         this.ISCToken = new ethers.Contract(this.config.isc, this.erc20_json_abi, this.provider)
-        this.xOILSigner =     this.xOIL.connect(this.signer)
-        this.ISCTokenSigner = this.ISCToken.connect(this.signer)
+        this.xOILSigner = this.xOIL.connect(this.localSigner)
+        this.ISCTokenSigner = this.ISCToken.connect(this.localSigner)
     }
 
     async print_balance() {
-        //const provider = new ethers.JsonRpcProvider();
-        let balance = await this.xOIL.balanceOf(this.config.publicKey)
-        balance = balance.toBigInt()
-        console.log("User OIL:", balance)
-        balance = await this.ISCToken.balanceOf(this.config.publicKey)
-        balance = balance.toBigInt()
-        console.log("User ISC:", balance)
-        balance = await this.xOIL.balanceOf(this.config.swap_contract)
-        balance = balance.toBigInt()
-        console.log("Swap OIL:", balance)
-        balance = await this.ISCToken.balanceOf(this.config.swap_contract)
-        balance = balance.toBigInt()
-        console.log("Swap ISC:", balance)
-        console.log("------------------")
+        if (signer.account !== null) {
+            let balance = await this.xOIL.balanceOf(this.signer.publicKey)
+            balance = balance.toBigInt()
+            console.log("User OIL:", balance)
+            balance = await this.ISCToken.balanceOf(this.signer.publicKey)
+            balance = balance.toBigInt()
+            console.log("User ISC:", balance)
+            balance = await this.xOIL.balanceOf(this.config.swap_contract)
+            balance = balance.toBigInt()
+            console.log("Swap OIL:", balance)
+            balance = await this.ISCToken.balanceOf(this.config.swap_contract)
+            balance = balance.toBigInt()
+            console.log("Swap ISC:", balance)
+            console.log("------------------")
+        }
     }
 
     async fetch_balance() {
-        let user_isc = await this.ISCToken.balanceOf(this.config.publicKey)
-        let user_oil = await this.xOIL.balanceOf(this.config.publicKey)
-        let pda_isc = await this.ISCToken.balanceOf(this.config.swap_contract)
-        let pda_oil = await this.xOIL.balanceOf(this.config.swap_contract)
-        return {
-            'user_isc': user_isc / 10**this.config.decimals,
-            'user_oil': user_oil / 10**this.config.decimals,
-            'pool_isc': pda_isc / 10**this.config.decimals,
-            'pool_oil': pda_oil / 10**this.config.decimals,
+        if (this.signer.account !== null) {
+            console.log('working 0'); // BREAKPOINT
+            let user_isc = await this.ISCToken.balanceOf(this.signer.publicKey)
+            console.log('working 1');
+            let user_oil = await this.xOIL.balanceOf(this.signer.publicKey)
+            console.log('working 2');
+            let pda_isc = await this.ISCToken.balanceOf(this.config.swap_contract)
+            console.log('working 3');
+            let pda_oil = await this.xOIL.balanceOf(this.config.swap_contract)
+            console.log('working all');
+            return {
+                'user_isc': user_isc / 10**this.config.decimals,
+                'user_oil': user_oil / 10**this.config.decimals,
+                'pool_isc': pda_isc / 10**this.config.decimals,
+                'pool_oil': pda_oil / 10**this.config.decimals,
+            }
         }
     }
     
@@ -117,7 +112,7 @@ class EthereumWalletSwap {
     }
 
     async swap(amount, to_native) {
-        const tx = await this.SwapSigner.swap(amount, to_native, {from:this.config.publicKey});//, gasPrice:'20000000000'});
+        const tx = await this.SwapSigner.swap(amount, to_native, {from:this.signer.publicKey});//, gasPrice:'20000000000'});
         await this.wait_until_finalized(tx)
         return tx
     }

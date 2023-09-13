@@ -1,6 +1,9 @@
+import { useContext } from 'react';
 import styles from '../../../../styles/mystyle.module.css'
+import { StepContext } from '../../contexts/stepContext';
 
-const MapInfo = ({step}) => {
+const MapInfo = () => {
+  const {step} = useContext(StepContext)
   const infos = [
     <p>
       {'Swap '}

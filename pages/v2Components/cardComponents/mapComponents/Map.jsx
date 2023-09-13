@@ -1,8 +1,11 @@
+import { useContext } from 'react'
 import styles from '../../../../styles/mystyle.module.css'
 import MapArrow from './MapArrrow'
 import MapTokenCard from './MapTokenCard'
+import { StepContext } from '../../contexts/stepContext'
 
-const Map = ({step}) => {
+const Map = () => {
+  const {step} = useContext(StepContext)
 
   const activeSteps = [false,false,false,false].map((state, index) => {
     if (index == step -1  || index == step) {
