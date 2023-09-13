@@ -6,7 +6,8 @@ export default {
     "eth":"Connect Ethereum Wallet",
     "sol":"Connect Solana Wallet",
     "noAmount":"Please Input An Amount",
-    "tooMuch":"Amount Exceeds Max Amount",
+    "tooMuch":"Amount Exceeds Balance",
+    "waiting":"Awaiting previous step",
     "swap":"Swap",
     "bridge":"Bridge"
   },
