@@ -1,34 +1,51 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import styles from '../../../styles/mystyle.module.css'
 import { Card } from '../Card'
 import myWalletApplication from '../../../v2walletScripts/my-wallet-application.mjs';
 import { useWeb3React } from '@web3-react/core';
 import { useWallet } from '@solana/wallet-adapter-react';
-
-
+import { BalanceContext } from '../contexts/balanceContext';
+import updateBalance from './apps/updateBalance';
+import { ApplicationContext } from '../contexts/applicationContext';
+import updateMaxAmounts from './utils/updateMaxAmounts';
+import { MaxAmountContext } from '../contexts/maxAmountContext';
 
 const BridgeApp = () => {
+  const { application, saveApplication } = useContext(ApplicationContext)
+  const { balance, saveBalance } = useContext(BalanceContext)
+  const {saveMaxAmounts} = useContext(MaxAmountContext)
+  const [ currStep, setCurrStep ] = useState(1);
   const ethSigner = useWeb3React()
+  const {active} = useWeb3React()
   const solSigner = useWallet()
-  const [application, setApplication] = useState (new myWalletApplication(ethSigner, solSigner))
+  const {connected} = useWallet()
+
+  const steps = [1,2,3];
 
   useEffect(() => {
-    setApplication(new myWalletApplication(ethSigner, solSigner))
-  }, [ethSigner, solSigner])
-
-  useEffect(() => {
-    const wait = async () => {
-      console.log(ethSigner);
-      // console.log(await application.solana_swap.fetch_balance());
-      console.log(await application.ethereum_swap.fetch_balance());
+    if (active || connected) {
+      console.log('updating ETHsigners');
+      saveApplication(new myWalletApplication(ethSigner, solSigner))
     }
-    wait()
-  }, [application])
-  
-  const [currStep, setCurrStep] = useState(1);
-  const steps = [1,2,3]
+  }, [active, connected])
 
+  useEffect(()=>{
+    const wait = async () => {
+      const balances = await application.updateBalance()
+      saveBalance(balances)
+    }
+    if (application != undefined) {
+      wait()
+    }
+  },[application])
 
+  useEffect(() => {
+      console.log(balance);
+      if (balance != undefined) {
+        const maxAmounts = updateMaxAmounts(balance)
+        saveMaxAmounts(maxAmounts)
+      }
+  }, [balance])
 
   // Connection Check
   // Connectivity check (in order of need as in Figma)
@@ -59,7 +76,8 @@ const BridgeApp = () => {
   // To use step 3: Connect to Solana, input amount, have Sol B ISC = ACTIVE If active -> Allow click handler
       // ->> Swap Selected Amount of Sol B ISC with Sol Native ISC if amount is less than max amount
 
-  const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep}/>  })
+  const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep}/>  });
+
   return ( 
     <>
     
