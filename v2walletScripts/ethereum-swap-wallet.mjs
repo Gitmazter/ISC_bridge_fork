@@ -3,44 +3,38 @@ import {ethers, BigNumber} from "ethers"
 //import fs from "fs"
 import erc20_json from "../config/ERC20.json"
 import swap_json from "../config/Swap.json"
-BigNumber
 
 class EthereumWalletSwap {
     constructor(config, ethSigner) {
         this.config = config.evm0
-
         this.erc20_json_abi = erc20_json.abi
         this.swap_abi = swap_json.abi
         this.provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
-        // this.signer = new ethers.Wallet(this.config.privateKey, this.provider);
         if (ethSigner !== null) {
             this.signer = ethSigner
-        }
-        this.SwapContract = new ethers.Contract(this.config.swap_contract, this.swap_abi, this.provider)
-        this.xOIL =     new ethers.Contract(this.config.xoil, this.erc20_json_abi, this.provider)
-        this.ISCToken = new ethers.Contract(this.config.isc, this.erc20_json_abi, this.provider)
-
-        if (ethSigner !== null) {
             // These may cause issues later
-            this.SwapSigner = this.SwapContract.connect(/* this.signer */)
-            this.xOILSigner =     this.xOIL.connect(/* this.signer */)
-            this.ISCTokenSigner = this.ISCToken.connect(/* this.signer */)
+            this.SwapContract =         new ethers.Contract(this.config.swap_contract, this.swap_abi, ethSigner)
+            this.xOILContract =         new ethers.Contract(this.config.xoil, this.erc20_json_abi, ethSigner)
+            this.ISCTokenContract =     new ethers.Contract(this.config.isc, this.erc20_json_abi, ethSigner)
+            this.SwapSigner = this.SwapContract  /* this.SwapContract.connect(ethSigner._address) */
+            this.xOILSigner = this.xOILContract
+            this.ISCTokenSigner = this.ISCTokenContract
         }
     }
 
     async print_balance() {
         if (this.signer) {
             //const provider = new ethers.JsonRpcProvider();
-            let balance = await this.xOIL.balanceOf(this.signer.account)
+            let balance = await this.xOILContract.balanceOf(this.signer._address)
             balance = balance.toBigInt()
             console.log("User OIL:", balance)
-            balance = await this.ISCToken.balanceOf(this.signer.account)
+            balance = await this.ISCTokenContract.balanceOf(this.signer._address)
             balance = balance.toBigInt()
             console.log("User ISC:", balance)
-            balance = await this.xOIL.balanceOf(this.config.swap_contract)
+            balance = await this.xOILContract.balanceOf(this.config.swap_contract)
             balance = balance.toBigInt()
             console.log("Swap OIL:", balance)
-            balance = await this.ISCToken.balanceOf(this.config.swap_contract)
+            balance = await this.ISCTokenContract.balanceOf(this.config.swap_contract)
             balance = balance.toBigInt()
             console.log("Swap ISC:", balance)
             console.log("------------------")
@@ -50,10 +44,11 @@ class EthereumWalletSwap {
     async fetch_balance() {
         // console.log(this.signer);
         if (this.signer) {
-            let user_isc = await this.ISCToken.balanceOf(this.signer.account)
-            let user_oil = await this.xOIL.balanceOf(this.signer.account)
-            let pda_isc = await this.ISCToken.balanceOf(this.config.swap_contract)
-            let pda_oil = await this.xOIL.balanceOf(this.config.swap_contract)
+            console.log(this.signer);
+            let user_isc = await this.ISCTokenSigner.balanceOf(this.signer._address)
+            let user_oil = await this.xOILContract.balanceOf(this.signer._address)
+            let pda_isc = await this.ISCTokenContract.balanceOf(this.config.swap_contract)
+            let pda_oil = await this.xOILContract.balanceOf(this.config.swap_contract)
             return {
                 'user_isc': user_isc / 10**this.config.decimals,
                 'user_oil': user_oil / 10**this.config.decimals,
@@ -116,7 +111,7 @@ class EthereumWalletSwap {
     }
 
     async swap(amount, to_native) {
-        const tx = await this.SwapSigner.swap(amount, to_native, {from:this.config.publicKey});//, gasPrice:'20000000000'});
+        const tx = await this.SwapSigner.swap(amount, to_native, {from:this.signer.account});//, gasPrice:'20000000000'});
         await this.wait_until_finalized(tx)
         return tx
     }
