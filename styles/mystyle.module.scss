@@ -1082,6 +1082,29 @@ $maxButtonBg:#263343;
         -webkit-text-fill-color: transparent;
       }
     }
+    .ActionButtonInactive {
+      cursor: not-allowed;
+      display: flex;
+      width: 440px;
+      padding: 24px 97px;
+      justify-content: center;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      border-radius: 10px;
+      background: #131B23;
+      p {
+        margin: 0px;
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+        background: #51565C ;
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+    }
   }
 }
 
