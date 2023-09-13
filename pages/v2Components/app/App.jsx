@@ -9,9 +9,11 @@ import updateBalance from './apps/updateBalance';
 import { ApplicationContext } from '../contexts/applicationContext';
 import updateMaxAmounts from './utils/updateMaxAmounts';
 import { MaxAmountContext } from '../contexts/maxAmountContext';
+import { DirectionContext } from '../contexts/directionContext';
 
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
+  const {direction, saveDirection} = useContext(DirectionContext)
   const { balance, saveBalance } = useContext(BalanceContext)
   const {saveMaxAmounts} = useContext(MaxAmountContext)
   const [ currStep, setCurrStep ] = useState(1);
@@ -78,13 +80,15 @@ const BridgeApp = () => {
       // ->> Swap Selected Amount of Sol B ISC with Sol Native ISC if amount is less than max amount
 
   const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep}/>  });
-
+  useEffect(() => {console.log(direction);},[direction])
   return ( 
     <>
     
       {/* Temporary Buttons */}
         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
         <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button>
+        <button type='button' onClick={() => {saveDirection('solToEth')}}>Sol To Eth</button>
+        <button type='button' onClick={() => {saveDirection('ethToSol')}}>Eth To Sol</button>
       {/* End Temporary Buttons */}
 
       <div className={styles.v2App}>
