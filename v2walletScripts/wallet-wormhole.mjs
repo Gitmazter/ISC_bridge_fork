@@ -134,14 +134,15 @@ class WalletWormhole {
         // const secretKey = Uint8Array.from(this.config.solana.privateKey);
         const keypair = this.wallets.solana;
         console.log("works til' here");
-        const targetRecipient = Buffer.from(tryNativeToHexString(this.wallets.ethereum, "ethereum"), 'hex');
+        // console.log(this.wallets[0]);
+        const targetRecipient = Buffer.from(tryNativeToHexString(this.wallets[0]._address, "ethereum"), 'hex');
         console.log(this.wallets.ethereum);                 
         console.log("works til' here");
         const transaction = await transferFromSolana(
             this.connection,
             this.config.solana.bridgeAddress,
             this.config.solana.tokenBridgeAddress, 
-            keypair.publicKey.toString(),
+            this.wallets[1].publicKey.toString(),
             this.user_oil_ata,
             this.config.solana.testToken, //mintAddress
             bigAmount,
@@ -227,7 +228,7 @@ class WalletWormhole {
         let network = this.config[source_chain];
         const targetNetwork = this.config[destination_chain];
         const recipientAddress = Buffer.from(tryNativeToHexString(this.user_oil_ata, "solana"), "hex");
-        const signer = this.wallets.ethSigner
+        const signer = this.wallets[0]
         const approval = await approveEth(network.tokenBridgeAddress, network.xoil, signer, amount)
         console.log("Approval limit set", approval['transactionHash'])
         const receipt = await transferFromEth(
@@ -261,7 +262,7 @@ class WalletWormhole {
     }
 
     async complete_transfer_on_solana(vaaBytes) {
-        const keypair = this.wallets.solana;
+        const keypair = this.wallets[1];
         console.log(keypair);
         let txid = await postVaaSolanaWithRetry(
             this.connection,
