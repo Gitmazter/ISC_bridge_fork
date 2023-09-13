@@ -3,10 +3,14 @@ import styles from '../../../../../styles/mystyle.module.css'
 import WalletIcon from '../../icons/WalletIcon';
 import BodyConfig from '../config/BodyConfig'
 import { StepContext } from '../../../contexts/stepContext';
+import { BalanceContext } from '../../../contexts/balanceContext';
+import { MaxAmountContext } from '../../../contexts/maxAmountContext';
 
 const InactiveInputTitle = () => {
   const { step } = useContext(StepContext)
   const direction = 'solToEth';
+  const { balance } = useContext(BalanceContext)
+  const { maxAmounts } = useContext(MaxAmountContext)
 
   const prompt = () => {
     return BodyConfig[`${direction}`].inactivePrompts[step-1]
@@ -17,7 +21,7 @@ const InactiveInputTitle = () => {
       <div>{prompt()}</div>
       <div className={styles.maxDisplay}>
         <WalletIcon/>
-        <div>Max Amount Target</div>
+        <div>{maxAmounts[step] + " " + BodyConfig[`${direction}`].tokenNames[step]}</div>
       </div>
     </div>
   )
