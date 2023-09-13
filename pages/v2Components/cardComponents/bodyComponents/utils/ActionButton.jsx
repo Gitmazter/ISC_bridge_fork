@@ -1,19 +1,15 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import styles from '../../../../../styles/mystyle.module.css'
 import config from '../config/BodyConfig'
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { useContext, useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import { StepContext } from '../../../contexts/stepContext';
 import { AmountContext } from '../../../contexts/amountContext';
 import { BalanceContext } from '../../../contexts/balanceContext';
 import { DirectionContext } from '../../../contexts/directionContext';
-import BodyConfig from '../config/BodyConfig';
-import Loading from '../../../../components/Loading';
 import { ApplicationContext } from '../../../contexts/applicationContext';
 import { Connection } from '@solana/web3.js';
-import updateBalance from '../../../app/apps/updateBalance';
-import { sign } from '@certusone/wormhole-sdk';
+
 const buttonPrompts = config.buttonPrompts;
 
 
@@ -28,7 +24,6 @@ const ActionButton = () => {
   const { active, library: provider} = useWeb3React()
   const solConnection = new Connection("http://localhost:8899", "processed")
   const solSigner = useWallet();
-  const ethSigner = useWeb3React();
   const [prompt, setPrompt] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
 
