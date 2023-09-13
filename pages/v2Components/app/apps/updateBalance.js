@@ -1,6 +1,6 @@
 export default async (my_application, saveBalance) => {
 
-  if(my_application.ethSigner.account && my_application.solSigner.publicKey) {
+  if(my_application.ethSigner._address && my_application.solSigner.publicKey) {
     const solana_bal = await my_application.solana_swap.fetch_balance()
     const eth_bal = await my_application.ethereum_swap.fetch_balance()
     const result = []
@@ -11,7 +11,7 @@ export default async (my_application, saveBalance) => {
     result.push({'item':'User SOL', 'solana':solana_bal.user_sol, 'ethereum':0})
     saveBalance(result)
   }
-  else if (my_application.ethSigner.account !== null && my_application.solSigner.publicKey == null) {
+  else if (my_application.ethSigner._address !== null && my_application.solSigner.publicKey == null) {
     const eth_bal = await my_application.ethereum_swap.fetch_balance()
     const result = []
     result.push({'item':'User ISC','solana':"No Wallet", 'ethereum':eth_bal.user_isc})
@@ -21,7 +21,7 @@ export default async (my_application, saveBalance) => {
     result.push({'item':'User SOL','solana':"No Wallet", 'ethereum':0})
     saveBalance(result)
   }
-  else if (my_application.ethSigner.account == null && my_application.solSigner.publicKey !== null) {
+  else if (my_application.ethSigner._address == null && my_application.solSigner.publicKey !== null) {
     const solana_bal = await my_application.solana_swap.fetch_balance()
     const result = []
     result.push({'item':'User ISC', 'solana':solana_bal.user_isc, 'ethereum':"No Wallet"});
