@@ -16,7 +16,7 @@ const BridgeApp = () => {
   const {saveMaxAmounts} = useContext(MaxAmountContext)
   const [ currStep, setCurrStep ] = useState(1);
   const ethSigner = useWeb3React()
-  const {active} = useWeb3React()
+  const {active, library: provider} = useWeb3React()
   const solSigner = useWallet()
   const {connected} = useWallet()
 
@@ -25,7 +25,8 @@ const BridgeApp = () => {
   useEffect(() => {
     if (active || connected) {
       console.log('updating ETHsigners');
-      saveApplication(new myWalletApplication(ethSigner, solSigner))
+      console.log(provider);
+      saveApplication(new myWalletApplication(provider.getSigner(ethSigner.account), solSigner))
     }
   }, [active, connected])
 
