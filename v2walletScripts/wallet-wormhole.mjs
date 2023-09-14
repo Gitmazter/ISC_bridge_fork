@@ -152,11 +152,6 @@ class WalletWormhole {
         // transaction.partialSign(keypair)
         console.log('works til return');
         return transaction;
-        const txid = await this.connection.sendRawTransaction(transaction.serialize());
-        console.log("Transfer from Solana to Wormhole", txid)
-        // Somehow using this.connection instead of a new connection instiated inside the function is slow for this method
-        await this.connection.confirmTransaction(txid);
-        return txid
     }
 
     async get_vaa_bytes_solana(txid) {

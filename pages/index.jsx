@@ -1,16 +1,16 @@
 import { Inter } from "next/font/google"
-import BridgeApp from "./v2Components/app/App"
+import BridgeApp from "../components/v2Components/app/App"
 import styles from "../styles/mystyle.module.css"
 import { useState } from "react"
-import { BalanceContext } from "./v2Components/contexts/balanceContext"
-import { MaxAmountContext } from "./v2Components/contexts/maxAmountContext"
-import { DirectionContext } from "./v2Components/contexts/directionContext"
-import { SolanaContextProvider } from "./v2Components/app/web3/solConnect"
-import Header from './layout/Header'
+import BalanceContext from "../components/v2Components/contexts/balanceContext"
+import MaxAmountContext from "../components/v2Components/contexts/maxAmountContext"
+import DirectionContext from "../components/v2Components/contexts/directionContext"
+import SolanaContextProvider from "../components/v2Components/app/web3/solConnect"
+import Header from '../components/layout/Header'
 import { Web3Provider } from "@ethersproject/providers"
 import { Web3ReactProvider } from "@web3-react/core"
-import { ApplicationContext } from "./v2Components/contexts/applicationContext"
-import Loading from "./components/Loading"
+import Loading from "../components/v2Components/Loading"
+import ApplicationContext from "../components/v2Components/contexts/applicationContext"
 const inter = Inter({
   subsets: ['latin'],
   weight: '700',

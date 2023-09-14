@@ -16,7 +16,7 @@ class myWalletApplication {
         this.ethereum_swap = new EthereumWalletSwap(config, this.ethSigner);
     }
 
-    async updateBalance() {
+    async updateBalance(saveBalance) {
         if(this.ethSigner._address && this.solSigner.publicKey) {
             const solana_bal = await this.solana_swap.fetch_balance()
             const eth_bal = await this.ethereum_swap.fetch_balance()
@@ -26,7 +26,8 @@ class myWalletApplication {
             result.push({'item':'Pool ISC', 'solana':solana_bal.pool_isc, 'ethereum':eth_bal.pool_isc})
             result.push({'item':'Pool OIL', 'solana':solana_bal.pool_oil, 'ethereum':eth_bal.pool_oil})
             result.push({'item':'User SOL', 'solana':solana_bal.user_sol, 'ethereum':0})
-            return result
+            saveBalance(result)
+            // return result
           }
           else if (this.ethSigner._address !== null && this.solSigner.publicKey == null) {
             const eth_bal = await this.ethereum_swap.fetch_balance()
@@ -36,7 +37,8 @@ class myWalletApplication {
             result.push({'item':'Pool ISC', 'ethereum':eth_bal.pool_isc})
             result.push({'item':'Pool OIL', 'ethereum':eth_bal.pool_oil})
             result.push({'item':'User SOL', 'ethereum':0})
-            return result
+            saveBalance(result)
+            // return result
           }
           else if (this.ethSigner._address == null && this.solSigner.publicKey !== null) {
             const solana_bal = await this.solana_swap.fetch_balance()
@@ -46,7 +48,8 @@ class myWalletApplication {
             result.push({'item':'Pool ISC', 'solana':solana_bal.pool_isc});
             result.push({'item':'Pool OIL', 'solana':solana_bal.pool_oil});
             result.push({'item':'User SOL', 'solana':solana_bal.user_sol});
-            return result
+            saveBalance(result)
+            // return result
           }
     }
 
