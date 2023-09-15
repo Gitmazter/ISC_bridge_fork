@@ -7,16 +7,16 @@ module.exports = {
   // For example, you can configure custom webpack behavior, plugins, etc.
 
   // Example custom webpack configuration:
-  webpack: (config, { isServer }) => {
-    // Add custom webpack rules or plugins here
-    // Example: Load SVG files using raw-loader
-    config.module.rules.push({
-      test: /\.svg$/,
-      use: ['raw-loader'],
-    });
+  // webpack: (config, { isServer }) => {
+  //   // Add custom webpack rules or plugins here
+  //   // Example: Load SVG files using raw-loader
+  //   config.module.rules.push({
+  //     test: /\.svg$/,
+  //     use: ['raw-loader'],
+  //   });
 
-    return config;
-  },
+  //   return config;
+  // },
 
   // Add more Next.js configurations as needed...
 
