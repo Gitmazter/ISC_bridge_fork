@@ -7,11 +7,11 @@ const Ellipse = ({ filled }) => {
       <defs>
         <linearGradient id="paint0_linear_988_1744" x1="0" y1="20" x2="40" y2="20" gradientUnits="userSpaceOnUse">
           <stop stop-color="#86A2FF"/>
-          <stop offset="1" stop-color="#2DD7FF"/>
+          <stop offset="1" stopColor="#2DD7FF"/>
         </linearGradient>
         <linearGradient id="paint1_linear_988_1744" x1="0" y1="20" x2="40" y2="20" gradientUnits="userSpaceOnUse">
           <stop stop-color="#86A2FF"/>
-          <stop offset="1" stop-color="#2CD8FF"/>
+          <stop offset="1" stopColor="#2CD8FF"/>
         </linearGradient>
       </defs>
     </svg>
