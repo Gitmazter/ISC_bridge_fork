@@ -1,7 +1,7 @@
 // next.config.js
 module.exports = {
   // Specify your desired base path here:
-  basePath: '/', // Replace with your desired base path
+  basePath: '', // Replace with your desired base path
 
   // Optional: Add any additional Next.js configurations here:
   // For example, you can configure custom webpack behavior, plugins, etc.
