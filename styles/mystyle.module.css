@@ -202,12 +202,12 @@
   flex-direction: column;
 }
 
-.mainFg {
+/* .mainFg {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  background-image: url("../public/ISC-logo.svg");
-}
+  background-image: url("./public/ISC-logo.svg");
+} */
 
 .main {
   padding: 0px;
