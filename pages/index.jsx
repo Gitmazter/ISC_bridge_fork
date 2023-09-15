@@ -16,6 +16,13 @@ const inter = Inter({
   weight: '700',
 })
 
+ 
+export async function getStaticProps() {
+  const res = await fetch('https://api.github.com/repos/vercel/next.js')
+  const repo = await res.json()
+  return { props: { repo } }
+}
+
 const App = () => {
   const [ maxAmounts, setMaxAmounts ] = useState([<Loading/>, <Loading/>, <Loading/>, <Loading/>]);
   const [ balance, setBalance ] = useState();
