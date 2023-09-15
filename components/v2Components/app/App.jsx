@@ -84,7 +84,7 @@ const BridgeApp = () => {
   // To use step 3: Connect to Solana, input amount, have Sol B ISC = ACTIVE If active -> Allow click handler
       // ->> Swap Selected Amount of Sol B ISC with Sol Native ISC if amount is less than max amount
 
-  const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep}/>  });
+  const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep} key={step}/>  });
   useEffect(() => {console.log(direction);},[direction])
   return ( 
     <>
