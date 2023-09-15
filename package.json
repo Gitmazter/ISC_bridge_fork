@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "deploy":"next start -p 3000 "
+    "deploy":"next start -p 3003 "
   },
   "keywords": [],
   "author": "ISC",
