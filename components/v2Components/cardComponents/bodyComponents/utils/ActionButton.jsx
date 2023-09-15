@@ -1,6 +1,6 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import styles from '../../../../../styles/mystyle.module.css'
-import config from '../../../../../config/BodyConfig'
+import bodyConfig from '../../../../../config/BodyConfig'
 import { useContext, useEffect, useState } from 'react';
 import { useWeb3React } from '@web3-react/core';
 import StepContext from '../../../contexts/stepContext';
@@ -9,10 +9,10 @@ import DirectionContext from '../../../contexts/directionContext';
 import ApplicationContext from '../../../contexts/applicationContext';
 import { Connection } from '@solana/web3.js';
 import AmountContext from '../../../contexts/amountContext';
+import config from '../../../../../config/config.json'
+const buttonPrompts = bodyConfig.buttonPrompts;
 
-const buttonPrompts = config.buttonPrompts;
-
-
+config
 const ActionButton = () => {
   const { step, currStep } = useContext(StepContext);
   const { amount } = useContext(AmountContext)
@@ -23,7 +23,7 @@ const ActionButton = () => {
 
   const { connected } = useWallet()
   const { active, library: provider} = useWeb3React()
-  const solConnection = new Connection("http://localhost:8899", "processed")
+  const solConnection = new Connection(config.solana.rpc, "processed")
   const solSigner = useWallet();
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
