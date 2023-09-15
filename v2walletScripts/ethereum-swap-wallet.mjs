@@ -3,13 +3,14 @@ import {ethers, BigNumber} from "ethers"
 //import fs from "fs"
 import erc20_json from "../config/ERC20.json"
 import swap_json from "../config/Swap.json"
+import rpcConfig from '../config/config.json'
 
 class EthereumWalletSwap {
     constructor(config, ethSigner) {
         this.config = config.evm0
         this.erc20_json_abi = erc20_json.abi
         this.swap_abi = swap_json.abi
-        this.provider = new ethers.providers.JsonRpcProvider("http://localhost:8545");
+        this.provider = new ethers.providers.JsonRpcProvider(rpcConfig.evm0.rpc);
         if (ethSigner !== null) {
             this.signer = ethSigner
             // These may cause issues later
