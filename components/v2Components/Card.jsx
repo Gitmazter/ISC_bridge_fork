@@ -6,7 +6,7 @@ import CardMap from './cardComponents/CardMap'
 import { useState } from 'react'
 import AmountContext from './contexts/amountContext'
 
-const Card = ({step, currStep}) => {
+const Card = ({step, currStep, setCurrStep}) => {
   const [amount, setAmount] = useState(0.00);
 
   const saveAmount = (value) => {
@@ -14,7 +14,7 @@ const Card = ({step, currStep}) => {
   }
 
   return ( 
-    <StepContext.Provider value={{step, currStep}}>
+    <StepContext.Provider value={{step, currStep, setCurrStep}}>
       <AmountContext.Provider value={{amount, saveAmount}}>
 
         <div className={styles.v2Card}>         

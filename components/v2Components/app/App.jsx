@@ -9,6 +9,7 @@ import ApplicationContext from '../contexts/applicationContext';
 import updateMaxAmounts from './utils/updateMaxAmounts';
 import MaxAmountContext from '../contexts/maxAmountContext';
 import DirectionContext from '../contexts/directionContext';
+import { sign } from '@certusone/wormhole-sdk';
 
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
@@ -25,14 +26,18 @@ const BridgeApp = () => {
 
   useEffect(() => {
     if (active || connected) {
-      console.log('updating ETHsigners');
+      console.log(active);
+      console.log(connected);
+      console.log('updating signers');
       console.log(provider);
-      if (active) {
-        saveApplication(new myWalletApplication(provider.getSigner(ethSigner.account), solSigner))
+      let signer = false
+      try {
+        signer = provider.getSigner(ethSigner.account)
       }
-      else {
-        saveApplication(new myWalletApplication(ethSigner, solSigner))
+      catch (e) {
+
       }
+      saveApplication(new myWalletApplication(signer, solSigner))
     }
   }, [active, connected])
 
@@ -84,16 +89,18 @@ const BridgeApp = () => {
   // To use step 3: Connect to Solana, input amount, have Sol B ISC = ACTIVE If active -> Allow click handler
       // ->> Swap Selected Amount of Sol B ISC with Sol Native ISC if amount is less than max amount
 
-  const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep} key={step}/>  });
-  useEffect(() => {console.log(direction);},[direction])
+  const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep} setCurrStep={setCurrStep} key={step}/>  });
+  useEffect(() => {setCurrStep(1)},[direction])
   return ( 
     <>
     
       {/* Temporary Buttons */}
-        <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
-        <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button>
-        <button type='button' onClick={() => {saveDirection('solToEth')}}>Sol To Eth</button>
-        <button type='button' onClick={() => {saveDirection('ethToSol')}}>Eth To Sol</button>
+{/*         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
+        <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button> */}
+        <div className={styles.dirBtns}>
+          <button type='button' className={styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>Sol To Eth</button>
+          <button type='button' className={styles.dirBtn} onClick={() => {saveDirection('ethToSol')}}>Eth To Sol</button>
+        </div>
       {/* End Temporary Buttons */}
 
       <div className={styles.v2App}>

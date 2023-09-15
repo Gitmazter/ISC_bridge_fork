@@ -91,6 +91,7 @@
 }
 
 .header {
+  width: 100vw;
   padding-top: 20px;
   padding-bottom: 20px;
   display: flex;
@@ -202,12 +203,12 @@
   flex-direction: column;
 }
 
-/* .mainFg {
+.mainFg {
   background-repeat: no-repeat;
   background-size: contain;
   background-position: center;
-  background-image: url("./public/ISC-logo.svg");
-} */
+  background-image: url("../public/ISC-logo.svg");
+}
 
 .main {
   padding: 0px;
@@ -1144,4 +1145,26 @@
   background-color: #617989;
   border-color: white;
   color: #263343;
+}
+
+.dirBtns {
+  margin-left: 50px;
+  width: 580px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+}
+.dirBtns .dirBtn {
+  cursor: pointer;
+  background-color: #222E3D;
+  font-size: 28px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: #ffffff;
+  font-weight: 700;
+}
+.dirBtns .dirBtn:hover {
+  border: 1px solid white;
 }/*# sourceMappingURL=mystyle.module.css.map */

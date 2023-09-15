@@ -14,7 +14,7 @@ const buttonPrompts = bodyConfig.buttonPrompts;
 
 config
 const ActionButton = () => {
-  const { step, currStep } = useContext(StepContext);
+  const { step, currStep, setCurrStep } = useContext(StepContext);
   const { amount } = useContext(AmountContext)
   const { balance } = useContext(BalanceContext)
   const { direction } = useContext(DirectionContext)
@@ -94,6 +94,8 @@ const ActionButton = () => {
     const options = {
       commitment: 'processed'
     };
+    setChecksPassed(false)
+    setPrompt('Swapping ISC...')
     let tx;
     if (direction === 'solToEth'){
       tx = await application.solana_swap.swap_isc_to_oil(amount);
@@ -110,6 +112,9 @@ const ActionButton = () => {
       console.log(e);
     }
     await application.updateBalance(saveBalance)
+    setChecksPassed(true)
+    setPrompt(buttonPrompts.swap)
+    setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
   }
 
   const handleBridgeSolToEth = async () => {
@@ -152,6 +157,7 @@ const ActionButton = () => {
     setPrompt("Bridging Complete!")
     // Set bridge state
     await application.updateBalance(saveBalance)
+    setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
   }
 
   const handleBridgeEthToSol = async () => { /* Tested and ready to roll */
@@ -186,9 +192,12 @@ const ActionButton = () => {
     }
     await application.updateBalance(saveBalance)
     setChecksPassed(true)
+    setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
   }
 
   const handleSwapEth = async () => {
+    setChecksPassed(false)
+    setPrompt("Swapping ISC...")
     let tx
     try {
       if (direction === 'solToEth'){
@@ -203,6 +212,9 @@ const ActionButton = () => {
     }
     console.log(tx);
     await application.updateBalance(saveBalance)
+    setChecksPassed(true)
+    setPrompt(buttonPrompts.swap)
+    setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
   }
 
 

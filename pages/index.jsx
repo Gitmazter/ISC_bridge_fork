@@ -16,13 +16,6 @@ const inter = Inter({
   weight: '700',
 })
 
- 
-export async function getStaticProps() {
-  const res = await fetch('https://api.github.com/repos/vercel/next.js')
-  const repo = await res.json()
-  return { props: { repo } }
-}
-
 const App = () => {
   const [ maxAmounts, setMaxAmounts ] = useState([<Loading/>, <Loading/>, <Loading/>, <Loading/>]);
   const [ balance, setBalance ] = useState();
@@ -56,7 +49,19 @@ const App = () => {
           <BalanceContext.Provider value={{balance, saveBalance}}>
             <MaxAmountContext.Provider value = {{maxAmounts, saveMaxAmounts}}>
               <ApplicationContext.Provider value={{application, saveApplication}}>
-                
+                <div>
+                <style jsx global>{`
+                  html {
+                    overflow-x: hidden;
+                  }
+                  body {
+                    overflow-x: hidden;
+                    margin: 0px;
+                    padding: 0px;
+                      }
+                    `}</style>
+                  </div>
+            
               <main className={inter.className}>
                 <Header/>
                 <div className={styles.body}>

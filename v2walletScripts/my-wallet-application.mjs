@@ -11,14 +11,21 @@ class myWalletApplication {
         this.exter_module = new myWalletModule();
         this.ethSigner = ethSigner;
         this.solSigner = solSigner;
-        this.solana_swap = new SolanaSwapWallet(config, this.solSigner);
-        this.wormhole = new WalletWormhole(config, [ethSigner, solSigner]);
-        this.ethereum_swap = new EthereumWalletSwap(config, this.ethSigner);
+        if (solSigner != null) {
+          this.solana_swap = new SolanaSwapWallet(config, this.solSigner);
+        }
+        if (ethSigner != false) {
+          this.ethereum_swap = new EthereumWalletSwap(config, this.ethSigner);
+        }
+        if (ethSigner && solSigner) {
+          this.wormhole = new WalletWormhole(config, [ethSigner, solSigner]);
+        }
     }
 
     async updateBalance(saveBalance) {
         if(this.ethSigner._address && this.solSigner.publicKey) {
             const solana_bal = await this.solana_swap.fetch_balance()
+            console.log(solana_bal);
             const eth_bal = await this.ethereum_swap.fetch_balance()
             const result = []
             result.push({'item':'User ISC', 'solana':solana_bal.user_isc, 'ethereum':eth_bal.user_isc})

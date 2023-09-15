@@ -111,6 +111,7 @@ $card-button-width:50%;
 }
 
 .header {
+  width: 100vw;
   padding-top: 20px;
   padding-bottom: 20px;
   display: flex;
@@ -792,12 +793,11 @@ white-space:nowrap;
   }
 }
 
-.display {
-  
-}
 .noDisplay {
   display: none;
 }
+
+
 
 .BackToTop {
   cursor: pointer;
@@ -1189,6 +1189,29 @@ $maxButtonBg:#263343;
       background-color: $maxDisplayColor;
       border-color: white;
       color: $maxButtonBg;
+    }
+  }
+}
+
+
+.dirBtns {
+  margin-left: 50px;
+  width: 580px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  .dirBtn {
+    cursor: pointer;
+    background-color: $inputInactiveBg;
+    font-size: 28px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #00000000;
+    color: $card-text;
+    font-weight: 700;
+    &:hover {
+      border: 1px solid white;
     }
   }
 }
