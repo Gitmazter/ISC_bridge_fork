@@ -1,7 +1,7 @@
 // next.config.js
 module.exports = {
   // Specify your desired base path here:
-  basePath: '/home/merton1111/v2App/ISC_bridge-fork/', // Replace with your desired base path
+  basePath: '/ISC_bridge-fork', // Replace with your desired base path
 
   // Optional: Add any additional Next.js configurations here:
   // For example, you can configure custom webpack behavior, plugins, etc.
