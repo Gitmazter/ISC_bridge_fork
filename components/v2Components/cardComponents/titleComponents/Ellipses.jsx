@@ -1,7 +1,7 @@
 
 const Ellipse = ({ filled }) => {
   return (
-    filled ? <img src="./new.FilledEllipse.svg" alt="active"/>
+    filled ? <img src="./new/FilledEllipse.svg" alt="active"/>
     : <img src="./new/Ellipse.svg"/>
   )
 }
