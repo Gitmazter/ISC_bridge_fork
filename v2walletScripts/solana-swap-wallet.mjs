@@ -6,7 +6,7 @@ import {
   PublicKey} from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import borsh from 'borsh'
-
+import rpcConfig from '../config/config.json'
 class Parameters {
   constructor(instruction, amount) {
     this.instruction = instruction;
@@ -29,7 +29,7 @@ constructor(config, solSigner) {
   this.pda_isc_ata = null;
   this.pda_oil_ata = null;
   this.updateAccounts();
-  this.connection = new Connection("http://127.0.0.1:8899");
+  this.connection = new Connection(rpcConfig.solana.rpc);
   this.options = {
       commitment: 'processed'
   };
