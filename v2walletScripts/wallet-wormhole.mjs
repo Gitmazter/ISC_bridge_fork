@@ -14,7 +14,7 @@ import {
     postVaaSolanaWithRetry,
     approveEth,
 } from "@certusone/wormhole-sdk"
-import { PublicKey, Connection, Keypair} from "@solana/web3.js"
+import { PublicKey, Connection, ConnectionConfig,  Keypair} from "@solana/web3.js"
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import rpcConfig from '../config/config.json'
 
@@ -27,7 +27,9 @@ class WalletWormhole {
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
-        this.connection = new Connection(rpcConfig.solana.rpc, "confirmed")
+        this.connectionConfig = new ConnectionConfig()
+        this.connection = new Connection(rpcConfig.solana.rpc, {"wsEndpoint":rpcConfig.solana.wss, "commitment":"confirmed"})
+
         // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
             commitment: 'processed'
