@@ -9,7 +9,6 @@ import SolanaContextProvider from "../components/v2Components/app/web3/solConnec
 import Header from '../components/layout/Header'
 import { Web3Provider } from "@ethersproject/providers"
 import { Web3ReactProvider } from "@web3-react/core"
-import Loading from "../components/v2Components/Loading"
 import ApplicationContext from "../components/v2Components/contexts/applicationContext"
 const inter = Inter({
   subsets: ['latin'],
@@ -17,7 +16,7 @@ const inter = Inter({
 })
 
 const App = () => {
-  const [ maxAmounts, setMaxAmounts ] = useState([<Loading/>, <Loading/>, <Loading/>, <Loading/>]);
+  const [ maxAmounts, setMaxAmounts ] = useState([0,0,0,0]);
   const [ balance, setBalance ] = useState();
   const [ direction, setDirection ] = useState('solToEth');
   const [ application, setApplication] = useState()
