@@ -115,7 +115,7 @@ const ActionButton = () => {
     // console.log(await solConnection.getAccountInfo(solSigner.publicKey));
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
-    setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
+    setCurrStep(step == 1 ? 2 : 1);
   }
 
   const handleBridgeSolToEth = async () => {
@@ -159,7 +159,7 @@ const ActionButton = () => {
     setPrompt("Bridging Complete!")
     // Set bridge state
     await application.updateBalance(saveBalance)
-    setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
+    setCurrStep(3);
   }
 
   const handleBridgeEthToSol = async () => { /* Tested and ready to roll */
@@ -194,7 +194,7 @@ const ActionButton = () => {
     }
     await application.updateBalance(saveBalance)
     setChecksPassed(true)
-    setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
+    setCurrStep(3);
   }
 
   const handleSwapEth = async () => {
@@ -216,7 +216,7 @@ const ActionButton = () => {
     await application.updateBalance(saveBalance)
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
-    setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
+    setCurrStep(step == 1 ? 2 : 1);
   }
 
 
