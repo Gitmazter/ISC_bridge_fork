@@ -115,6 +115,7 @@ const ActionButton = () => {
     }
     try {
       const latestBlockHash = await solConnection.getLatestBlockhash();
+      console.log('works til here');
       await solConnection.confirmTransaction({
         blockhash: latestBlockHash.blockhash,
         lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
