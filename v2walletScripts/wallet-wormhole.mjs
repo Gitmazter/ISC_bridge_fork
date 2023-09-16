@@ -246,7 +246,7 @@ class WalletWormhole {
         // Get the sequence number and emitter address required to fetch the signedVAA of our message
         const sequence = parseSequenceFromLogEth(receipt, this.config.evm0.bridgeAddress); //ETH_BRIDGE_ADDRESS);
         const emitterAddress = getEmitterAddressEth(this.config.evm0.tokenBridgeAddress); //ETH_TOKEN_BRIDGE_ADDRESS);
-        const vaaURL =`${this.config.wormhole.restAddress}/v1/signed_vaa/${this.config.evm0.wormholeChainId}/${emitterAddress}/${sequence}`;
+        const vaaURL =`https://bridge.isc.money/wormholeVm/v1/signed_vaa/${this.config.evm0.wormholeChainId}/${emitterAddress}/${sequence}`;
         console.log("Searching for: ", vaaURL);
         // Fetch the signedVAA from the Wormhole Network (this may require retries while you wait for confirmation)
         let vaaBytes = await (await fetch(vaaURL)).json();
@@ -262,6 +262,7 @@ class WalletWormhole {
 
     async complete_transfer_on_solana(vaaBytes) {
         const keypair = this.wallets[1];
+        console.log("transfer 1");
         console.log(keypair);
         let txid = await postVaaSolanaWithRetry(
             this.connection,
@@ -277,6 +278,7 @@ class WalletWormhole {
             10
         );
         console.log("Posted VAA to Solana \n", txid[0]['signature'], "\n", txid[1]['signature'])
+        console.log("transfer 2");
         // Finally, redeem on Solana
         const transaction = await redeemOnSolana(
             this.connection,
@@ -285,6 +287,7 @@ class WalletWormhole {
             keypair.publicKey.toString(), // payerAddress,
             Buffer.from(vaaBytes, "base64"), //vaaBytes, //signedVAA,
         );
+        console.log("transfer 3");
         // keypair.sign(transaction)
         //transaction.partialSign(keypair.signTransaction)
         console.log('ready to send');
