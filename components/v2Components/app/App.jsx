@@ -12,6 +12,7 @@ import DirectionContext from '../contexts/directionContext';
 import { sign } from '@certusone/wormhole-sdk';
 import SolIcon from '../cardComponents/icons/SolIcon';
 import EthIcon from '../cardComponents/icons/EthIcon';
+
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
   const {direction, saveDirection} = useContext(DirectionContext)

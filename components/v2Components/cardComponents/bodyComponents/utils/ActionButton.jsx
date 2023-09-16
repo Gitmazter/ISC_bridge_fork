@@ -1,4 +1,4 @@
-import { useWallet } from '@solana/wallet-adapter-react';
+import { useConnection, useWallet } from '@solana/wallet-adapter-react';
 import styles from '../../../../../styles/mystyle.module.css'
 import bodyConfig from '../../../../../config/BodyConfig'
 import { useContext, useEffect, useState } from 'react';
@@ -13,6 +13,7 @@ import config from '../../../../../config/config.json'
 import axios from 'axios';
 import confirmSolanaTx from './confirmSolanaTx';
 const buttonPrompts = bodyConfig.buttonPrompts;
+
 
 config
 const ActionButton = () => {
@@ -31,6 +32,7 @@ const ActionButton = () => {
   const solSigner = useWallet();
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
+  const walletConnection = useConnection()
 
   function amountCheck ()  {
     if (balance !== undefined) {
@@ -95,6 +97,8 @@ const ActionButton = () => {
   }, [amount, balance, step, currStep, active, connected, direction])
 
   const handleSwapSol = async () => {
+    console.log(solSigner);
+    console.log(walletConnection);
     const options = {
       commitment: 'processed'
     };
@@ -205,7 +209,7 @@ const ActionButton = () => {
     let txid2;
     try {
       setPrompt("Requesting ISC from Wormhole...")
-      txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes)
+      txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes, walletConnection)
       console.log(txid2);
       setPrompt("Bridging Complete")
     }
