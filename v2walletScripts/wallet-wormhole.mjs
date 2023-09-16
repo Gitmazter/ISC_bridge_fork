@@ -28,7 +28,7 @@ class WalletWormhole {
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
-        this.connection = new Connection(rpcConfig.solana.rpc, {"wsEndpoint":rpcConfig.solana.wss, "commitment":"processed"})
+        this.connection = new Connection(rpcConfig.solana.wss)
 
         // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
@@ -261,13 +261,13 @@ class WalletWormhole {
         return vaaBytes
     }
 
-    async complete_transfer_on_solana(vaaBytes, walletConnection) {
+    async complete_transfer_on_solana(vaaBytes) {
         const keypair = this.wallets[1];
         console.log("transfer 1");
         console.log(keypair);
-        console.log(walletConnection.connection.getAccountInfo);
+        console.log(this.connection.connection.getAccountInfo);
         let txid = await postVaaSolanaWithRetry(
-            walletConnection.connection,
+            this.connection.connection,
             async (transaction) => {
                 console.log('signing tx');
                 transaction = await keypair.signTransaction(transaction)
@@ -284,7 +284,7 @@ class WalletWormhole {
         console.log("transfer 2");
         // Finally, redeem on Solana
         const transaction = await redeemOnSolana(
-            walletConnection,
+            this.connection,
             this.config.solana.bridgeAddress, //SOL_BRIDGE_ADDRESS,
             this.config.solana.tokenBridgeAddress, //SOL_TOKEN_BRIDGE_ADDRESS,
             keypair.publicKey.toString(), // payerAddress,
@@ -296,7 +296,7 @@ class WalletWormhole {
         console.log('ready to send');
         const signedTransaction = await keypair.signTransaction(transaction)
         // txid = await keypair.sendTransaction(signedTransaction)
-        txid = await walletConnection.sendRawTransaction(signedTransaction.serialize());
+        txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
         console.log(txid);
         // await this.connection.confirmTransaction(txid);
         console.log("Token redeemed", txid)
