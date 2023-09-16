@@ -41,6 +41,6 @@
         "decimals": 9
     },
     "wormhole": {
-        "restAddress": "https://bridge.isc.money/wormholeVm"
+        "restAddress": "https://bridge.isc.money/wormholeVm/"
     }
 }

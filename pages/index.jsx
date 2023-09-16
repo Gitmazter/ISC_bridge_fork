@@ -10,6 +10,7 @@ import Header from '../components/layout/Header'
 import { Web3Provider } from "@ethersproject/providers"
 import { Web3ReactProvider } from "@web3-react/core"
 import ApplicationContext from "../components/v2Components/contexts/applicationContext"
+
 const inter = Inter({
   subsets: ['latin'],
   weight: '700',
