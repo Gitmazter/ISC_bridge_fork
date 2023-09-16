@@ -17,7 +17,7 @@ const inter = Inter({
 })
 
 const App = () => {
-  const [ maxAmounts, setMaxAmounts ] = useState([0,0,0,0]);
+  const [ maxAmounts, setMaxAmounts ] = useState([1000,0,0,1000]);
   const [ balance, setBalance ] = useState();
   const [ direction, setDirection ] = useState('solToEth');
   const [ application, setApplication] = useState()
@@ -47,7 +47,7 @@ const App = () => {
       <SolanaContextProvider>
         <DirectionContext.Provider value={{direction, saveDirection}}>
           <BalanceContext.Provider value={{balance, saveBalance}}>
-            <MaxAmountContext.Provider value = {{maxAmounts, saveMaxAmounts}}>
+            <MaxAmountContext.Provider value = {{maxAmounts}}>
               <ApplicationContext.Provider value={{application, saveApplication}}>
                 <div>
                   <style jsx global>{`

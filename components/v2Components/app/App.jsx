@@ -45,7 +45,8 @@ const BridgeApp = () => {
 
   useEffect(()=>{
     const wait = async () => {
-      const balances = await application.updateBalance(saveBalance)
+      // const balances = await application.updateBalance(saveBalance)
+      /* saveMaxAmounts(1000, 1000, 1000, 1000) */
       // saveBalance(balances)
     }
     if (application != undefined) {
@@ -53,14 +54,14 @@ const BridgeApp = () => {
     }
   },[application])
 
-  useEffect(() => {
-      console.log(balance);
-      if (balance != undefined) {
-        console.log("updating");
-        const maxAmounts = updateMaxAmounts(balance, direction)
-        saveMaxAmounts(maxAmounts)
-      }
-  }, [balance, direction])
+  // useEffect(() => {
+  //     console.log(balance);
+  //     if (balance != undefined) {
+  //       console.log("updating");
+  //       const maxAmounts = updateMaxAmounts(balance, direction)
+  //       saveMaxAmounts(maxAmounts)
+  //     }
+  // }, [balance, direction])
 
   // Connection Check
   // Connectivity check (in order of need as in Figma)

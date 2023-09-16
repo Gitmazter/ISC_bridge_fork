@@ -12,6 +12,7 @@ import AmountContext from '../../../contexts/amountContext';
 import config from '../../../../../config/config.json'
 import axios from 'axios';
 import confirmSolanaTx from './confirmSolanaTx';
+import MaxAmountContext from '../../../contexts/maxAmountContext';
 const buttonPrompts = bodyConfig.buttonPrompts;
 
 
@@ -24,7 +25,7 @@ const ActionButton = () => {
   const { application } = useContext(ApplicationContext)
   const { saveBalance } = useContext(BalanceContext)
 
-  const { connected } = useWallet()
+  const { connected, signMessage } = useWallet()
   const { active, library: provider} = useWeb3React()
   const solConnection = new Connection(config.solana.rpc, "confirmed")
   // solConnection._rpcWsEndpoint = config.solana.wss;
@@ -33,6 +34,7 @@ const ActionButton = () => {
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
   const walletConnection = useConnection()
+  const { maxAmounts } = useContext(MaxAmountContext)
 
   function amountCheck ()  {
     if (balance !== undefined) {
@@ -61,8 +63,8 @@ const ActionButton = () => {
       switch (step) {
         case 1:
           if (direction == 'solToEth' ? connected : active) {
-            if (balance !== undefined && amount > 0) { 
-              if (amount <= balance[0].solana) {
+            if (/* balance !== undefined && */ amount > 0) { 
+              if (amount <= maxAmounts[0]) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -73,8 +75,8 @@ const ActionButton = () => {
         case 2:
           if (connected) {
             if (active) {
-              if (balance !== undefined && amount > 0) { 
-                if (amount <= balance[1].solana) {
+              if (/* balance !== undefined && */ amount > 0) { 
+                if (amount <= maxAmounts[1]) {
                   setPrompt(buttonPrompts.bridge + ` ${amount} ISC`)
                   setChecksPassed(true)
                 } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -85,8 +87,8 @@ const ActionButton = () => {
 
         case 3:
           if (direction == 'solToEth' ? active : connected) {
-            if (balance !== undefined && amount > 0) { 
-              if (amount <= balance[1].ethereum) {
+            if (/* balance !== undefined && */ amount > 0) { 
+              if (amount <= maxAmounts[2]) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -227,10 +229,10 @@ const ActionButton = () => {
     let tx
     try {
       if (direction === 'solToEth'){
-        tx = await application.ethereum_swap.swap_oil_to_isc(amount);
+        tx = await application.ethereum_swap.swap_oil_to_isc(0.100);
       }
       else {
-        tx = await application.ethereum_swap.swap_isc_to_oil(amount);
+        tx = await application.ethereum_swap.swap_isc_to_oil(0.100);
       }
     }
     catch (e) {
@@ -243,25 +245,19 @@ const ActionButton = () => {
     setCurrStep(step == 1 ? 2 : 1);
   }
 
+  async function mockIt1 () {
+    setPrompt("Requesting Signature");
+    signMessage(Uint8Array.from(["a","b","c"]))
+  }
+  function mockIt2 () {
+
+  }
+  function mockIt3 () {
+
+  }
+
 
   const clickHandler = () => {
-    if (direction === 'solToEth'){
-      switch (step) {
-        case 1:
-          console.log('Handling Swap 1');
-          handleSwapSol();
-          return; 
-        case 2: 
-          console.log('Handling Bridge');
-          handleBridgeSolToEth();
-          return;
-        case 3: 
-          console.log('Handling Swap 2');
-          handleSwapEth();
-      }
-    }
-    
-    else {
       switch (step) {
         case 1:
           console.log('Handling Swap 1');
@@ -269,13 +265,13 @@ const ActionButton = () => {
           return; 
         case 2: 
           console.log('Handling Bridge');
-          handleBridgeEthToSol();
+          mockit2();
           return;
         case 3: 
           console.log('Handling Swap 2');
-          handleSwapSol();
+          mockit3()
       }
-    }
+
   }
 
   return (  
