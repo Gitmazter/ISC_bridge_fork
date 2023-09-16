@@ -46,7 +46,7 @@ const ActionButton = () => {
         if (amount < tocheck) {
           return true
         } else {setPrompt(buttonPrompts.tooMuch)}
-      } else {setPrompt(buttonPrompts.noAmount)}
+      } else {setPrompt(buttonPrompts.swap)}
     }
     return false
   }
@@ -60,7 +60,7 @@ const ActionButton = () => {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
-            } else {setPrompt(buttonPrompts.noAmount);  setChecksPassed(false)}
+            } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
           } else {setPrompt(direction == 'solToEth' ? buttonPrompts.sol : buttonPrompts.eth);  setChecksPassed(false)}
           return;
 
@@ -72,7 +72,7 @@ const ActionButton = () => {
                   setPrompt(buttonPrompts.bridge + ` ${amount} ISC`)
                   setChecksPassed(true)
                 } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
-              } else {setPrompt(buttonPrompts.noAmount);  setChecksPassed(false)}
+              } else {setPrompt(buttonPrompts.bridge);  setChecksPassed(false)}
             } else {setPrompt(buttonPrompts.eth);  setChecksPassed(false)}
           } else {setPrompt(buttonPrompts.sol);  setChecksPassed(false)}
           return;
@@ -84,7 +84,7 @@ const ActionButton = () => {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
-            } else {setPrompt(buttonPrompts.noAmount);  setChecksPassed(false)}
+            } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
           } else {setPrompt(direction == 'solToEth' ? buttonPrompts.eth : buttonPrompts.sol);  setChecksPassed(false)}
           return;
       }
@@ -106,7 +106,18 @@ const ActionButton = () => {
     try {
       txid = await solSigner.sendTransaction(tx, solConnection, options);
       console.log(txid);
-      await solConnection.confirmTransaction(txid)
+      
+    }
+    catch (e) {
+      console.log(e);
+    }
+    try {
+      const latestBlockHash = await solConnection.getLatestBlockhash();
+      await solConnection.confirmTransaction({
+        blockhash: latestBlockHash.blockhash,
+        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+        signature: txid,
+      }, 'confirmed');
     }
     catch (e) {
       console.log(e);

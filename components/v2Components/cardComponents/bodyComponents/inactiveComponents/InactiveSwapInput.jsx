@@ -12,7 +12,7 @@ const InactiveSwapInput = () => {
 
   return (
     <>
-      <input placeholder={'0.00'} value={val? val : undefined}/>
+      <input placeholder={'0.00'} disabled="disabled" value={val? val : undefined}/>
     </>
   )
 }

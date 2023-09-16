@@ -10,7 +10,8 @@ import updateMaxAmounts from './utils/updateMaxAmounts';
 import MaxAmountContext from '../contexts/maxAmountContext';
 import DirectionContext from '../contexts/directionContext';
 import { sign } from '@certusone/wormhole-sdk';
-
+import SolIcon from '../cardComponents/icons/SolIcon';
+import EthIcon from '../cardComponents/icons/EthIcon';
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
   const {direction, saveDirection} = useContext(DirectionContext)
@@ -98,8 +99,12 @@ const BridgeApp = () => {
 {/*         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
         <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button> */}
         <div className={styles.dirBtns}>
-          <button type='button' className={styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>Sol To Eth</button>
-          <button type='button' className={styles.dirBtn} onClick={() => {saveDirection('ethToSol')}}>Eth To Sol</button>
+          <button type='button' className={direction == 'solToEth' ? styles.dirBtnActive : styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>
+            <SolIcon type={'swap'}/><p>Solana To </p><EthIcon type={'swap'}/><p>Ethereum</p>
+          </button>
+          <button type='button' className={direction == 'solToEth' ? styles.dirBtn : styles.dirBtnActive} onClick={() => {saveDirection('ethToSol')}}>
+            <EthIcon type={'swap'}/><p>Ethereum To </p><SolIcon type={'swap'}/><p>Solana</p>
+          </button>
         </div>
       {/* End Temporary Buttons */}
 
