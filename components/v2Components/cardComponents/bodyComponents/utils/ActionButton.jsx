@@ -25,7 +25,6 @@ const ActionButton = () => {
   const { active, library: provider} = useWeb3React()
   const solConnection = new Connection(config.solana.rpc, "confirmed")
   solConnection._rpcWsEndpoint = config.solana.wss;
-  console.log(solConnection);
   const solSigner = useWallet();
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
@@ -115,6 +114,7 @@ const ActionButton = () => {
     }
     try {
       const latestBlockHash = await solConnection.getLatestBlockhash();
+      console.log(solConnection);
       console.log('works til here');
       await solConnection.confirmTransaction({
         blockhash: latestBlockHash.blockhash,
