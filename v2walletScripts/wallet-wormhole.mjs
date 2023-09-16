@@ -14,7 +14,7 @@ import {
     postVaaSolanaWithRetry,
     approveEth,
 } from "@certusone/wormhole-sdk"
-import { PublicKey, Connection, ConnectionConfig,  Keypair} from "@solana/web3.js"
+import { PublicKey, Connection,  Keypair} from "@solana/web3.js"
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import rpcConfig from '../config/config.json'
 
@@ -48,7 +48,6 @@ class WalletWormhole {
         }
 
         let connection = new Connection(network.rpc, "confirmed")
-        connection._rpcWsEndpoint = config.solana.wss;
         const secretKey = Uint8Array.from(this.config.solana.privateKey);
         const keypair = Keypair.fromSecretKey(secretKey);
 
@@ -60,7 +59,7 @@ class WalletWormhole {
             network.testToken, //mintAddress
         );
         transaction.partialSign(keypair)
-        const txid = await connection.sendRawTransaction(transaction.serialize());
+        const txid = await this.connection.sendRawTransaction(transaction.serialize());
         await connection.confirmTransaction(txid);
         // Get the sequence number and emitter address required to fetch the signedVAA of our message
         const info = await connection.getTransaction(txid);
@@ -265,6 +264,7 @@ class WalletWormhole {
         const keypair = this.wallets[1];
         console.log("transfer 1");
         console.log(keypair);
+        console.log(this.connection);
         let txid = await postVaaSolanaWithRetry(
             this.connection,
             async (transaction) => {
