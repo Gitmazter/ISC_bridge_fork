@@ -13,6 +13,7 @@ import {
     redeemOnSolana,
     postVaaSolanaWithRetry,
     approveEth,
+    postVaaSolana,
 } from "@certusone/wormhole-sdk"
 import { PublicKey, Connection,  Keypair} from "@solana/web3.js"
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
@@ -265,7 +266,8 @@ class WalletWormhole {
         console.log("transfer 1");
         console.log(keypair);
         console.log(this.connection);
-        let txid = await postVaaSolanaWithRetry(
+        // postVaaSolanaWithRetry
+        let txid = await postVaaSolana(
             this.connection,
             async (transaction) => {
                 console.log('signing tx');
