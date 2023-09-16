@@ -111,17 +111,17 @@ const ActionButton = () => {
     catch (e) {
       console.log(e);
     }
-    try {
-      const latestBlockHash = await solConnection.getLatestBlockhash();
-      await solConnection.confirmTransaction({
-        blockhash: latestBlockHash.blockhash,
-        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-        signature: txid,
-      }, 'confirmed');
-    }
-    catch (e) {
-      console.log(e);
-    }
+    // try {
+    //   const latestBlockHash = await solConnection.getLatestBlockhash();
+    //   await solConnection.confirmTransaction({
+    //     blockhash: latestBlockHash.blockhash,
+    //     lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+    //     signature: txid,
+    //   }, 'confirmed');
+    // }
+    // catch (e) {
+    //   console.log(e);
+    // }
     await application.updateBalance(saveBalance)
     // console.log(await solConnection.getAccountInfo(solSigner.publicKey));
     setChecksPassed(true)
