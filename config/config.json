@@ -28,6 +28,7 @@
         "type": "solana",
         "wormholeChainId": 1,
         "rpc": "https://bridge.isc.money/solanaVm",
+        "wss": "wss://bridge.isc.money/solanaVmWss",
         "privateKey": [71,50,29,33,210,143,244,24,141,16,66,62,164,82,200,191,134,253,235,135,20,248,255,205,196,70,30,62,21,178,220,119,209,91,18,240,18,254,121,178,128,233,133,89,63,9,131,236,92,247,18,201,88,239,98,253,8,161,64,183,96,11,226,196],
         "tokenBridgeAddress": "B6RHG3mfcckmrYN1UhmJzyS1XX3fZKbkeUcpJe9Sy3FE",
         "bridgeAddress": "Bridge1p5gheXUvJ6jGWGeCsgPKgnE3YgdGKRVCMY9o",

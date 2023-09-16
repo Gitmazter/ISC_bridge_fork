@@ -28,6 +28,7 @@ class WalletWormhole {
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
         this.connection = new Connection(rpcConfig.solana.rpc, "confirmed")
+        this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
             commitment: 'processed'
         }
@@ -45,7 +46,8 @@ class WalletWormhole {
             throw new Error("Network not defined in config file.");
         }
 
-        const connection = new Connection(network.rpc, "confirmed")
+        let connection = new Connection(network.rpc, "confirmed")
+        connection._rpcWsEndpoint = config.solana.wss;
         const secretKey = Uint8Array.from(this.config.solana.privateKey);
         const keypair = Keypair.fromSecretKey(secretKey);
 
