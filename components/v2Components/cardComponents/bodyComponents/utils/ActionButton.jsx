@@ -23,8 +23,7 @@ const ActionButton = () => {
 
   const { connected } = useWallet()
   const { active, library: provider} = useWeb3React()
-  const solConnection = new Connection(config.solana.rpc, "confirmed")
-  solConnection._rpcWsEndpoint = config.solana.wss;
+  const solConnection = new Connection(config.solana.wss, "confirmed")
   console.log(solConnection);
   const solSigner = useWallet();
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
@@ -113,17 +112,17 @@ const ActionButton = () => {
     catch (e) {
       console.log(e);
     }
-    // try {
-    //   const latestBlockHash = await solConnection.getLatestBlockhash();
-    //   await solConnection.confirmTransaction({
-    //     blockhash: latestBlockHash.blockhash,
-    //     lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-    //     signature: txid,
-    //   }, 'confirmed');
-    // }
-    // catch (e) {
-    //   console.log(e);
-    // }
+    try {
+      const latestBlockHash = await solConnection.getLatestBlockhash();
+      await solConnection.confirmTransaction({
+        blockhash: latestBlockHash.blockhash,
+        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+        signature: txid,
+      }, 'confirmed');
+    }
+    catch (e) {
+      console.log(e);
+    }
     await application.updateBalance(saveBalance)
     // console.log(await solConnection.getAccountInfo(solSigner.publicKey));
     setChecksPassed(true)
