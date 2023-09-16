@@ -162,7 +162,7 @@ class WalletWormhole {
         const sequence = parseSequenceFromLogSolana(info);
         const emitterAddress = getEmitterAddressSolana(this.config.solana.tokenBridgeAddress);
 
-        const vaaURL =`https://bridge.isc.money/wormholeVm/${1}/${emitterAddress}/${sequence}`; /* v1/signed_vaa/ */
+        const vaaURL =`http://34.64.155.127/v1/signed_vaa/wormholeVm/${1}/${emitterAddress}/${sequence}`; /* v1/signed_vaa/ */
         console.log("Searching for: ", vaaURL);
         // Fetch the signedVAA from the Wormhole Network (this may require retries while you wait for confirmation)
         let vaaBytes = await (await fetch(vaaURL)).json();
