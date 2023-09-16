@@ -28,7 +28,7 @@ class WalletWormhole {
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
         this.connection = new Connection(rpcConfig.solana.rpc, "confirmed")
-        this.connection._rpcWsEndpoint = config.solana.wss;
+        // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
             commitment: 'processed'
         }
@@ -270,7 +270,7 @@ class WalletWormhole {
                 console.log('signing tx');
                 transaction = await keypair.signTransaction(transaction)
                 // transaction.partialSign(keypair.sign);
-                // return transaction;
+                return transaction;
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
             keypair.publicKey.toString(), //srcKey.publicKey.toString(),
