@@ -270,7 +270,7 @@ class WalletWormhole {
                 console.log('signing tx');
                 transaction = await keypair.signTransaction(transaction)
                 // transaction.partialSign(keypair.sign);
-                return transaction;
+                // return transaction;
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
             keypair.publicKey.toString(), //srcKey.publicKey.toString(),
