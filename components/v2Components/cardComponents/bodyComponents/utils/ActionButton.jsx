@@ -145,7 +145,7 @@ const ActionButton = () => {
       catch (e) {
         console.log(e);
       }
-    // await solConnection.confirmTransaction(txid)
+    await solConnection.confirmTransaction(txid)
     // Set bridge state
     let VAA;
       try {
