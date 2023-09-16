@@ -140,6 +140,7 @@ const ActionButton = () => {
       try {
         setPrompt("Sending ISC to Wormhole...")
         txid = await solSigner.sendTransaction(tx, solConnection, options)
+        console.log(txid);
       }
       catch (e) {
         console.log(e);
