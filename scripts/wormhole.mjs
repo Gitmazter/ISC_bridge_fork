@@ -16,6 +16,7 @@ import {
 } from "@certusone/wormhole-sdk"
 import { PublicKey, Connection, Keypair} from "@solana/web3.js"
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import rpcConfig from '../config/config.json'
 
 class Wormhole {
     constructor(config) {
@@ -27,7 +28,7 @@ class Wormhole {
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
         this.keypair = Keypair.fromSecretKey(this.secretKey);
-        this.connection = new Connection("http://localhost:8899", "confirmed")
+        this.connection = new Connection(config.solana.rpc, "confirmed")
         this.options = {
             commitment: 'processed'
         }

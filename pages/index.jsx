@@ -50,17 +50,18 @@ const App = () => {
             <MaxAmountContext.Provider value = {{maxAmounts, saveMaxAmounts}}>
               <ApplicationContext.Provider value={{application, saveApplication}}>
                 <div>
-                <style jsx global>{`
-                  html {
-                    overflow-x: hidden;
-                  }
-                  body {
-                    overflow-x: hidden;
-                    margin: 0px;
-                    padding: 0px;
-                      }
-                    `}</style>
-                  </div>
+                  <style jsx global>{`
+                    html {
+                      overflow-x: hidden;
+                    }
+                    body {
+                      overflow-x: hidden;
+                      margin: 0px;
+                      padding: 0px;
+                        }
+                      `}
+                  </style>
+                </div>
             
               <main className={inter.className}>
                 <Header/>

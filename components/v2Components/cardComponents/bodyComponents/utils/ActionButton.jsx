@@ -23,7 +23,7 @@ const ActionButton = () => {
 
   const { connected } = useWallet()
   const { active, library: provider} = useWeb3React()
-  const solConnection = new Connection(config.solana.rpc, "processed")
+  const solConnection = new Connection(config.solana.rpc, "confirmed")
   const solSigner = useWallet();
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
@@ -106,12 +106,13 @@ const ActionButton = () => {
     try {
       txid = await solSigner.sendTransaction(tx, solConnection, options);
       console.log(txid);
-      await solConnection.confirmTransaction(txid,'confirmed')
+      await solConnection.confirmTransaction(txid)
     }
     catch (e) {
       console.log(e);
     }
     await application.updateBalance(saveBalance)
+    // console.log(await solConnection.getAccountInfo(solSigner.publicKey));
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
     setCurrStep(() => {currStep <= 2 ? currStep+1 : 1});
@@ -124,6 +125,7 @@ const ActionButton = () => {
     const tx = await application.wormhole.send_from_solana(amount)
     setChecksPassed(false)
     let txid;
+    console.log(solConnection);
       try {
         setPrompt("Sending ISC to Wormhole...")
         txid = await solSigner.sendTransaction(tx, solConnection, options)
