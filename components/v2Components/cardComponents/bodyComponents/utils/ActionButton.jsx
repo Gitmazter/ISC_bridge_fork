@@ -171,7 +171,7 @@ const ActionButton = () => {
         setPrompt("Requesting ISC from Wormhole...")
         txid2 = await application.wormhole.complete_transfer_on_eth(VAA, signer)
         console.log(txid2);
-        await application.ethereum_swap.wait_until_finalized({"hash":txid2})
+        await application.ethereum_swap.wait_until_finalized({"hash":txid2.hash})
       }
       catch(e) {
         console.log(e);
