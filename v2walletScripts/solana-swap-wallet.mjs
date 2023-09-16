@@ -30,7 +30,7 @@ constructor(config, solSigner) {
   this.pda_oil_ata = null;
   this.updateAccounts();
   this.connection = new Connection(rpcConfig.solana.rpc);
-  this.connection._rpcWsEndpoint = config.solana.wss;
+  // this.connection._rpcWsEndpoint = config.solana.wss;
   this.options = {
       commitment: 'processed'
   };

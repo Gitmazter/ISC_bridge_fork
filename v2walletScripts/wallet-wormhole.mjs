@@ -265,9 +265,9 @@ class WalletWormhole {
         const keypair = this.wallets[1];
         console.log("transfer 1");
         console.log(keypair);
-        console.log(this.connection.connection.getAccountInfo);
+        console.log(this.connection.getAccountInfo);
         let txid = await postVaaSolanaWithRetry(
-            this.connection.connection,
+            this.connection,
             async (transaction) => {
                 console.log('signing tx');
                 transaction = await keypair.signTransaction(transaction)
