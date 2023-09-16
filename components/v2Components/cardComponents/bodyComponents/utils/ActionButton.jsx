@@ -10,6 +10,8 @@ import ApplicationContext from '../../../contexts/applicationContext';
 import { Connection } from '@solana/web3.js';
 import AmountContext from '../../../contexts/amountContext';
 import config from '../../../../../config/config.json'
+import axios from 'axios';
+import confirmSolanaTx from './confirmSolanaTx';
 const buttonPrompts = bodyConfig.buttonPrompts;
 
 config
@@ -24,8 +26,8 @@ const ActionButton = () => {
   const { connected } = useWallet()
   const { active, library: provider} = useWeb3React()
   const solConnection = new Connection(config.solana.rpc, "confirmed")
-  solConnection._rpcWsEndpoint = config.solana.wss;
-  // solConnection.underlyingSocket.url = config.solana.wss;
+  // solConnection._rpcWsEndpoint = config.solana.wss;
+  // // solConnection.underlyingSocket.url = config.solana.wss;
   const solSigner = useWallet();
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
@@ -114,14 +116,16 @@ const ActionButton = () => {
       console.log(e);
     }
     try {
-      const latestBlockHash = await solConnection.getLatestBlockhash();
       console.log(solConnection);
       console.log('works til here');
-      await solConnection.confirmTransaction({
-        blockhash: latestBlockHash.blockhash,
-        lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-        signature: txid,
-      }, 'confirmed');
+      
+      const conf = await confirmSolanaTx(txid)
+      console.log(conf.data.result);
+      // await solConnection.confirmTransaction({
+      //   blockhash: latestBlockHash.blockhash,
+      //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
+      //   signature: txid,
+      // }, 'confirmed');
     }
     catch (e) {
       console.log(e);
@@ -149,7 +153,7 @@ const ActionButton = () => {
       catch (e) {
         console.log(e);
       }
-    await solConnection.confirmTransaction(txid)
+    await confirmSolanaTx(txid)
     // Set bridge state
     let VAA;
       try {
