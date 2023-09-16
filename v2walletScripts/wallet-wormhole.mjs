@@ -28,7 +28,7 @@ class WalletWormhole {
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
-        this.connection = new Connection(rpcConfig.solana.rpc, {"wsEndpoint":rpcConfig.solana.wss, "commitment":"processed"})
+        this.connection = new Connection(rpcConfig.solana.rpc, /* {"wsEndpoint":rpcConfig.solana.wss, "commitment":"processed"} */)
 
         // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
@@ -266,25 +266,20 @@ class WalletWormhole {
         console.log("transfer 1");
         console.log(keypair);
         console.log(this.connection);
-        // postVaaSolanaWithRetry
-        try {
-            let txid = await postVaaSolana(
-                this.connection,
-                async (transaction) => {
-                    console.log('signing tx');
-                    transaction = await keypair.signTransaction(transaction)
-                    // transaction.partialSign(keypair.sign);
-                    return transaction;
-                },
-                this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
-                keypair.publicKey.toString(), //srcKey.publicKey.toString(),
-                Buffer.from(vaaBytes, "base64"),
-                10
-            );
-        }
-        catch (e) {
-            console.log(e);
-        }
+        let txid = await postVaaSolanaWithRetry(
+            this.connection,
+            async (transaction) => {
+                console.log('signing tx');
+                transaction = await keypair.signTransaction(transaction)
+                // transaction.partialSign(keypair.sign);
+                return transaction;
+            },
+            this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
+            keypair.publicKey.toString(), //srcKey.publicKey.toString(),
+            Buffer.from(vaaBytes, "base64"),
+            10
+        );
+
         console.log("Posted VAA to Solana \n", txid[0]['signature'], "\n", txid[1]['signature'])
         console.log("transfer 2");
         // Finally, redeem on Solana
