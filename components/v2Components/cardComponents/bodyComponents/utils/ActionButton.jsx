@@ -23,7 +23,8 @@ const ActionButton = () => {
 
   const { connected } = useWallet()
   const { active, library: provider} = useWeb3React()
-  const solConnection = new Connection(config.solana.wss, "confirmed")
+  const solConnection = new Connection(config.solana.rpc, "confirmed")
+  solConnection._rpcWsEndpoint = config.solana.wss;
   console.log(solConnection);
   const solSigner = useWallet();
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
