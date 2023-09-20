@@ -278,7 +278,7 @@ class WalletWormhole {
                 return transaction;
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
-            keypair.publicKey.toString(), //srcKey.publicKey.toString(),
+            keypair.publicKey, //srcKey.publicKey.toString(),
             Buffer.from(vaaBytes, "base64"),
             10
         );
