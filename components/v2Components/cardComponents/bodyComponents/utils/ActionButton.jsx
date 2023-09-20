@@ -135,7 +135,7 @@ const ActionButton = () => {
     console.log(solSigner);
     console.log(walletConnection);
     const options = {
-      commitment: 'finalized'
+      commitment: 'confirmed'
     };
     setChecksPassed(false);
     setPrompt('Swapping ISC...');
@@ -152,7 +152,7 @@ const ActionButton = () => {
       // const {blockhash, lastValidBlockHeight} = await this.solConnection.getLatestBlockhash('finalized');
       // tx.recentBlockhash = blockhash;
       // tx.lastValidBlockHeight = lastValidBlockHeight;
-      txid = await solSigner.sendTransaction(tx, solConnection)
+      txid = await solSigner.sendTransaction(tx, connection, options)
       console.log(txid);
     }
     catch (e) {
