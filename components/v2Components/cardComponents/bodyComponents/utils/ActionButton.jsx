@@ -92,6 +92,7 @@ const ActionButton = () => {
   }
 
   useEffect(() => {
+    console.log(balance);
       switch (step) {
         case 1:
           if (direction == 'solToEth' ? connected : active) {
