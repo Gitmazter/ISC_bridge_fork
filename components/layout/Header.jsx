@@ -1,7 +1,20 @@
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import styles from '../../styles/mystyle.module.css'
 import EthModalButton from '../v2Components/app/web3/EthConnectButton';
+import { useEffect, useState } from 'react';
 export default function Header () {
+  const [clientRendered, setClientRendered] = useState()
+
+  useEffect(() => {
+    setClientRendered(
+      <>
+        <WalletMultiButton/>
+        <EthModalButton />
+      </>
+    )
+  }, [])
+
+
   return (
     <header className={styles.header}>
       <div className={styles.headerInfo}> 
@@ -9,8 +22,7 @@ export default function Header () {
         <h1>ISC BRIDGE</h1>
       </div>
       <div className={styles.walletContainer}>
-        <WalletMultiButton />
-        <EthModalButton />
+        {clientRendered}
       </div>
     </header>
   )
