@@ -146,7 +146,8 @@ const ActionButton = () => {
     }
     let txid;
     try {
-      txid = await solSigner.sendTransaction(tx, connection, options);
+      console.log(tx);
+      txid = await solSigner.sendTransaction(tx, walletConnection, options);
       console.log(txid);
     }
     catch (e) {
