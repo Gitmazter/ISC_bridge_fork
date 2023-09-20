@@ -136,8 +136,8 @@ const ActionButton = () => {
     const options = {
       commitment: 'finalized'
     };
-    setChecksPassed(false)
-    setPrompt('Swapping ISC...')
+    setChecksPassed(false);
+    setPrompt('Swapping ISC...');
     let tx;
     if (direction === 'solToEth'){
       tx = await application.solana_swap.swap_isc_to_oil(amount);
