@@ -295,9 +295,9 @@ class WalletWormhole {
         // keypair.sign(transaction)
         //transaction.partialSign(keypair.signTransaction)
         console.log('ready to send');
-        txid = await keypair.sendTransaction(transaction)
+        //txid = await keypair.sendTransaction(transaction)
         // txid = await keypair.sendTransaction(signedTransaction)
-        // txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
+        txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
         console.log(txid);
         // await this.connection.confirmTransaction(txid);
         console.log("Token redeemed", txid)
