@@ -1,4 +1,5 @@
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
+import { BaseWalletAdapter, WalletName } from '@solana/wallet-adapter-base';
 import styles from '../../../../../styles/mystyle.module.css'
 import bodyConfig from '../../../../../config/BodyConfig'
 import { useContext, useEffect, useState } from 'react';
@@ -10,12 +11,12 @@ import ApplicationContext from '../../../contexts/applicationContext';
 import { Connection } from '@solana/web3.js';
 import AmountContext from '../../../contexts/amountContext';
 import config from '../../../../../config/config.json'
-import axios from 'axios';
 import confirmSolanaTx from './confirmSolanaTx';
 const buttonPrompts = bodyConfig.buttonPrompts;
+import {InjectedConnector} from '@web3-react/injected-connector'
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+const injected = new InjectedConnector()
 
-
-config
 const ActionButton = () => {
   const { step, currStep, setCurrStep } = useContext(StepContext);
   const { amount } = useContext(AmountContext)
@@ -24,8 +25,9 @@ const ActionButton = () => {
   const { application } = useContext(ApplicationContext)
   const { saveBalance } = useContext(BalanceContext)
 
-  const { connected } = useWallet()
-  const { active, library: provider} = useWeb3React()
+  const { connected, connect } = useWallet()
+  const {connection} = useConnection()
+  const { active, activate, library: provider} = useWeb3React()
   const solConnection = new Connection(config.solana.rpc, "confirmed")
   // solConnection._rpcWsEndpoint = config.solana.wss;
   // // solConnection.underlyingSocket.url = config.solana.wss;
@@ -33,6 +35,14 @@ const ActionButton = () => {
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
   const walletConnection = useConnection()
+  const { setVisible: setModalVisible, visible:modalVisible,  } = useWalletModal(); 
+  const [walletSelected, setWalletSelected] = useState(false);
+
+
+  useEffect(() => {
+    setWalletSelected(false)
+  },[balance])
+
 
   function amountCheck ()  {
     if (balance !== undefined) {
@@ -57,6 +67,30 @@ const ActionButton = () => {
     return false
   }
 
+
+  async function connectEth () {
+    try {
+      await activate(injected)
+    }
+    catch(e){
+      console.log(e);
+    }
+
+  }
+
+  async function connectSol () {
+    console.log(connection);
+    if (!walletSelected) {
+      console.log("selecting Wallet");
+      setModalVisible(true)
+      setWalletSelected(true)
+    }
+    else {
+      console.log("connecting");
+      connect()
+    }
+  }
+
   useEffect(() => {
       switch (step) {
         case 1:
@@ -67,7 +101,7 @@ const ActionButton = () => {
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
             } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
-          } else {setPrompt(direction == 'solToEth' ? buttonPrompts.sol : buttonPrompts.eth);  setChecksPassed(false)}
+          } else {setPrompt(direction == 'solToEth' ? buttonPrompts.sol : buttonPrompts.eth);  setChecksPassed(true)}
           return;
 
         case 2:
@@ -79,8 +113,8 @@ const ActionButton = () => {
                   setChecksPassed(true)
                 } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
               } else {setPrompt(buttonPrompts.bridge);  setChecksPassed(false)}
-            } else {setPrompt(buttonPrompts.eth);  setChecksPassed(false)}
-          } else {setPrompt(buttonPrompts.sol);  setChecksPassed(false)}
+            } else {setPrompt(buttonPrompts.eth);  setChecksPassed(true)}
+          } else {setPrompt(buttonPrompts.sol);  setChecksPassed(true)}
           return;
 
         case 3:
@@ -91,7 +125,7 @@ const ActionButton = () => {
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
             } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
-          } else {setPrompt(direction == 'solToEth' ? buttonPrompts.eth : buttonPrompts.sol);  setChecksPassed(false)}
+          } else {setPrompt(direction == 'solToEth' ? buttonPrompts.eth : buttonPrompts.sol);  setChecksPassed(true)}
           return;
       }
   }, [amount, balance, step, currStep, active, connected, direction])
@@ -244,20 +278,42 @@ const ActionButton = () => {
   }
 
 
-  const clickHandler = () => {
+  const clickHandler = async () => {
     if (direction === 'solToEth'){
       switch (step) {
         case 1:
           console.log('Handling Swap 1');
-          handleSwapSol();
+          if (connected) {
+            handleSwapSol();
+          }
+          else {
+            console.log('connecting sol');
+            connectSol()
+          }
           return; 
         case 2: 
-          console.log('Handling Bridge');
-          handleBridgeSolToEth();
+        console.log('Handling Bridge');
+        if (connected) {
+          if (active) {
+            handleBridgeSolToEth();
+          }
+          else {
+            connectEth();
+          }
+        }
+        else{
+          connectSol();
+        }
+          // handleBridgeSolToEth();
           return;
         case 3: 
-          console.log('Handling Swap 2');
+        console.log('Handling Swap 2');
+        if (active) {
           handleSwapEth();
+        }
+        else {
+          connectEth()
+        }
       }
     }
     
@@ -265,39 +321,55 @@ const ActionButton = () => {
       switch (step) {
         case 1:
           console.log('Handling Swap 1');
-          handleSwapEth();
+          if (active) {
+            handleSwapEth();
+          }
+          else {
+            connectEth()
+          }
           return; 
         case 2: 
           console.log('Handling Bridge');
-          handleBridgeEthToSol();
-          return;
+          if (connected) {
+            if (active) {
+              handleBridgeSolToEth();
+            }
+            else {
+              connectEth();
+            }
+          }
+          else{
+            connectSol();
+          }
+          return
         case 3: 
-          console.log('Handling Swap 2');
-          handleSwapSol();
+          console.log('Handling Swap 1');
+          if (connected) {
+            handleSwapSol();
+          }
+          else {
+            console.log('connecting sol');
+            connectSol()
+          }
+          return; 
       }
     }
   }
 
-  return (  
-   checksPassed == true ?
-   <button type='button' onClick={clickHandler} className={styles.ActionButton}>
-    <p>{prompt}</p>
-   </button>
+  return ( checksPassed ? <>
+    <button type='button' onClick={clickHandler} className={styles.ActionButton}>
+      <p>{prompt}</p>
+    </button>
+    {/* <BaseWalletMultiButton/> */}
+    </>
    :
-   <button type='button' className={styles.ActionButtonInactive}>
-    <p>{prompt}</p>
-   </button>
+   <>
+    <button type='button' className={styles.ActionButtonInactive}>
+      <p>{prompt}</p>
+    </button>
+     {/*  <BaseWalletMultiButton/> */}
+    </>
   )
 }
 
 export default ActionButton
-
-/* 0x789733c6Cfd5EAa6c27bEAfD8bB7AF20aBe28500
-0xD13ebb5C39fB00C06122827E1cbD389930C9E0E3
-
-Swap.deploy('0x789733c6Cfd5EAa6c27bEAfD8bB7AF20aBe28500','0xD13ebb5C39fB00C06122827E1cbD389930C9E0E3', {'from':a})
-
-'0x8914a9E5C5E234fDC3Ce9dc155ec19F43947ab59'
-
-ISCToken[0].mint('0x8914a9E5C5E234fDC3Ce9dc155ec19F43947ab59', 500000000, {'from':a})
- */
