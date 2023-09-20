@@ -18,6 +18,7 @@ class SolanaWalletSwap {
 constructor(config, solSigner) {
   this.signer = solSigner;
   // this.signerPubKey = solSigner.publicKey;
+  this.signer = solSigner;
   this.acc_info = null;
   this.config = config.solana;
   this.SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID = new PublicKey(this.config.spl_ata_program_id);
