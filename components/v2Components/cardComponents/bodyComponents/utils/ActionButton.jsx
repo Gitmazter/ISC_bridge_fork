@@ -28,7 +28,7 @@ const ActionButton = () => {
   const { connected, connect } = useWallet()
   const {connection} = useConnection()
   const { active, activate, library: provider} = useWeb3React()
-  const solConnection = new Connection(config.solana.rpc, "confirmed")
+  const solConnection = new Connection(config.solana.rpc, "finalize")
   // solConnection._rpcWsEndpoint = config.solana.wss;
   // // solConnection.underlyingSocket.url = config.solana.wss;
   const solSigner = useWallet();
@@ -146,7 +146,7 @@ const ActionButton = () => {
     }
     let txid;
     try {
-      txid = await solSigner.sendTransaction(tx, solConnection, options);
+      txid = await solSigner.sendTransaction(tx, connection, options);
       console.log(txid);
       
     }
