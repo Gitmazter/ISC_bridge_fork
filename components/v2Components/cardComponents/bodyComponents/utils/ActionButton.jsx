@@ -148,10 +148,7 @@ const ActionButton = () => {
     let txid;
     try {
       console.log(tx);
-      // tx.feePayer = solSigner.publicKey;
-      // const {blockhash, lastValidBlockHeight} = await this.solConnection.getLatestBlockhash('finalized');
-      // tx.recentBlockhash = blockhash;
-      // tx.lastValidBlockHeight = lastValidBlockHeight;
+      console.log(solSigner);
       txid = await solSigner.sendTransaction(tx, connection, options)
       console.log(txid);
     }
@@ -164,11 +161,6 @@ const ActionButton = () => {
       
       const conf = solConnection.confirmTransaction(txid)
       console.log(conf.data.result);
-      // await solConnection.confirmTransaction({
-      //   blockhash: latestBlockHash.blockhash,
-      //   lastValidBlockHeight: latestBlockHash.lastValidBlockHeight,
-      //   signature: txid,
-      // }, 'confirmed');
     }
     catch (e) {
       console.log(e);
