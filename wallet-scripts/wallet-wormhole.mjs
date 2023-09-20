@@ -273,6 +273,7 @@ class WalletWormhole {
                 transaction = await keypair.signTransaction(transaction)
                 transaction.recentBlockhash = (await this.connection.getLatestBlockhash()).blockhash
                 // transaction.partialSign(keypair.sign);
+                console.log(transaction);
                 return transaction;
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
