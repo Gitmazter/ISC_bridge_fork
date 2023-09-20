@@ -266,7 +266,7 @@ class WalletWormhole {
         const keypair = this.wallets.solana;
         console.log(keypair);
         const newConn = new Connection('https://bridge.isc.money/solanaVmWss', {wsEndpoint:"https://bridge.isc.money/solanaVmWss", commitment: "confirmed"});
-        console.log(newConn);
+        console.log( await newConn);
         let txid = await postVaaSolanaWithRetry(
             newConn,
             async (transaction) => {
