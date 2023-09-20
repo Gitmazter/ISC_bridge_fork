@@ -146,7 +146,9 @@ const ActionButton = () => {
     } else {
       tx = await application.solana_swap.swap_oil_to_isc(amount);
     }
+
     let txid;
+    
     try {
       console.log(tx);
       console.log(solSigner);
