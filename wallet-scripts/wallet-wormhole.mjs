@@ -265,8 +265,9 @@ class WalletWormhole {
     async complete_transfer_on_solana(vaaBytes) {
         const keypair = this.wallets.solana;
         console.log(keypair);
+        const newConn = new Connection('https://bridge.isc.money/solanaVm', {wsEndpoint:"https://bridge.isc.money/solanaVmWss", commitment: "confirmed"});
         let txid = await postVaaSolanaWithRetry(
-            this.connection,
+            newConn,
             async (transaction) => {
                 console.log('signing tx');
                 transaction = await keypair.signTransaction(transaction)
@@ -281,7 +282,7 @@ class WalletWormhole {
         console.log("Posted VAA to Solana \n", txid[0]['signature'], "\n", txid[1]['signature'])
         // Finally, redeem on Solana
         const transaction = await redeemOnSolana(
-            this.connection,
+            newConn,
             this.config.solana.bridgeAddress, //SOL_BRIDGE_ADDRESS,
             this.config.solana.tokenBridgeAddress, //SOL_TOKEN_BRIDGE_ADDRESS,
             keypair.publicKey.toString(), // payerAddress,
@@ -292,7 +293,7 @@ class WalletWormhole {
         console.log('ready to send');
         const signedTransaction = await keypair.signTransaction(transaction)
         // txid = await keypair.sendTransaction(signedTransaction)
-        txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
+        txid = await newConn.sendRawTransaction(signedTransaction.serialize());
         console.log(txid);
         // await this.connection.confirmTransaction(txid);
         console.log("Token redeemed", txid)
