@@ -148,7 +148,7 @@ const ActionButton = () => {
     let txid;
     try {
       console.log(tx);
-      tx.feePayer = solSigner.publicKey;
+      // tx.feePayer = solSigner.publicKey;
       // const {blockhash, lastValidBlockHeight} = await this.solConnection.getLatestBlockhash('finalized');
       // tx.recentBlockhash = blockhash;
       // tx.lastValidBlockHeight = lastValidBlockHeight;
