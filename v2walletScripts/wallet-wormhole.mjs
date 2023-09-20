@@ -262,16 +262,19 @@ class WalletWormhole {
     }
 
     async complete_transfer_on_solana(vaaBytes) {
-        const keypair = this.wallets[1];
-        console.log("transfer 1");
+        const keypair = this.wallets.solana;
         console.log(keypair);
-        console.log(this.connection.getAccountInfo);
+        console.log(this.connection);
+        console.log(await this.connection.getLatestBlockhash());
         let txid = await postVaaSolanaWithRetry(
             this.connection,
             async (transaction) => {
                 console.log('signing tx');
                 transaction = await keypair.signTransaction(transaction)
+                transaction.recentBlockhash = (await this.connection.getLatestBlockhash()).blockhash;
+                transaction.lastValidBlockHeight =(await this.connection.getLatestBlockhash()).lastValidBlockHeight;
                 // transaction.partialSign(keypair.sign);
+                console.log(transaction);
                 return transaction;
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
@@ -279,9 +282,7 @@ class WalletWormhole {
             Buffer.from(vaaBytes, "base64"),
             10
         );
-
         console.log("Posted VAA to Solana \n", txid[0]['signature'], "\n", txid[1]['signature'])
-        console.log("transfer 2");
         // Finally, redeem on Solana
         const transaction = await redeemOnSolana(
             this.connection,
@@ -290,7 +291,6 @@ class WalletWormhole {
             keypair.publicKey.toString(), // payerAddress,
             Buffer.from(vaaBytes, "base64"), //vaaBytes, //signedVAA,
         );
-        console.log("transfer 3");
         // keypair.sign(transaction)
         //transaction.partialSign(keypair.signTransaction)
         console.log('ready to send');
