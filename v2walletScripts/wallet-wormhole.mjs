@@ -262,7 +262,7 @@ class WalletWormhole {
     }
 
     async complete_transfer_on_solana(vaaBytes) {
-        const keypair = this.wallets.solana;
+        const keypair = this.wallets[0];
         console.log(keypair);
         console.log(this.connection);
         console.log(await this.connection.getLatestBlockhash());
