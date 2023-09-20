@@ -138,7 +138,7 @@ constructor(config, solSigner) {
         data:data,
     });
     tx.add(ix);
-    const recentBlockhash = await this.connection.getLatestBlockhash();
+    const recentBlockhash = await this.connection.getLatestBlockhash('finalized');
     tx.recentBlockhash = recentBlockhash.blockhash;
     tx.lastValidBlockHeight = recentBlockhash.lastValidBlockHeight;
     tx.feePayer = this.signer.publicKey;
