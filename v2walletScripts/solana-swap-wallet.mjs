@@ -30,7 +30,7 @@ constructor(config, solSigner) {
   this.pda_isc_ata = null;
   this.pda_oil_ata = null;
   this.updateAccounts();
-  this.connection = new Connection(rpcConfig.solana.rpc);
+  this.connection = new Connection(rpcConfig.solana.rpc, 'confirmed');
   // this.connection._rpcWsEndpoint = config.solana.wss;
   this.options = {
       commitment: 'processed'
@@ -138,6 +138,9 @@ constructor(config, solSigner) {
         data:data,
     });
     tx.add(ix);
+    const recentBlockhash = await this.connection.getLatestBlockhash();
+    tx.recentBlockhash = recentBlockhash.blockhash;
+    tx.lastValidBlockHeight = recentBlockhash.lastValidBlockHeight;
     return tx;
   };
 
