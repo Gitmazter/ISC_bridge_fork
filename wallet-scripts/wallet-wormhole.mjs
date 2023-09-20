@@ -16,6 +16,7 @@ import {
 } from "@certusone/wormhole-sdk"
 import { PublicKey, Connection, Keypair} from "@solana/web3.js"
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import rpcConfig from '../config/config.json'
 
 class WalletWormhole {
     constructor(config, wallets) {
@@ -28,7 +29,7 @@ class WalletWormhole {
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
         // this.keypair = Keypair.fromSecretKey(this.secretKey);
-        this.connection = new Connection("http://localhost:8899", "confirmed")
+        this.connection = new Connection(rpcConfig.solana.rpc, "confirmed")
         this.options = {
             commitment: 'processed'
         }
@@ -265,13 +266,12 @@ class WalletWormhole {
     async complete_transfer_on_solana(vaaBytes) {
         const keypair = this.wallets.solana;
         console.log(keypair);
-        const newConn = new Connection('https://bridge.isc.money/solanaVmWss', {wsEndpoint:"https://bridge.isc.money/solanaVmWss", commitment: "confirmed"});
-        console.log(await newConn);
         let txid = await postVaaSolanaWithRetry(
-            newConn,
+            this.connection,
             async (transaction) => {
                 console.log('signing tx');
                 transaction = await keypair.signTransaction(transaction)
+                transaction.recentBlockhash = (await this.connection.getLatestBlockhash()).blockhash
                 // transaction.partialSign(keypair.sign);
                 return transaction;
             },
@@ -283,7 +283,7 @@ class WalletWormhole {
         console.log("Posted VAA to Solana \n", txid[0]['signature'], "\n", txid[1]['signature'])
         // Finally, redeem on Solana
         const transaction = await redeemOnSolana(
-            newConn,
+            this.connection,
             this.config.solana.bridgeAddress, //SOL_BRIDGE_ADDRESS,
             this.config.solana.tokenBridgeAddress, //SOL_TOKEN_BRIDGE_ADDRESS,
             keypair.publicKey.toString(), // payerAddress,
@@ -294,7 +294,7 @@ class WalletWormhole {
         console.log('ready to send');
         const signedTransaction = await keypair.signTransaction(transaction)
         // txid = await keypair.sendTransaction(signedTransaction)
-        txid = await newConn.sendRawTransaction(signedTransaction.serialize());
+        txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
         console.log(txid);
         // await this.connection.confirmTransaction(txid);
         console.log("Token redeemed", txid)
