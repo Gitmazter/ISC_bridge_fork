@@ -295,6 +295,7 @@ class WalletWormhole {
         // keypair.sign(transaction)
         //transaction.partialSign(keypair.signTransaction)
         console.log('ready to send');
+        const signedTransaction = await keypair.signTransaction(transaction)
         //txid = await keypair.sendTransaction(transaction)
         // txid = await keypair.sendTransaction(signedTransaction)
         txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
