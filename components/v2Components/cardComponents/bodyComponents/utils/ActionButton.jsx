@@ -134,7 +134,7 @@ const ActionButton = () => {
     console.log(solSigner);
     console.log(walletConnection);
     const options = {
-      commitment: 'processed'
+      commitment: 'finalized'
     };
     setChecksPassed(false)
     setPrompt('Swapping ISC...')
