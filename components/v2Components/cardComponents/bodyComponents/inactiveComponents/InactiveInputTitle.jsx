@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import styles from '../../../../../styles/mystyle.module.css'
 import WalletIcon from '../../icons/WalletIcon';
 import BodyConfig from '../../../../../config/BodyConfig'
@@ -16,6 +16,8 @@ const InactiveInputTitle = () => {
   const prompt = () => {
     return BodyConfig[`${direction}`].inactivePrompts[step-1]
   }
+
+  useEffect(() => {maxAmounts}, [])
 
   return (
     <div className={styles.inputTitle}>

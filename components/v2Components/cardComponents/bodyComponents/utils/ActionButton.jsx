@@ -34,7 +34,7 @@ const ActionButton = () => {
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
   const walletConnection = useConnection()
-  const { maxAmounts } = useContext(MaxAmountContext)
+  const { maxAmounts, saveMaxAmounts } = useContext(MaxAmountContext)
 
   function amountCheck ()  {
     if (balance !== undefined) {
@@ -64,7 +64,7 @@ const ActionButton = () => {
         case 1:
           if (direction == 'solToEth' ? connected : active) {
             if (/* balance !== undefined && */ amount > 0) { 
-              if (amount <= maxAmounts[0]) {
+              if (/* amount <= maxAmounts[0] */ true) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -76,7 +76,7 @@ const ActionButton = () => {
           if (connected) {
             if (active) {
               if (/* balance !== undefined && */ amount > 0) { 
-                if (amount <= maxAmounts[1]) {
+                if (/* amount <= maxAmounts[1] */ true) {
                   setPrompt(buttonPrompts.bridge + ` ${amount} ISC`)
                   setChecksPassed(true)
                 } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -86,9 +86,9 @@ const ActionButton = () => {
           return;
 
         case 3:
-          if (direction == 'solToEth' ? active : connected) {
+          if (/* direction == 'solToEth' ? active : connected */ true) {
             if (/* balance !== undefined && */ amount > 0) { 
-              if (amount <= maxAmounts[2]) {
+              if (/* amount <= maxAmounts[2] */ true) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -246,14 +246,56 @@ const ActionButton = () => {
   }
 
   async function mockIt1 () {
+    setChecksPassed(false)
     setPrompt("Requesting Signature");
-    signMessage(Uint8Array.from(["a","b","c"]))
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 3000));
+    setPrompt("Swapping ISC...");
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 4000));
+    let tempBalance = maxAmounts
+    setPrompt("Swap")
+    setChecksPassed(true)
+    tempBalance[0] -= 100;
+    tempBalance[1] += 100;
+    console.log(maxAmounts);
+    saveMaxAmounts(tempBalance)
+    setCurrStep(2)
   }
-  function mockIt2 () {
+  async function mockIt2 () {
+    setChecksPassed(false)
+    setPrompt("Requesting Signature");
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 3000));
+    setPrompt("Sending ISC...");
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 4000));
+    setPrompt("Requesting VAA...");
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 8000));
+    setPrompt("Requesting Signature");
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 4000));
+    setPrompt("Awaiting Confirmation...");
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 4000));
+    let tempBalance = maxAmounts
+    setPrompt("Bridge Complete")
+    setChecksPassed(true)
+    tempBalance[1] -= 100;
+    tempBalance[2] += 100;
+    console.log(maxAmounts);
+    saveMaxAmounts(tempBalance)
+    setCurrStep(3)
 
   }
-  function mockIt3 () {
-
+  async function mockIt3 () {
+    setChecksPassed(false)
+    setPrompt("Requesting Signature");
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 3000));
+    setPrompt("Swapping ISC...");
+    await new Promise(resolve => setTimeout(() => resolve(console.log('.')), 4000));
+    let tempBalance = maxAmounts
+    setPrompt("Swap")
+    setChecksPassed(true)
+    tempBalance[2] -= 100;
+    tempBalance[3] += 100;
+    console.log(maxAmounts);
+    saveMaxAmounts(tempBalance)
+    setCurrStep(1)
   }
 
 
@@ -261,15 +303,15 @@ const ActionButton = () => {
       switch (step) {
         case 1:
           console.log('Handling Swap 1');
-          handleSwapEth();
+          mockIt1()
           return; 
         case 2: 
           console.log('Handling Bridge');
-          mockit2();
+          mockIt2();
           return;
         case 3: 
           console.log('Handling Swap 2');
-          mockit3()
+          mockIt3()
       }
 
   }
