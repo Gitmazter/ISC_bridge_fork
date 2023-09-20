@@ -148,7 +148,6 @@ const ActionButton = () => {
     try {
       txid = await solSigner.sendTransaction(tx, connection, options);
       console.log(txid);
-      
     }
     catch (e) {
       console.log(e);
@@ -157,7 +156,7 @@ const ActionButton = () => {
       console.log(solConnection);
       console.log('works til here');
       
-      const conf = await confirmSolanaTx(txid)
+      const conf = solConnection.confirmTransaction(txid)
       console.log(conf.data.result);
       // await solConnection.confirmTransaction({
       //   blockhash: latestBlockHash.blockhash,
