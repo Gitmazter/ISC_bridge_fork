@@ -8,13 +8,14 @@ import StepContext from '../../../contexts/stepContext';
 import BalanceContext from '../../../contexts/balanceContext';
 import DirectionContext from '../../../contexts/directionContext';
 import ApplicationContext from '../../../contexts/applicationContext';
-import { Connection } from '@solana/web3.js';
+import { Connection, Transaction } from '@solana/web3.js';
 import AmountContext from '../../../contexts/amountContext';
 import config from '../../../../../config/config.json'
 import confirmSolanaTx from './confirmSolanaTx';
 const buttonPrompts = bodyConfig.buttonPrompts;
 import {InjectedConnector} from '@web3-react/injected-connector'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import { transfer } from '@solana/spl-token';
 const injected = new InjectedConnector()
 
 const ActionButton = () => {
@@ -149,7 +150,8 @@ const ActionButton = () => {
     try {
       console.log(tx);
       console.log(solSigner);
-      txid = await solSigner.sendTransaction(tx, connection, options)
+      txid = await solSigner.signTransaction(Transaction)
+      txid = await solConnection.sendRawTransaction(txid.serialize())
       console.log(txid);
     }
     catch (e) {
