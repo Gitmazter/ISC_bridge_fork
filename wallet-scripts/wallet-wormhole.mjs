@@ -265,7 +265,7 @@ class WalletWormhole {
     async complete_transfer_on_solana(vaaBytes) {
         const keypair = this.wallets.solana;
         console.log(keypair);
-        const newConn = new Connection('https://bridge.isc.money/solanaVm', {wsEndpoint:"https://bridge.isc.money/solanaVmWss", commitment: "confirmed"});
+        const newConn = new Connection('https://bridge.isc.money/solanaVmWss', {wsEndpoint:"https://bridge.isc.money/solanaVmWss", commitment: "confirmed"});
         let txid = await postVaaSolanaWithRetry(
             newConn,
             async (transaction) => {
