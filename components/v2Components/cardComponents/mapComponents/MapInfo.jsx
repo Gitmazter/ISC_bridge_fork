@@ -8,7 +8,13 @@ const MapInfo = () => {
   const {direction} = useContext(DirectionContext);
   const {step} = useContext(StepContext);
   const [tokenNames, setTokenNames] = useState(BodyConfig[`${direction}`].tokenNames)
+  const [clientRendered, setClientRendered] = useState()
   useEffect(() => {setTokenNames(BodyConfig[`${direction}`].tokenNames)}, [direction])
+  useEffect(() => {
+    setClientRendered(
+
+    )
+  },[])
   const infos = [
     <p>
       {'Swap '}
@@ -43,7 +49,7 @@ const MapInfo = () => {
   ];
 
   return (
-    <p className={styles.MapInfo}>{infos[step-1]}</p>
+    <div className={styles.MapInfo}>{infos[step-1]}</div>
   );
 
 }
