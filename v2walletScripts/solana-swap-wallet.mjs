@@ -144,8 +144,8 @@ constructor(config, solSigner) {
   };
 
   // Creates params for a ist to oil swap and returns the return of create transaction
-  async swap_isc_to_oil(amount) {
-    const scaled_amount = amount*(10**this.config.decimals);
+  async swap_isc_to_oil(isc_amount) {
+    const scaled_amount = isc_amount*(10**this.config.decimals);
     const param = new Parameters(0, scaled_amount);
     return await this.createTransaction(param);
   };
