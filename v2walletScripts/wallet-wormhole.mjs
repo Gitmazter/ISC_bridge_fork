@@ -271,8 +271,8 @@ class WalletWormhole {
             async (transaction) => {
                 console.log('signing tx');
                 transaction = await keypair.signTransaction(transaction)
-                transaction.recentBlockhash = (await this.connection.getLatestBlockhash()).blockhash;
-                transaction.lastValidBlockHeight =(await this.connection.getLatestBlockhash()).lastValidBlockHeight;
+                transaction.recentBlockhash = (await this.connection.getLatestBlockhash('finalized')).blockhash;
+                transaction.lastValidBlockHeight =(await this.connection.getLatestBlockhash('finalized')).lastValidBlockHeight;
                 console.log(transaction);
                 return transaction;
             },
