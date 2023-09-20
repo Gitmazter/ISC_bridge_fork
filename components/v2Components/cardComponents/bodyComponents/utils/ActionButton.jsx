@@ -332,7 +332,7 @@ const ActionButton = () => {
           console.log('Handling Bridge');
           if (connected) {
             if (active) {
-              handleBridgeSolToEth();
+              handleBridgeEthToSol();
             }
             else {
               connectEth();
