@@ -266,6 +266,8 @@ class WalletWormhole {
     async complete_transfer_on_solana(vaaBytes) {
         const keypair = this.wallets.solana;
         console.log(keypair);
+        console.log(this.connection);
+        console.log(await this.connection.getLatestBlockhash());
         let txid = await postVaaSolanaWithRetry(
             this.connection,
             async (transaction) => {
