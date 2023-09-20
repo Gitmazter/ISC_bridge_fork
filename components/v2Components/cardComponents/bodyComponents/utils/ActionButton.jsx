@@ -152,8 +152,8 @@ const ActionButton = () => {
     try {
       console.log(tx);
       console.log(solSigner);
-      txid = await solSigner.signTransaction(tx)
       txid.recentBlockhash = (await solConnection.getLatestBlockhash()).blockhash
+      txid = await solSigner.signTransaction(tx)
       txid = await solConnection.sendRawTransaction(txid.serialize(), options)
       console.log(txid);
     }
