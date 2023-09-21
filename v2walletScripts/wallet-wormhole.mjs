@@ -188,14 +188,15 @@ class WalletWormhole {
             targetSigner
         );    
         const completeTransferTx = await targetTokenBridge.completeTransfer(Buffer.from(vaaBytes.vaaBytes, "base64"));
-        await (function() {
-            return new Promise((resolve, reject) => {
-              setTimeout(function() {
-                console.log("One: Completed");
-                resolve();
-              }, 10000);
-            });
-        })();
+        completeTransferTx.wait(1)
+        // await (function() {
+        //     return new Promise((resolve, reject) => {
+        //       setTimeout(function() {
+        //         console.log("One: Completed");
+        //         resolve();
+        //       }, 10000);
+        //     });
+        // })();
         return completeTransferTx
     }
 
