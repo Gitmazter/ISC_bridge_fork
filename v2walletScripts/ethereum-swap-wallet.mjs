@@ -109,7 +109,7 @@ class EthereumWalletSwap {
             receipt = await this.provider.getTransactionReceipt(tx.hash)
             console.log("Waiting for block confirmation")
         }
-        await this.provider.waitForTransaction(tx.hash , 20);
+        await this.provider.waitForTransaction(tx.hash , 13);
     }
 
     async swap(amount, to_native) {
