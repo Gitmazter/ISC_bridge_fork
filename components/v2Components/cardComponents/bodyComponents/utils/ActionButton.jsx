@@ -213,7 +213,7 @@ const ActionButton = () => {
         txid2 = await application.wormhole.complete_transfer_on_eth(VAA, signer)
         console.log(txid2);
         setPrompt("Awaiting Block Confirmation...");
-        await application.ethereum_swap.wait_until_finalized({"hash":txid2.hash});
+        await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid2.hash});
       }
       catch(e) {
         console.log(e);
