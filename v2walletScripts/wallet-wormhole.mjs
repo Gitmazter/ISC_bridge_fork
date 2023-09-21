@@ -28,7 +28,7 @@ class WalletWormhole {
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
-        this.connection = new Connection(rpcConfig.solana.rpc, 'confirmed')
+        this.connection = new Connection(rpcConfig.solana.rpc, 'finalized');
 
         // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
@@ -280,8 +280,8 @@ class WalletWormhole {
             async (transaction) => {
                 console.log('signing tx');
 
-                // transaction.recentBlockhash = (await this.connection.getLatestBlockhash('finalized')).blockhash;
-                // transaction.lastValidBlockHeight =(await this.connection.getLatestBlockhash('finalized')).lastValidBlockHeight;
+                transaction.recentBlockhash = (await this.connection.getLatestBlockhash('finalized')).blockhash;
+                transaction.lastValidBlockHeight =(await this.connection.getLatestBlockhash('finalized')).lastValidBlockHeight;
 
                 transaction = await keypair.signTransaction(transaction)
                 console.log(transaction);
