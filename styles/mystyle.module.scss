@@ -929,7 +929,7 @@ $maxButtonBg:#263343;
 
 .v2App {
   color: $defaultTextColor;
-
+  min-height: 100vh;
   display: flex;
   width: 578px;
   flex-direction: column;
