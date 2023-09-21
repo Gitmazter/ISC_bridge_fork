@@ -209,9 +209,10 @@ const ActionButton = () => {
     const signer = provider.getSigner()
     let txid2;
       try {
-        setPrompt("Requesting ISC from Wormhole...")
+        setPrompt("Requesting ISC from Wormhole...");
         txid2 = await application.wormhole.complete_transfer_on_eth(VAA, signer)
         console.log(txid2);
+        setPrompt("Awaiting Block Confirmation...");
         await application.ethereum_swap.wait_until_finalized({"hash":txid2.hash});
       }
       catch(e) {
@@ -245,7 +246,7 @@ const ActionButton = () => {
     }
     let txid2;
     try {
-      setPrompt("Requesting ISC from Wormhole...")
+      setPrompt("(3 signatures) Requesting ISC from Wormhole...")
       txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes, walletConnection)
       console.log(txid2);
       setPrompt("Bridging Complete")
