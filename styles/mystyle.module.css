@@ -899,6 +899,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 80px;
+  transition: all 1s ease-in-out;
 }
 .v2App .v2Card {
   display: flex;
@@ -1216,4 +1217,54 @@
 }
 .dirBtns .dirBtnActive p {
   margin: 0px;
+}
+
+.StepSelector {
+  background-color: #222E3D;
+  color: white;
+  padding: 10px;
+  margin: 20px;
+  width: 580px;
+  height: -moz-max-content;
+  height: max-content;
+  border-radius: 10px;
+}
+.StepSelector .StepWrapper {
+  height: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.StepSelector .StepWrapper .Step {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+}
+.StepSelector .StepWrapper .Step .Status {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  align-items: center;
+}
+.StepSelector .StepWrapper .Step .Status button {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  border-radius: 999px;
+  border: none;
+}
+.StepSelector .StepWrapper .Step .Status .loadingbar {
+  height: 1px;
+  width: 60px;
+  height: 3px;
+  background: linear-gradient(270deg, #29D9FF 0%, #87A1FF 100%);
+}
+.StepSelector .StepWrapper .Step .StatusText {
+  padding-top: 10px;
+}
+.StepSelector .StepWrapper .Step .StatusText p {
+  font-size: 10px;
+}
+.StepSelector .StepWrapper .Step .StatusText h2 {
+  font-size: 15px;
 }/*# sourceMappingURL=mystyle.module.css.map */

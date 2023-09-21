@@ -12,6 +12,7 @@ import DirectionContext from '../contexts/directionContext';
 import { sign } from '@certusone/wormhole-sdk';
 import SolIcon from '../cardComponents/icons/SolIcon';
 import EthIcon from '../cardComponents/icons/EthIcon';
+import StepSelector from './utils/StepSelector';
 
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
@@ -62,43 +63,11 @@ const BridgeApp = () => {
       }
   }, [balance, direction])
 
-  // Connection Check
-  // Connectivity check (in order of need as in Figma)
-  // const app = AppSelector()
-  
-  // TODO    ::: 
-  // Click Handlers 
-  // Balance Context
-  // Bridge Scripts (Rewrite old app to class with exported fns?)
-
-  // Max amount Context 
-  // FOR EACH
-      // ->> Greatest value of, wallet balance for source token || target token pool balance
-
-  // SOL TO ETH
-  // To use step 1: Connect to Solana, input amount ,Have ISC = ACTIVE If active -> Allow click handler
-      // ->> Swap Selected Amount With Sol B ISC pool Token if amount is less than maxAmount
-  // To use step 2: Connect to Ethereum & Solana, input amount ,have Sol B ISC = ACTIVE If active -> Allow click handler
-      // ->> Bridge Selected Amount of Sol B ISC if amount is less than maxAmount
-  // To use step 3: Connect to Ethereum, input amount, have Eth B ISC = ACTIVE If active -> Allow click handler
-      // ->> Swap Selected Amount of Eth B ISC with Eth Native ISC if amount is less than max amount
-
-  // ETH TO SOL 
-  // To use step 1: Connect to Ethereum, input amount ,Have Eth ISC = ACTIVE If active -> Allow click handler
-      // ->> Swap Selected Amount With ETH B ISC pool Token if amount is less than maxAmount
-  // To use step 2: Connect to Ethereum & Solana, input amount ,have Eth B ISC = ACTIVE If active -> Allow click handler
-      // ->> Bridge Selected Amount of ETH B ISC if amount is less than maxAmount
-  // To use step 3: Connect to Solana, input amount, have Sol B ISC = ACTIVE If active -> Allow click handler
-      // ->> Swap Selected Amount of Sol B ISC with Sol Native ISC if amount is less than max amount
-
   const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep} setCurrStep={setCurrStep} key={step}/>  });
   useEffect(() => {setCurrStep(1)},[direction])
   return ( 
     <>
-    
-      {/* Temporary Buttons */}
-{/*         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
-        <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button> */}
+
         <div className={styles.dirBtns}>
           <button type='button' className={direction == 'solToEth' ? styles.dirBtnActive : styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>
             <SolIcon type={'swap'}/><p>Solana To </p><EthIcon type={'swap'}/><p>Ethereum</p>
@@ -107,8 +76,8 @@ const BridgeApp = () => {
             <EthIcon type={'swap'}/><p>Ethereum To </p><SolIcon type={'swap'}/><p>Solana</p>
           </button>
         </div>
-      {/* End Temporary Buttons */}
 
+        <StepSelector currStepProps={{currStep, setCurrStep}}/>
       <div className={styles.v2App}>
         {html}
       </div>
