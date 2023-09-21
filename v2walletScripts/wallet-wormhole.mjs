@@ -202,7 +202,8 @@ class WalletWormhole {
             targetSigner
         );    
         const completeTransferTx = await targetTokenBridge.completeTransfer(Buffer.from(vaaBytes, "base64"));
-        return completeTransferTx
+        await this.await_tx_completion_eth(completeTransferTx);
+        return completeTransferTx;
     }
 
     async await_tx_completion_eth(completeTransferTx) {
@@ -239,6 +240,7 @@ class WalletWormhole {
             targetNetwork.wormholeChainId, //CHAIN_ID_SOLANA,
             recipientAddress
         );
+        await this.await_tx_completion_eth(receipt)
         console.log("Finished transferring from ETH", receipt['transactionHash'])
         return receipt
     }
