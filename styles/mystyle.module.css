@@ -91,6 +91,7 @@
 }
 
 .header {
+  width: 100vw;
   padding-top: 20px;
   padding-bottom: 20px;
   display: flex;
@@ -930,13 +931,18 @@
 }
 
 .CardTitle {
+  position: relative;
+  left: -50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
   align-self: stretch;
 }
+.CardTitle :first-child {
+  margin-right: 50px;
+}
 .CardTitle .TitleHeading {
-  width: 460px;
+  width: 580px;
   color: #FFFFFF;
   font-size: 32px;
   font-style: normal;
@@ -989,7 +995,12 @@
   gap: 10px;
 }
 .CardMap .mapInner .MapInfo {
+  margin: 0px;
+  padding: 0px;
   color: #C0C0C0;
+}
+.CardMap .mapInner .MapInfo p {
+  margin: 0px;
 }
 
 .CardBody .CardBodyInner {
@@ -1008,12 +1019,26 @@
   flex-direction: column;
   gap: 10px;
 }
+.CardBody .CardBodyInner .ActiveInput:focus-within {
+  border: 1px solid #9199A2;
+  border-radius: 10px;
+}
+.CardBody .CardBodyInner .ActiveInput input:focus-within {
+  outline: none;
+}
 .CardBody .CardBodyInner .InactiveInput {
+  cursor: not-allowed;
   width: 480px;
   text-align: center;
   display: flex;
   flex-direction: column;
   gap: 10px;
+}
+.CardBody .CardBodyInner .InactiveInput input {
+  cursor: not-allowed;
+}
+.CardBody .CardBodyInner .InactiveInput input:focus-within {
+  outline: none;
 }
 .CardBody .CardBodyInner .ActionButton {
   cursor: pointer;
@@ -1034,6 +1059,29 @@
   font-weight: 700;
   line-height: normal;
   background: linear-gradient(270deg, #29D9FF 0%, #87A1FF 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.CardBody .CardBodyInner .ActionButtonInactive {
+  cursor: not-allowed;
+  display: flex;
+  width: 440px;
+  padding: 24px 97px;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: none;
+  border-radius: 10px;
+  background: #131B23;
+}
+.CardBody .CardBodyInner .ActionButtonInactive p {
+  margin: 0px;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  background: #51565C;
   background-clip: text;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -1067,9 +1115,6 @@
   font-style: normal;
   font-weight: 700;
   line-height: normal;
-}
-.inputField input :focus {
-  border: rgba(0, 0, 0, 0) 0px solid;
 }
 
 .v2TokenCard {
@@ -1121,4 +1166,54 @@
   background-color: #617989;
   border-color: white;
   color: #263343;
+}
+
+.dirBtns {
+  margin-left: 50px;
+  width: 580px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  margin-bottom: 30px;
+  gap: 20px;
+}
+.dirBtns .dirBtn {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+  cursor: pointer;
+  background-color: #222E3D;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: #ffffff;
+  font-weight: 700;
+}
+.dirBtns .dirBtn:hover {
+  border: 1px solid white;
+}
+.dirBtns .dirBtn p {
+  margin: 0px;
+}
+.dirBtns .dirBtnActive {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  gap: 5px;
+  align-items: center;
+  cursor: pointer;
+  background-color: #222E3D;
+  font-size: 18px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(0, 0, 0, 0);
+  color: #ffffff;
+  font-weight: 700;
+  box-shadow: 0 0 5px 5px #617989;
+}
+.dirBtns .dirBtnActive p {
+  margin: 0px;
 }/*# sourceMappingURL=mystyle.module.css.map */

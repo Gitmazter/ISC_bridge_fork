@@ -6,7 +6,7 @@ import {
   PublicKey} from "@solana/web3.js";
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
 import borsh from 'borsh'
-
+import rpcConfig from '../config/config.json'
 class Parameters {
   constructor(instruction, amount) {
     this.instruction = instruction;
@@ -18,6 +18,7 @@ class SolanaWalletSwap {
 constructor(config, solSigner) {
   this.signer = solSigner;
   // this.signerPubKey = solSigner.publicKey;
+  this.signer = solSigner;
   this.acc_info = null;
   this.config = config.solana;
   this.SPL_ASSOCIATED_TOKEN_ACCOUNT_PROGRAM_ID = new PublicKey(this.config.spl_ata_program_id);
@@ -29,7 +30,8 @@ constructor(config, solSigner) {
   this.pda_isc_ata = null;
   this.pda_oil_ata = null;
   this.updateAccounts();
-  this.connection = new Connection("http://127.0.0.1:8899");
+  this.connection = new Connection(rpcConfig.solana.rpc, 'confirmed');
+  // this.connection._rpcWsEndpoint = config.solana.wss;
   this.options = {
       commitment: 'processed'
   };
@@ -56,7 +58,7 @@ constructor(config, solSigner) {
 
   async fetch_balance() {
     // Only updates balances if a wallet has been connected
-    console.log(this.signer);
+    // console.log(this.signer);
     if (this.signer.publicKey !== null) {
       this.updateAccounts()
       let user_isc = await this.connection.getTokenAccountBalance(this.user_isc_ata, "processed");
@@ -136,14 +138,16 @@ constructor(config, solSigner) {
         data:data,
     });
     tx.add(ix);
-    const recentBlockhash = await this.connection.getLatestBlockhash();
+    const recentBlockhash = await this.connection.getLatestBlockhash('finalized');
     tx.recentBlockhash = recentBlockhash.blockhash;
+    tx.lastValidBlockHeight = recentBlockhash.lastValidBlockHeight;
+    tx.feePayer = this.signer.publicKey;
     return tx;
   };
 
   // Creates params for a ist to oil swap and returns the return of create transaction
-  async swap_isc_to_oil(amount) {
-    const scaled_amount = amount*(10**this.config.decimals);
+  async swap_isc_to_oil(isc_amount) {
+    const scaled_amount = isc_amount*(10**this.config.decimals);
     const param = new Parameters(0, scaled_amount);
     return await this.createTransaction(param);
   };

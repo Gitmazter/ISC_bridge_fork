@@ -14,8 +14,10 @@ import {
     postVaaSolanaWithRetry,
     approveEth,
 } from "@certusone/wormhole-sdk"
-import { PublicKey, Connection, Keypair} from "@solana/web3.js"
+import { PublicKey, Connection,  Keypair} from "@solana/web3.js"
 import { TOKEN_PROGRAM_ID } from '@solana/spl-token'
+import rpcConfig from '../config/config.json'
+
 
 class WalletWormhole {
     constructor(config, wallets) {
@@ -26,7 +28,9 @@ class WalletWormhole {
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
-        this.connection = new Connection("http://localhost:8899", "confirmed")
+        this.connection = new Connection(rpcConfig.solana.rpc, 'finalized')
+
+        // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
             commitment: 'processed'
         }
@@ -44,7 +48,7 @@ class WalletWormhole {
             throw new Error("Network not defined in config file.");
         }
 
-        const connection = new Connection(network.rpc, "confirmed")
+        let connection = new Connection(network.rpc, "confirmed")
         const secretKey = Uint8Array.from(this.config.solana.privateKey);
         const keypair = Keypair.fromSecretKey(secretKey);
 
@@ -56,7 +60,7 @@ class WalletWormhole {
             network.testToken, //mintAddress
         );
         transaction.partialSign(keypair)
-        const txid = await connection.sendRawTransaction(transaction.serialize());
+        const txid = await this.connection.sendRawTransaction(transaction.serialize());
         await connection.confirmTransaction(txid);
         // Get the sequence number and emitter address required to fetch the signedVAA of our message
         const info = await connection.getTransaction(txid);
@@ -64,7 +68,7 @@ class WalletWormhole {
         //const sequence = 15;
         const emitterAddress = getEmitterAddressSolana(network.tokenBridgeAddress);
       
-        const vaaURL =`${this.config.wormhole.restAddress}/v1/signed_vaa/${1}/${emitterAddress}/${sequence}`;
+        const vaaURL =`https://bridge.isc.money/wormholeVm/v1/signed_vaa/${1}/${emitterAddress}/${sequence}`;
         console.log("Searching for: ", vaaURL);
         console.log(emitterAddress)
         console.log(sequence)
@@ -134,14 +138,15 @@ class WalletWormhole {
         // const secretKey = Uint8Array.from(this.config.solana.privateKey);
         const keypair = this.wallets.solana;
         console.log("works til' here");
-        const targetRecipient = Buffer.from(tryNativeToHexString(this.wallets.ethereum, "ethereum"), 'hex');
+        // console.log(this.wallets[0]);
+        const targetRecipient = Buffer.from(tryNativeToHexString(this.wallets[0]._address, "ethereum"), 'hex');
         console.log(this.wallets.ethereum);                 
         console.log("works til' here");
         const transaction = await transferFromSolana(
             this.connection,
             this.config.solana.bridgeAddress,
             this.config.solana.tokenBridgeAddress, 
-            keypair.publicKey.toString(),
+            this.wallets[1].publicKey.toString(),
             this.user_oil_ata,
             this.config.solana.testToken, //mintAddress
             bigAmount,
@@ -151,19 +156,15 @@ class WalletWormhole {
         // transaction.partialSign(keypair)
         console.log('works til return');
         return transaction;
-        const txid = await this.connection.sendRawTransaction(transaction.serialize());
-        console.log("Transfer from Solana to Wormhole", txid)
-        // Somehow using this.connection instead of a new connection instiated inside the function is slow for this method
-        await this.connection.confirmTransaction(txid);
-        return txid
     }
 
     async get_vaa_bytes_solana(txid) {
         const info = await this.connection.getTransaction(txid);
+        console.log(info);
         const sequence = parseSequenceFromLogSolana(info);
         const emitterAddress = getEmitterAddressSolana(this.config.solana.tokenBridgeAddress);
 
-        const vaaURL =`${this.config.wormhole.restAddress}/v1/signed_vaa/${1}/${emitterAddress}/${sequence}`;
+        const vaaURL =`https://bridge.isc.money/wormholeVm/v1/signed_vaa/${1}/${emitterAddress}/${sequence}`; /* v1/signed_vaa/ */
         console.log("Searching for: ", vaaURL);
         // Fetch the signedVAA from the Wormhole Network (this may require retries while you wait for confirmation)
         let vaaBytes = await (await fetch(vaaURL)).json();
@@ -227,7 +228,7 @@ class WalletWormhole {
         let network = this.config[source_chain];
         const targetNetwork = this.config[destination_chain];
         const recipientAddress = Buffer.from(tryNativeToHexString(this.user_oil_ata, "solana"), "hex");
-        const signer = this.wallets.ethSigner
+        const signer = this.wallets[0]
         const approval = await approveEth(network.tokenBridgeAddress, network.xoil, signer, amount)
         console.log("Approval limit set", approval['transactionHash'])
         const receipt = await transferFromEth(
@@ -246,7 +247,7 @@ class WalletWormhole {
         // Get the sequence number and emitter address required to fetch the signedVAA of our message
         const sequence = parseSequenceFromLogEth(receipt, this.config.evm0.bridgeAddress); //ETH_BRIDGE_ADDRESS);
         const emitterAddress = getEmitterAddressEth(this.config.evm0.tokenBridgeAddress); //ETH_TOKEN_BRIDGE_ADDRESS);
-        const vaaURL =`${this.config.wormhole.restAddress}/v1/signed_vaa/${this.config.evm0.wormholeChainId}/${emitterAddress}/${sequence}`;
+        const vaaURL =`https://bridge.isc.money/wormholeVm/v1/signed_vaa/${this.config.evm0.wormholeChainId}/${emitterAddress}/${sequence}`;
         console.log("Searching for: ", vaaURL);
         // Fetch the signedVAA from the Wormhole Network (this may require retries while you wait for confirmation)
         let vaaBytes = await (await fetch(vaaURL)).json();
@@ -261,18 +262,24 @@ class WalletWormhole {
     }
 
     async complete_transfer_on_solana(vaaBytes) {
-        const keypair = this.wallets.solana;
+        const keypair = this.wallets[1];
         console.log(keypair);
+        console.log(this.connection);
+        console.log(await this.connection.getLatestBlockhash());
         let txid = await postVaaSolanaWithRetry(
             this.connection,
             async (transaction) => {
                 console.log('signing tx');
+
+                // transaction.recentBlockhash = (await this.connection.getLatestBlockhash('finalized')).blockhash;
+                // transaction.lastValidBlockHeight =(await this.connection.getLatestBlockhash('finalized')).lastValidBlockHeight;
+
                 transaction = await keypair.signTransaction(transaction)
-                // transaction.partialSign(keypair.sign);
+                console.log(transaction);
                 return transaction;
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
-            keypair.publicKey.toString(), //srcKey.publicKey.toString(),
+            keypair.publicKey, //srcKey.publicKey.toString(),
             Buffer.from(vaaBytes, "base64"),
             10
         );
@@ -282,13 +289,14 @@ class WalletWormhole {
             this.connection,
             this.config.solana.bridgeAddress, //SOL_BRIDGE_ADDRESS,
             this.config.solana.tokenBridgeAddress, //SOL_TOKEN_BRIDGE_ADDRESS,
-            keypair.publicKey.toString(), // payerAddress,
+            keypair.publicKey, // payerAddress,
             Buffer.from(vaaBytes, "base64"), //vaaBytes, //signedVAA,
         );
         // keypair.sign(transaction)
         //transaction.partialSign(keypair.signTransaction)
         console.log('ready to send');
         const signedTransaction = await keypair.signTransaction(transaction)
+        //txid = await keypair.sendTransaction(transaction)
         // txid = await keypair.sendTransaction(signedTransaction)
         txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
         console.log(txid);
