@@ -239,6 +239,14 @@ class WalletWormhole {
             targetNetwork.wormholeChainId, //CHAIN_ID_SOLANA,
             recipientAddress
         );
+        await (function() {
+            return new Promise((resolve, reject) => {
+              setTimeout(function() {
+                console.log("One: Completed");
+                resolve();
+              }, 10000);
+            });
+        })();
         console.log("Finished transferring from ETH", receipt['transactionHash'])
         return receipt
     }
