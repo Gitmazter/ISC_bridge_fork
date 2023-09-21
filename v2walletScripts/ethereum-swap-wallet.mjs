@@ -107,9 +107,9 @@ class EthereumWalletSwap {
         while (!(receipt&&receipt.blockNumber)) {
             await new Promise((r) => setTimeout(r, 500)); //Timeout to let Guardiand pick up log and have VAA ready
             receipt = await this.provider.getTransactionReceipt(tx.hash)
-            await this.provider.waitForTransaction(tx.hash , 10);
             console.log("Waiting for block confirmation")
         }
+        await this.provider.waitForTransaction(tx.hash , 10);
     }
 
     async swap(amount, to_native) {
