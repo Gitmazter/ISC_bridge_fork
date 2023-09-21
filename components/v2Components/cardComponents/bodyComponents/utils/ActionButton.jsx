@@ -16,6 +16,7 @@ const buttonPrompts = bodyConfig.buttonPrompts;
 import {InjectedConnector} from '@web3-react/injected-connector'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { transfer } from '@solana/spl-token';
+import { Provider } from '@ethersproject/providers';
 const injected = new InjectedConnector()
 
 const ActionButton = () => {
@@ -27,8 +28,8 @@ const ActionButton = () => {
   const { saveBalance } = useContext(BalanceContext)
 
   const { connected, connect } = useWallet()
-  const {connection} = useConnection()
-  const { active, activate, library: provider} = useWeb3React()
+  const { connection } = useConnection()
+  const { active, activate, library: provider, wait_until_finalized} = useWeb3React()
   const solConnection = new Connection(config.solana.rpc, "finalized")
   // solConnection._rpcWsEndpoint = config.solana.wss;
   // // solConnection.underlyingSocket.url = config.solana.wss;
@@ -228,7 +229,6 @@ const ActionButton = () => {
       setChecksPassed(false)
       setPrompt("Sending ISC to Wormhole...")
       txid = await application.wormhole.send_from_ethereum(amount)
-      await application.ethereum_swap.wait_until_finalized({"hash":txid});
       console.log(txid);
     }
     catch (e) {
