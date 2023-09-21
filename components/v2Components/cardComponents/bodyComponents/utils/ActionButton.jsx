@@ -211,7 +211,7 @@ const ActionButton = () => {
         setPrompt("Requesting ISC from Wormhole...")
         txid2 = await application.wormhole.complete_transfer_on_eth(VAA, signer)
         console.log(txid2);
-        await application.ethereum_swap.wait_until_finalized({"hash":txid2.hash})
+        await application.ethereum_swap.wait_until_finalized({"hash":txid2.hash});
       }
       catch(e) {
         console.log(e);
@@ -228,6 +228,7 @@ const ActionButton = () => {
       setChecksPassed(false)
       setPrompt("Sending ISC to Wormhole...")
       txid = await application.wormhole.send_from_ethereum(amount)
+      await application.ethereum_swap.wait_until_finalized({"hash":txid});
       console.log(txid);
     }
     catch (e) {
