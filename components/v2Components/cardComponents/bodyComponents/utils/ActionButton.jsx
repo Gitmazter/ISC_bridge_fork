@@ -188,32 +188,24 @@ const ActionButton = () => {
       console.log(e);
     }
     await application.updateBalance(saveBalance)
-    // console.log(await solConnection.getAccountInfo(solSigner.publicKey));
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
     setCurrStep(step == 1 ? 2 : 1);
   }
 
   const handleBridgeSolToEth = async () => {
-    const options = {
-      commitment: 'finalized'
-    };
     const tx = await application.wormhole.send_from_solana(amount)
     setChecksPassed(false)
     let txid;
     console.log(solConnection);
       try {
         setPrompt("Sending ISC to Wormhole...")
-        const signedTx = await solSigner.signTransaction(tx);
-        console.log(tx);
-        txid = await solConnection.sendRawTransaction(signedTx.serialize());
-        console.log(txid);
+        txid = await solSigner.sendTransaction(tx, connection, {skipPreflight:true});
       }
       catch (e) {
         console.log(e);
       }
     await confirmSolanaTx(txid)
-    // Set bridge state
     let VAA;
       try {
         setPrompt("Fetching VAA...")
@@ -223,7 +215,6 @@ const ActionButton = () => {
         console.log(e);
       }
     console.log(VAA);
-    // Set bridge state
     const signer = provider.getSigner()
     let txid2;
       try {
@@ -237,7 +228,6 @@ const ActionButton = () => {
         console.log(e);
       }
     setPrompt("Bridging Complete!")
-    // Set bridge state
     await application.updateBalance(saveBalance)
     setCurrStep(3);
   }
