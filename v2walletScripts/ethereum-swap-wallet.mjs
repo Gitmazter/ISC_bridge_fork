@@ -110,10 +110,15 @@ class EthereumWalletSwap {
             console.log("Waiting for block confirmation")
         }
     }
+    async wait_for_fifteen_confirmations(tx) { // Last step only 
+        console.log("Waiting for block confirmation")
+        await this.provider.waitForTransaction(tx.hash , 15);
+    }
 
     async swap(amount, to_native) {
         const tx = await this.SwapSigner.swap(amount, to_native, {from:this.signer.account});//, gasPrice:'20000000000'});
-        await this.wait_until_finalized(tx)
+        // await this.wait_until_finalized(tx)
+        await this.wait_for_fifteen_confirmations(tx)
         return tx
     }
     
