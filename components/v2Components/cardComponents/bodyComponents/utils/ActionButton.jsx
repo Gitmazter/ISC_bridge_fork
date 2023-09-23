@@ -187,7 +187,9 @@ const ActionButton = () => {
     console.log(solConnection);
       try {
         setPrompt("Sending ISC to Wormhole...")
-        txid = await solSigner.sendTransaction(tx, solConnection, options)
+        const {recentBlockhash, latestBlockHeight} = solConnection.getLatestBlockhash();
+        tx.recentBlockhash = recentBlockhash;
+        txid = await solSigner.sendTransaction(tx, solConnection, options);
         console.log(txid);
       }
       catch (e) {
