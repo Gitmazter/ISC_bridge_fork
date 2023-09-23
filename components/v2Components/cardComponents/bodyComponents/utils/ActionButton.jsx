@@ -246,7 +246,9 @@ const ActionButton = () => {
     try {
       setChecksPassed(false)
       setPrompt("Sending ISC to Wormhole...")
-      txid = await application.wormhole.send_from_ethereum(amount)
+      txid = await application.wormhole.send_from_ethereum(amount);
+      await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid2.hash});
+      application.
       console.log(txid);
     }
     catch (e) {
