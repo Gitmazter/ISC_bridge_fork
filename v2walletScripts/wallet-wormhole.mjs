@@ -28,7 +28,7 @@ class WalletWormhole {
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
-        this.connection = new Connection(rpcConfig.solana.rpc, 'confirmed');
+        this.connection = new Connection(rpcConfig.solana.rpc, 'processed');
 
         // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
@@ -134,14 +134,8 @@ class WalletWormhole {
 
     async send_from_solana(amount) {
         const bigAmount = amount*(10**this.config.solana.decimals)
-        console.log("BIG AMOUNT:  ", bigAmount);
-        // const secretKey = Uint8Array.from(this.config.solana.privateKey);
-        const keypair = this.wallets.solana;
-        console.log("works til' here");
-        // console.log(this.wallets[0]);
         const targetRecipient = Buffer.from(tryNativeToHexString(this.wallets[0]._address, "ethereum"), 'hex');
         console.log(this.wallets.ethereum);                 
-        console.log("works til' here");
         const transaction = await transferFromSolana(
             this.connection,
             this.config.solana.bridgeAddress,
@@ -151,10 +145,8 @@ class WalletWormhole {
             this.config.solana.testToken, //mintAddress
             bigAmount,
             targetRecipient, //config.networks[destination_chain].publicKey, //config.networks[destination_chain].tokenBridgeAddress, // targetAddress,
-            this.config.evm0.wormholeChainId, //CHAIN_ID_ETH,
+            this.config.evm0.wormholeChainId
         );
-        // transaction.partialSign(keypair)
-        console.log('works til return');
         return transaction;
     }
 
