@@ -182,13 +182,13 @@ const ActionButton = () => {
       commitment: 'finalized'
     };
     const tx = await application.wormhole.send_from_solana(amount)
+    tx.recentBlockhash = recentBlockhash;
     setChecksPassed(false)
     let txid;
     console.log(solConnection);
       try {
         setPrompt("Sending ISC to Wormhole...")
         const {recentBlockhash, latestBlockHeight} = solConnection.getLatestBlockhash();
-        tx.recentBlockhash = recentBlockhash;
         txid = await solSigner.sendTransaction(tx, solConnection, options);
         console.log(txid);
       }
