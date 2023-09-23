@@ -99,10 +99,18 @@ const ActionButton = () => {
         case 1:
           if (direction == 'solToEth' ? connected : active) {
             if (balance !== undefined && amount > 0) { 
-              if (amount <= balance[0].solana) {
+              
+              if(
+                direction == 'solToEth' && amount <= balance[0].solana
+                ||
+                direction == 'ethToSol' && amount <= balance[0].ethereum
+                ) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
+            
+            
+            
             } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
           } else {setPrompt(direction == 'solToEth' ? buttonPrompts.sol : buttonPrompts.eth);  setChecksPassed(true)}
           return;
@@ -111,7 +119,11 @@ const ActionButton = () => {
           if (connected) {
             if (active) {
               if (balance !== undefined && amount > 0) { 
-                if (amount <= balance[1].solana) {
+                if (
+                direction == 'solToEth' && amount <= balance[1].solana
+                ||
+                direction == 'ethToSol' && amount <= balance[1].ethereum
+                  ) {
                   setPrompt(buttonPrompts.bridge + ` ${amount} ISC`)
                   setChecksPassed(true)
                 } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -123,7 +135,11 @@ const ActionButton = () => {
         case 3:
           if (direction == 'solToEth' ? active : connected) {
             if (balance !== undefined && amount > 0) { 
-              if (amount <= balance[1].ethereum) {
+              if (
+                direction == 'solToEth' && amount <= balance[1].ethereum
+                ||
+                direction == 'ethToSol' && amount <= balance[1].solana
+              ) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
