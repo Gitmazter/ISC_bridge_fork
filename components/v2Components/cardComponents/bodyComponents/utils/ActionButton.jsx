@@ -29,7 +29,7 @@ const ActionButton = () => {
   const { connected, connect } = useWallet()
   const {connection} = useConnection()
   const { active, activate, library: provider} = useWeb3React()
-  const solConnection = new Connection(config.solana.rpc, "finalized")
+  const solConnection = new Connection(config.solana.rpc, "confirmed")
   // solConnection._rpcWsEndpoint = config.solana.wss;
   // // solConnection.underlyingSocket.url = config.solana.wss;
   const solSigner = useWallet();
