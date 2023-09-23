@@ -182,8 +182,8 @@ const ActionButton = () => {
       commitment: 'finalized'
     };
     const tx = await application.wormhole.send_from_solana(amount)
-    const {recentBlockhash, latestBlockHeight} = solConnection.getLatestBlockhash();
-    tx.recentBlockhash = recentBlockhash;
+    // const {recentBlockhash, latestBlockHeight} = solConnection.getLatestBlockhash();
+    // tx.recentBlockhash = recentBlockhash;
     setChecksPassed(false)
     let txid;
     console.log(solConnection);
