@@ -128,13 +128,13 @@ const ActionButton = () => {
           return;
 
         case 3:
-          if (
-            direction == 'solToEth' && amount <= balance[1].ethereum
-            ||
-            direction == 'ethToSol' && amount <= balance[1].solana
-          ) {
+          if (direction == 'solToEth' ? active : connected) {
             if (balance !== undefined && amount > 0) { 
-              if (amount <= balance[1].ethereum) {
+              if (
+                direction == 'solToEth' && amount <= balance[1].ethereum
+                ||
+                direction == 'ethToSol' && amount <= balance[1].solana
+              ) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
