@@ -107,9 +107,6 @@ const ActionButton = () => {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
-            
-            
-            
             } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
           } else {setPrompt(direction == 'solToEth' ? buttonPrompts.sol : buttonPrompts.eth);  setChecksPassed(true)}
           return;
@@ -183,19 +180,13 @@ const ActionButton = () => {
       console.log(e);
     }
     await application.updateBalance(saveBalance)
-    // console.log(await solConnection.getAccountInfo(solSigner.publicKey));
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
     setCurrStep(step == 1 ? 2 : 1);
   }
 
   const handleBridgeSolToEth = async () => {
-    const options = {
-      commitment: 'finalized'
-    };
     const tx = await application.wormhole.send_from_solana(amount)
-    // const {recentBlockhash, latestBlockHeight} = solConnection.getLatestBlockhash();
-    // tx.recentBlockhash = recentBlockhash;
     setChecksPassed(false)
     let txid;
     console.log(solConnection);
@@ -209,7 +200,6 @@ const ActionButton = () => {
         console.log(e);
       }
     await confirmSolanaTx(txid)
-    // Set bridge state
     let VAA;
       try {
         setPrompt("Fetching VAA...")
@@ -219,21 +209,18 @@ const ActionButton = () => {
         console.log(e);
       }
     console.log(VAA);
-    // Set bridge state
     const signer = provider.getSigner()
     let txid2;
       try {
         setPrompt("Requesting ISC from Wormhole...")
         txid2 = await application.wormhole.complete_transfer_on_eth(VAA, signer)
         console.log(txid2);
-        // await application.ethereum_swap.wait_until_finalized({"hash":txid2.hash})
         await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid2.hash});
       }
       catch(e) {
         console.log(e);
       }
     setPrompt("Bridging Complete!")
-    // Set bridge state
     await application.updateBalance(saveBalance)
     setCurrStep(3);
   }
@@ -310,28 +297,27 @@ const ActionButton = () => {
           }
           return; 
         case 2: 
-        console.log('Handling Bridge');
-        if (connected) {
-          if (active) {
-            handleBridgeSolToEth();
+          console.log('Handling Bridge');
+          if (connected) {
+            if (active) {
+              handleBridgeSolToEth();
+            }
+            else {
+              connectEth();
+            }
           }
-          else {
-            connectEth();
+          else{
+            connectSol();
           }
-        }
-        else{
-          connectSol();
-        }
-          // handleBridgeSolToEth();
           return;
         case 3: 
-        console.log('Handling Swap 2');
-        if (active) {
-          handleSwapEth();
-        }
-        else {
-          connectEth()
-        }
+          console.log('Handling Swap 2');
+          if (active) {
+            handleSwapEth();
+          }
+          else {
+            connectEth()
+          }
       }
     }
     
