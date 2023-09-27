@@ -1,95 +1,3 @@
-.App {
-  background-color: rgba(6, 8, 24, 0.7411764706);
-}
-
-.SwapCard {
-  background-color: #313131;
-}
-
-.requestConn {
-  height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
-.requestDirection {
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  color: white;
-}
-
-.innerRequestDirection {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  background-color: #060818;
-  border: 3px solid silver;
-  border-radius: 10px;
-  padding: 3rem;
-  gap: 10px;
-  box-shadow: 0px 0px 10px 15px silver;
-}
-.innerRequestDirection button {
-  cursor: pointer;
-  height: 30px;
-  color: white;
-  background-color: #425275;
-  border: none;
-  padding: 1.5rem;
-  display: flex;
-  align-items: center;
-  border-radius: 0.5rem;
-  box-shadow: 0px 0px 3px 1px rgba(255, 255, 255, 0.199);
-  transition: all 0.3s ease-in-out;
-}
-.innerRequestDirection button:hover {
-  background-color: #737e96;
-  box-shadow: 0px 0px 3px 3px rgba(255, 255, 255, 0.199);
-}
-
-.DirSelectorIcons {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 5px;
-}
-.DirSelectorIcons p {
-  font-size: 64px;
-}
-.DirSelectorIcons img {
-  border: 2px solid black;
-  border-radius: 999px;
-}
-.DirSelectorIcons :last-child {
-  opacity: 1;
-}
-
-.innerRequestConn {
-  padding: 25px;
-  background-color: #000000;
-  height: 300px;
-  min-width: 280px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 25px;
-}
-
-.UI {
-  display: flex;
-  flex-direction: column;
-  height: -moz-max-content;
-  height: max-content;
-}
-
 .header {
   width: 100vw;
   padding-top: 20px;
@@ -120,6 +28,7 @@
 .walletContainer {
   display: flex;
   flex-direction: row;
+  align-items: center;
   gap: 10px;
   padding-right: 40px;
 }
@@ -147,693 +56,11 @@
   height: 100%;
 }
 
-.sidebar {
-  width: 100px;
-  height: 100vh;
-  background-color: black;
-  color: white;
-  left: 0;
-  top: 0;
-  position: fixed;
-  z-index: 998;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 50px;
-}
-.sidebar :first-child {
-  margin-top: 200px;
-}
-
-.BridgeApp {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.plan {
-  border-radius: 16px;
-  box-shadow: 0 30px 30px -25px rgba(0, 38, 255, 0.205);
-  padding: 3px;
-  background-color: #C0C0C0;
-  color: #697e91;
-  max-width: 800px;
-  width: 720px;
-  margin: 20px;
-}
-
-.table_container {
-  border-radius: 8px;
-  box-shadow: 0 30px 30px -25px rgba(0, 38, 255, 0.205);
-  padding: 10px;
-  background-color: #202020;
-  color: #697e91;
-  max-width: 100%;
-  margin-top: 20px;
-}
-
-.table {
-  max-width: 100%;
-  white-space: nowrap;
-}
-
-.App {
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.mainFg {
-  background-repeat: no-repeat;
-  background-size: contain;
-  background-position: center;
-  background-image: url("../public/ISC-logo.svg");
-}
-
-.main {
-  padding: 0px;
-}
-
-.UI {
-  display: flex;
-  flex-direction: row;
-}
-
-.background {
-  background-color: #dddddd;
-}
-
-.plan strong {
-  font-weight: 600;
-  color: #425275;
-}
-
-.info {
-  color: #ffffff;
-  width: 50%;
-  word-wrap: normal;
-}
-
-.inner {
-  align-items: center;
-  padding: 20px;
-  padding-top: 10px;
-  background-color: #0f0113;
-  border-radius: 12px;
-  position: relative;
-  transition: all 0.2s ease-in;
-}
-
-.plan .pricing {
-  position: absolute;
-  top: 0;
-  right: 0;
-  background-color: #bed6fb;
-  border-radius: 99em 0 0 99em;
-  display: flex;
-  align-items: center;
-  padding: 0.625em 0.75em;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #425475;
-}
-
-.plan .pricing small {
-  color: #707a91;
-  font-size: 0.75em;
-  margin-left: 0.25em;
-}
-
-.plan .title {
-  font-weight: 600;
-  font-size: 1.25rem;
-  color: #ffffff;
-}
-
-.plan .title + * {
-  margin-top: 0.75rem;
-}
-
-.plan .info + * {
-  color: #ffffff;
-  margin-top: 1rem;
-  word-wrap: break-word;
-}
-
-.plan .cardData {
-  border: 1px white solid;
-  padding: 10px;
-  border-radius: 10px;
-  background-color: rgba(6, 8, 24, 0.1568627451);
-  color: white;
-  font-family: monospace, monospace;
-  word-wrap: break-word;
-}
-.plan .cardData a {
-  color: white;
-}
-
-.plan .copyButton {
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, 0);
-  font-size: 24px;
-  color: white;
-  padding: 0.3rem;
-  border-radius: 5px;
-  border: 1px solid white;
-  transition: all 0.08s ease-in-out;
-}
-.plan .copyButton:hover {
-  background-color: white;
-  color: black;
-}
-
-.plan .cardData + * {
-  margin-top: 1rem;
-  word-wrap: break-word;
-}
-
-.plan .features {
-  display: flex;
-  flex-direction: column;
-}
-
-.plan .features li {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-}
-
-.plan .features li + * {
-  margin-top: 0.75rem;
-}
-
-.plan .icon {
-  background-color: #1FCAC5;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-}
-
-.plan .features .icon {
-  background-color: #1FCAC5;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-}
-
-.plan .features .icon svg {
-  width: 24px;
-  height: 14px;
-}
-
-.plan .features + * {
-  margin-top: 1.25rem;
-}
-
-.plan .action {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.plan .action .button {
-  font-size: 18px;
-  font-weight: 500;
-  padding: 10px;
-  margin: 30px;
-  background: #6558d3;
-  cursor: pointer;
-  border: none;
-  border-radius: 50px;
-  color: white;
-  border: 1px solid #C0C0C0;
-  box-shadow: 0px 0px 10px #C0C0C0;
-}
-
-.plan .action_waiting {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.plan .action_waiting .button {
-  font-size: 18px;
-  font-weight: 500;
-  padding: 10px;
-  margin: 30px;
-  background: #303030;
-  cursor: not-allowed;
-  border: none;
-  border-radius: 50px;
-  color: white;
-  border: 1px solid #C0C0C0;
-}
-
-.plan .skip {
-  cursor: pointer;
-  text-decoration: underline;
-  color: rgb(239, 245, 162);
-}
-
-.plan .button {
-  background-color: rgba(6, 8, 24, 0.7411764706);
-  border-radius: 999px;
-  color: #fff;
-  font-weight: 500;
-  font-size: 1.125rem;
-  text-align: center;
-  border: 0;
-  outline: 0;
-  width: 50%;
-  padding: 0.625em 0.75em;
-  text-decoration: none;
-  transition: all 0.1s ease-in-out;
-}
-
-.plan .resumeStep button {
-  background-color: #060818;
-  color: white;
-  border: 1px white solid;
-  border-radius: 99px;
-  width: 10%;
-  transition: all 0.15s ease-in-out;
-}
-.plan .resumeStep .resumeP {
-  cursor: pointer;
-  color: rgb(239, 245, 162);
-  text-decoration: underline;
-  display: inline-block;
-}
-.plan .resumeStep .resumeOk {
-  cursor: pointer;
-  width: 6%;
-  display: inline;
-  background-color: #273285;
-  margin-left: 1rem;
-}
-.plan .resumeStep .resumeOk:hover {
-  background-color: #515781;
-  border-color: black;
-}
-.plan .resumeStep form {
-  display: flex;
-  flex-direction: column;
-}
-.plan .resumeStep form .resumeBtns {
-  margin-top: 0.5rem;
-  display: flex;
-  flex-direction: row;
-  justify-content: flex-end;
-  align-items: flex-end;
-  gap: 5%;
-}
-.plan .resumeStep form .resumeClose {
-  cursor: pointer;
-  padding: 0.5rem;
-  background-color: #191c35;
-}
-.plan .resumeStep form .resumeClose:hover {
-  border-color: black;
-  background-color: rgb(95, 0, 0);
-}
-.plan .resumeStep form .resumeSubmit {
-  cursor: pointer;
-  padding: 0.5rem;
-  background-color: #273285;
-}
-.plan .resumeStep form .resumeSubmit:hover {
-  background-color: #515781;
-  border-color: black;
-}
-.plan .resumeStep form .resumePrompt {
-  align-self: center;
-  justify-self: center;
-}
-.plan .resumeStep form textarea {
-  opacity: 0.3;
-  border-radius: 5px;
-}
-
-.plan .action .button:hover {
-  background-color: rgba(37, 50, 145, 0.368627451);
-}
-
-.plan .button_disabled {
-  background-color: rgba(86, 88, 105, 0.368627451);
-  box-shadow: -5px -5px 10px -1px rgba(37, 50, 145, 0.368627451), 5px 5px 10px -1px rgba(37, 50, 145, 0.368627451);
-  cursor: not-allowed;
-  border-radius: 999px;
-  color: #fff;
-  font-weight: 500;
-  font-size: 1.125rem;
-  text-align: center;
-  border: 0;
-  outline: 0;
-  width: 50%;
-  padding: 0.625em 0.75em;
-  text-decoration: none;
-}
-
-.ldsellipsis {
-  display: inline-block;
-  position: relative;
-  width: 70px;
-  height: 10px;
-}
-
-.ldsellipsis div {
-  position: absolute;
-  top: 3px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #6558d3;
-  animation-timing-function: cubic-bezier(0, 1, 1, 0);
-}
-
-.ldsellipsis div:nth-child(1) {
-  left: 8px;
-  animation: ldsellipsis1 0.6s infinite;
-}
-
-.ldsellipsis div:nth-child(2) {
-  left: 8px;
-  animation: ldsellipsis2 0.6s infinite;
-}
-
-.ldsellipsis div:nth-child(3) {
-  left: 32px;
-  animation: ldsellipsis2 0.6s infinite;
-}
-
-.ldsellipsis div:nth-child(4) {
-  left: 56px;
-  animation: ldsellipsis3 0.6s infinite;
-}
-
-@keyframes ldsellipsis1 {
-  0% {
-    transform: scale(0);
-  }
-  100% {
-    transform: scale(1);
-  }
-}
-@keyframes ldsellipsis3 {
-  0% {
-    transform: scale(1);
-  }
-  100% {
-    transform: scale(0);
-  }
-}
-@keyframes ldsellipsis2 {
-  0% {
-    transform: translate(0, 0);
-  }
-  100% {
-    transform: translate(24px, 0);
-  }
-}
-.card {
-  border-collapse: collapse;
-  margin: 25px 0;
-  font-size: 0.9em;
-  font-family: sans-serif;
-  min-width: 400px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
-  color: #ffffff;
-}
-
-.card thead tr {
-  /* background-color: #009879; */
-  background-color: #6558d3;
-  color: #ffffff;
-  text-align: left;
-}
-
-.card th,
-.card td {
-  padding: 12px 15px;
-}
-
-.card tbody tr {
-  border-bottom: 1px solid #dddddd;
-}
-
-.card tbody tr:nth-of-type(even) {
-  background-color: #f3f3f3;
-}
-
-.card :nth-of-type(odd) {
-  background-color: rgba(255, 255, 255, 0.349);
-}
-
-.card tbody tr:last-of-type {
-  border-bottom: 2px solid #6558d3; /* #009879;*/
-}
-
-.form {
-  line-height: 200%;
-}
-
-.MyTable {
-  left: 120px;
-  top: 250px;
-  position: fixed;
-}
-
-.card_line {
-  border-color: #C0C0C0;
-}
-
-.SwapTitle {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-}
-.SwapTitle :last-child {
-  align-self: flex-end;
-}
-
-.SwapMax {
-  padding: 0px;
-  margin-bottom: 12px;
-  width: 50%;
-}
-.SwapMax button {
-  cursor: pointer;
-  background-color: #202020;
-  color: white;
-  border: 1px solid #131313;
-  height: 30px;
-  width: 70px;
-  font-size: 18px;
-  font-weight: bolder;
-  border-radius: 999px;
-  margin-right: 10px;
-}
-.SwapMax button:hover {
-  transition: all 0.2s ease-in-out;
-  color: #1FCAC5;
-  border: 2px solid #1FCAC5;
-}
-
-.maxWalletIcon {
-  padding-right: 5px;
-}
-
-#outputField {
-  cursor: not-allowed;
-}
-#outputField input {
-  cursor: not-allowed;
-  pointer-events: none;
-}
-
-.sendInput .inputField {
-  background-color: #333333;
-  height: 72px;
-  border-radius: 10px;
-  transition: all 0.25s ease-in;
-  border: 1px solid rgba(0, 0, 0, 0);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  padding-left: 20px;
-  padding-right: 20px;
-}
-.sendInput .inputField:focus-within {
-  border: 1px solid #9ecaed;
-  box-shadow: 0 0 10px #9ecaed;
-}
-.sendInput .inputField input {
-  height: 100%;
-  width: 100%;
-  font-size: 25px;
-  font-weight: bolder;
-}
-.sendInput .inputField .tokenCard {
-  height: 30%;
-}
-
-.CardSwapUi .inputField {
-  background-color: #333333;
-  height: 72px;
-  border-radius: 10px;
-  transition: all 0.25s ease-in;
-  border: 1px solid rgba(0, 0, 0, 0);
-}
-.CardSwapUi .inputField:focus-within {
-  border: 1px solid #9ecaed;
-  box-shadow: 0 0 10px #9ecaed;
-}
-.CardSwapUi .inputField .flex {
-  height: 100%;
-  width: 100%;
-  align-items: center;
-  justify-content: space-between;
-}
-.CardSwapUi .inputField .flex :nth-child(1) {
-  margin-left: 30px;
-  font-weight: bolder;
-}
-.CardSwapUi .inputField .flex :nth-child(2) {
-  margin-right: 30px;
-}
-.CardSwapUi .inputField .flex :nth-child(2) .text_end {
-  text-align: right;
-  font-size: 10px;
-  padding: 0px;
-  margin: 0px;
-}
-.CardSwapUi .inputField .flex input {
-  font-size: 25px;
-  font-weight: bolder;
-}
-
-.flex {
-  display: flex;
-}
-
-.flex_col {
-  display: flex;
-  flex-direction: column;
-}
-
-.swap_input {
-  height: -moz-max-content;
-  height: max-content;
-  width: -moz-max-content;
-  width: max-content;
-  text-align: end;
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-  outline: none;
-  color: white;
-}
-
-.text_end {
-  text-align: right;
-  padding: 0px;
-  margin: 0px;
-}
-
-.tokenCard {
-  background-color: #060818;
-  color: #ffffff;
-  padding: 10px;
-  border-radius: 5px;
-  font-size: 20px;
-  display: flex;
-  flex-direction: row;
-  width: 120px;
-  align-items: center;
-  justify-content: center;
-}
-.tokenCard img {
-  margin: 0px;
-}
-.tokenCard p {
-  padding: 0px;
-  margin: 0px;
-}
-
-.noDisplay {
-  display: none;
-}
-
-.BackToTop {
-  cursor: pointer;
-  height: 50px;
-  width: 50px;
-  z-index: 2000;
-  position: fixed;
-  bottom: 5%;
-  right: 5%;
-  opacity: 0.3;
-  border-radius: 999px;
-}
-
-.returnDirection {
-  cursor: pointer;
-  z-index: 2000;
-  position: fixed;
-  top: 10%;
-  left: 15%;
-  opacity: 1;
-  border-radius: 999px;
-  border: 3px solid white;
-  background-color: #425275;
-  padding: 1rem;
-}
-.returnDirection .returnDirectionIcon {
-  height: 50px;
-  width: 80px;
-}
-.returnDirection p {
-  width: 80px;
-  text-align: center;
-  color: white;
-  word-wrap: break-word;
-}
-
-.Progressbar {
-  border-radius: 8px;
-  background-color: white;
-  height: 30px;
-  width: 100%;
-}
-.Progressbar div {
-  border-radius: 5px;
-  background: linear-gradient(#a66cff, #341e55);
-}
-
-/* NEW STUFF */
-/* NEW STUFF */
-/* NEW STUFF */
-/* NEW STUFF */
-/* NEW STUFF */
-/* NEW STUFF */
-/* NEW STUFF */
-/* NEW STUFF */
-/* NEW STUFF */
-/* NEW STUFF */
 .body {
   background-color: #181F27;
   height: -moz-max-content;
   height: max-content;
-  padding: 100px 50px;
+  padding: 100px 0px;
   width: 100vw;
   display: flex;
   flex-direction: column;
@@ -896,15 +123,14 @@
   color: #FFFFFF;
   min-height: 100vh;
   display: flex;
-  width: 578px;
+  width: 80vw;
   flex-direction: column;
-  align-items: flex-end;
   gap: 80px;
 }
 .v2App .v2Card {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   gap: 40px;
   align-self: stretch;
 }
@@ -933,17 +159,15 @@
 
 .CardTitle {
   position: relative;
-  left: -50px;
+  left: -180px;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  align-self: stretch;
+  justify-content: flex-start;
 }
 .CardTitle :first-child {
   margin-right: 50px;
 }
 .CardTitle .TitleHeading {
-  width: 580px;
   color: #FFFFFF;
   font-size: 32px;
   font-style: normal;
@@ -957,7 +181,7 @@
 .CardMap {
   display: flex;
   flex-direction: column;
-  align-items: flex-end;
+  align-items: center;
   gap: 10px;
   align-self: stretch;
 }
@@ -991,6 +215,7 @@
 }
 .CardMap .mapInner .Map .mapCentre {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: flex-end;
   gap: 10px;
@@ -1012,6 +237,9 @@
   gap: 10px;
   border-radius: 10px;
   background: #2A394B;
+}
+.CardBody .CardBodyInner .bodyArrow {
+  margin-top: 15px;
 }
 .CardBody .CardBodyInner .ActiveInput {
   width: 480px;
@@ -1044,8 +272,8 @@
 .CardBody .CardBodyInner .ActionButton {
   cursor: pointer;
   display: flex;
-  width: 440px;
-  padding: 24px 97px;
+  width: 100%;
+  padding: 25px 0 25px 0;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -1067,7 +295,7 @@
 .CardBody .CardBodyInner .ActionButtonInactive {
   cursor: not-allowed;
   display: flex;
-  width: 440px;
+  width: 100%;
   padding: 24px 97px;
   justify-content: center;
   align-items: center;
@@ -1170,8 +398,6 @@
 }
 
 .dirBtns {
-  margin-left: 50px;
-  width: 580px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -1217,4 +443,106 @@
 }
 .dirBtns .dirBtnActive p {
   margin: 0px;
+}
+
+@media (max-width: 800px) {
+  .CardTitle {
+    left: 0vw;
+  }
+}
+@media (max-width: 696px) {
+  .header h1 {
+    font-size: 40px;
+  }
+}
+@media (max-width: 640px) {
+  .header h1 {
+    font-size: 40px;
+  }
+  .walletContainer {
+    display: none;
+  }
+}
+@media (max-width: 570px) {
+  .dirBtns {
+    flex-direction: column;
+  }
+  .CardBody .CardBodyInner {
+    max-width: 59vw;
+  }
+  .CardBody .CardBodyInner .bodyArrow {
+    margin-top: 0;
+  }
+  .CardBody .CardBodyInner .inputTitle {
+    max-width: 59vw;
+  }
+  .CardBody .CardBodyInner .ActiveInput {
+    max-width: 59vw;
+    font-size: 0.6rem;
+    gap: 0px;
+  }
+  .CardBody .CardBodyInner .ActiveInput input {
+    width: 100px;
+  }
+  .CardBody .CardBodyInner .InactiveInput {
+    max-width: 59vw;
+    font-size: 0.6rem;
+    gap: 0px;
+  }
+  .CardBody .CardBodyInner .InactiveInput input {
+    width: 100px;
+  }
+  .CardBody .CardBodyInner .ActionButton p {
+    width: -moz-max-content;
+    width: max-content;
+    font-size: 1em;
+  }
+  .mapInner {
+    max-width: 55vw;
+    align-items: center;
+  }
+  .mapInner .Map {
+    flex-direction: column;
+  }
+  .mapInner .Map :first-child {
+    align-self: center;
+  }
+  .mapInner .Map .mapCentre {
+    align-self: center;
+  }
+  .turn180 {
+    transform: rotate(0deg);
+  }
+  .turn270 {
+    transform: rotate(0deg);
+  }
+}
+@media (max-width: 500px) {
+  .MapInfo {
+    text-align: center;
+  }
+}
+@media (max-width: 460px) {
+  .CardTitle .TitleHeading {
+    font-size: 20px;
+  }
+  .CardTitle :first-child {
+    height: 30px;
+  }
+}
+@media (max-width: 490px) {
+  .v2TokenCard {
+    margin-right: -10px;
+    height: 0.8rem;
+  }
+  .v2TokenCard .iconsWrapper .swapIcon {
+    height: 1.2rem;
+    width: 1.2rem;
+  }
+  .v2TokenCard .tokenCardText {
+    display: none;
+  }
+  .inputTitle {
+    flex-direction: column;
+  }
 }/*# sourceMappingURL=mystyle.module.css.map */
