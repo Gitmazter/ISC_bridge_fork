@@ -29,17 +29,17 @@ const ActionButton = () => {
 
   const { connected, connect } = useWallet()
   const { connection } = useConnection()
+  const solConnection = new Connection(config.solana.rpc);
   const { active, activate, library: provider, wait_until_finalized} = useWeb3React()
-  const solConnection = new Connection(config.solana.rpc, "finalized")
   // solConnection._rpcWsEndpoint = config.solana.wss;
   // // solConnection.underlyingSocket.url = config.solana.wss;
+  const { setVisible: setModalVisible } = useWalletModal(); 
+  const walletConnection = useConnection()
   const solSigner = useWallet();
+  
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
-  const walletConnection = useConnection()
-  const { setVisible: setModalVisible, visible:modalVisible,  } = useWalletModal(); 
   const [walletSelected, setWalletSelected] = useState(false);
-
 
   useEffect(() => {
     setWalletSelected(false)
@@ -181,8 +181,7 @@ const ActionButton = () => {
       console.log(solConnection);
       console.log('works til here');
       
-      const conf = solConnection.confirmTransaction(txid)
-      console.log(conf.data.result);
+      await solConnection.confirmTransaction(txid)
     }
     catch (e) {
       console.log(e);
@@ -194,13 +193,12 @@ const ActionButton = () => {
   }
 
   const handleBridgeSolToEth = async () => {
-    const tx = await application.wormhole.send_from_solana(amount)
     setChecksPassed(false)
     let txid;
     console.log(solConnection);
-      try {
+    try {
         setPrompt("Sending ISC to Wormhole...")
-        txid = await solSigner.sendTransaction(tx, connection, {skipPreflight:true});
+        txid = await application.wormhole.send_from_solana(amount)
       }
       catch (e) {
         console.log(e);
@@ -208,7 +206,7 @@ const ActionButton = () => {
     await confirmSolanaTx(txid)
     let VAA;
       try {
-        setPrompt("Fetching VAA...")
+        setPrompt("Fetching VAA...")  
         VAA = await application.wormhole.get_vaa_bytes_solana(txid);
       }
       catch (e) {
@@ -238,9 +236,7 @@ const ActionButton = () => {
       setChecksPassed(false)
       setPrompt("Sending ISC to Wormhole...")
       txid = await application.wormhole.send_from_ethereum(amount);
-      await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid2.hash});
-      application.
-      console.log(txid);
+      await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid.hash});
     }
     catch (e) {
       console.log(e);
@@ -257,8 +253,7 @@ const ActionButton = () => {
     let txid2;
     try {
       setPrompt("(3 signatures) Requesting ISC from Wormhole...")
-      txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes, walletConnection)
-      console.log(txid2);
+      txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes)
       setPrompt("Bridging Complete")
     }
     catch(e) {
