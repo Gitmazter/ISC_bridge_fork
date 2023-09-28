@@ -41,10 +41,21 @@ const ActionButton = () => {
   const [ checksPassed, setChecksPassed ] = useState(false)
   const [walletSelected, setWalletSelected] = useState(false);
   const [ successPopup, setSuccessPopup ] = useState()
+  const [ failedPopup, setFailedPopup ] = useState()
   useEffect(() => {
     setSuccessPopup(document.getElementById('successPopup'))
+    setFailedPopup(document.getElementById('failedPopup'))
   }, [])
 
+  const showSuccessPopup = () => {
+    successPopup.style.left = '30vw';
+    successPopup.style.opacity = '1'
+  }
+
+  const showFailedPopup = () => {
+    failedPopup.style.left = '30vw';
+    failedPopup.style.opacity = '1'
+  }
 
 
 
@@ -184,11 +195,12 @@ const ActionButton = () => {
     catch (e) {
       console.log(e);
     }
+    let confirmation = false;
     try {
       console.log(solConnection);
       console.log('works til here');
       
-      await solConnection.confirmTransaction(txid)
+      confirmation = (await solConnection.confirmTransaction(txid)).value.confirmationStatus == 'confirmed' ? true : false;
     }
     catch (e) {
       console.log(e);
@@ -197,8 +209,8 @@ const ActionButton = () => {
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
     setCurrStep(step == 1 ? 2 : 1);
-    successPopup.style.left = '30vw';
-    successPopup.style.opacity = '1'
+    console.log();
+    confirmation ? showSuccessPopup() : showFailedPopup()
   }
 
   const handleBridgeSolToEth = async () => {

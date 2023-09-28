@@ -13,6 +13,7 @@ import { sign } from '@certusone/wormhole-sdk';
 import SolIcon from '../cardComponents/icons/SolIcon';
 import EthIcon from '../cardComponents/icons/EthIcon';
 import { TxSuccessPopup } from '../popups/TxSuccess';
+import { TxFailedPopup } from '../popups/TxFail';
 
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
@@ -83,6 +84,7 @@ const BridgeApp = () => {
       {/* End Temporary Buttons */}
       {/* Popup */}
       <TxSuccessPopup/>
+      <TxFailedPopup/>
 
       <div className={styles.v2App}>
         {html}
