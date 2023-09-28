@@ -16,6 +16,7 @@ const buttonPrompts = bodyConfig.buttonPrompts;
 import {InjectedConnector} from '@web3-react/injected-connector'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import { transfer } from '@solana/spl-token';
+import { Provider } from '@ethersproject/providers';
 const injected = new InjectedConnector()
 
 const ActionButton = () => {
@@ -27,17 +28,24 @@ const ActionButton = () => {
   const { saveBalance } = useContext(BalanceContext)
 
   const { connected, connect } = useWallet()
-  const {connection} = useConnection()
-  const { active, activate, library: provider} = useWeb3React()
-  const solConnection = new Connection(config.solana.rpc, "finalized")
+  const { connection } = useConnection()
+  const solConnection = new Connection(config.solana.rpc);
+  const { active, activate, library: provider, wait_until_finalized} = useWeb3React()
   // solConnection._rpcWsEndpoint = config.solana.wss;
   // // solConnection.underlyingSocket.url = config.solana.wss;
+  const { setVisible: setModalVisible } = useWalletModal(); 
+  const walletConnection = useConnection()
   const solSigner = useWallet();
+  
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
-  const walletConnection = useConnection()
-  const { setVisible: setModalVisible, visible:modalVisible,  } = useWalletModal(); 
   const [walletSelected, setWalletSelected] = useState(false);
+  const [ successPopup, setSuccessPopup ] = useState()
+  useEffect(() => {
+    setSuccessPopup(document.getElementById('successPopup'))
+  }, [])
+
+
 
 
   useEffect(() => {
@@ -98,10 +106,18 @@ const ActionButton = () => {
         case 1:
           if (direction == 'solToEth' ? connected : active) {
             if (balance !== undefined && amount > 0) { 
-              if (amount <= balance[0].solana) {
+              
+              if(
+                direction == 'solToEth' && amount <= balance[0].solana
+                ||
+                direction == 'ethToSol' && amount <= balance[0].ethereum
+                ) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
+            
+            
+            
             } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
           } else {setPrompt(direction == 'solToEth' ? buttonPrompts.sol : buttonPrompts.eth);  setChecksPassed(true)}
           return;
@@ -110,7 +126,11 @@ const ActionButton = () => {
           if (connected) {
             if (active) {
               if (balance !== undefined && amount > 0) { 
-                if (amount <= balance[1].solana) {
+                if (
+                direction == 'solToEth' && amount <= balance[1].solana
+                ||
+                direction == 'ethToSol' && amount <= balance[1].ethereum
+                  ) {
                   setPrompt(buttonPrompts.bridge + ` ${amount} ISC`)
                   setChecksPassed(true)
                 } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -122,7 +142,11 @@ const ActionButton = () => {
         case 3:
           if (direction == 'solToEth' ? active : connected) {
             if (balance !== undefined && amount > 0) { 
-              if (amount <= balance[1].ethereum) {
+              if (
+                direction == 'solToEth' && amount <= balance[1].ethereum
+                ||
+                direction == 'ethToSol' && amount <= balance[1].solana
+              ) {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
@@ -164,60 +188,53 @@ const ActionButton = () => {
       console.log(solConnection);
       console.log('works til here');
       
-      const conf = solConnection.confirmTransaction(txid)
-      console.log(conf.data.result);
+      await solConnection.confirmTransaction(txid)
     }
     catch (e) {
       console.log(e);
     }
     await application.updateBalance(saveBalance)
-    // console.log(await solConnection.getAccountInfo(solSigner.publicKey));
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
     setCurrStep(step == 1 ? 2 : 1);
+    successPopup.style.left = '30vw';
+    successPopup.style.opacity = '1'
   }
 
   const handleBridgeSolToEth = async () => {
-    const options = {
-      commitment: 'finalized'
-    };
-    const tx = await application.wormhole.send_from_solana(amount)
     setChecksPassed(false)
     let txid;
     console.log(solConnection);
-      try {
+    try {
         setPrompt("Sending ISC to Wormhole...")
-        txid = await solSigner.sendTransaction(tx, solConnection, options)
-        console.log(txid);
+        txid = await application.wormhole.send_from_solana(amount)
       }
       catch (e) {
         console.log(e);
       }
     await confirmSolanaTx(txid)
-    // Set bridge state
     let VAA;
       try {
-        setPrompt("Fetching VAA...")
+        setPrompt("Fetching VAA...")  
         VAA = await application.wormhole.get_vaa_bytes_solana(txid);
       }
       catch (e) {
         console.log(e);
       }
     console.log(VAA);
-    // Set bridge state
     const signer = provider.getSigner()
     let txid2;
       try {
-        setPrompt("Requesting ISC from Wormhole...")
+        setPrompt("Requesting ISC from Wormhole...");
         txid2 = await application.wormhole.complete_transfer_on_eth(VAA, signer)
         console.log(txid2);
-        await application.ethereum_swap.wait_until_finalized({"hash":txid2.hash})
+        setPrompt("Awaiting Block Confirmation...");
+        await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid2.hash});
       }
       catch(e) {
         console.log(e);
       }
     setPrompt("Bridging Complete!")
-    // Set bridge state
     await application.updateBalance(saveBalance)
     setCurrStep(3);
   }
@@ -227,8 +244,8 @@ const ActionButton = () => {
     try {
       setChecksPassed(false)
       setPrompt("Sending ISC to Wormhole...")
-      txid = await application.wormhole.send_from_ethereum(amount)
-      console.log(txid);
+      txid = await application.wormhole.send_from_ethereum(amount);
+      await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid.hash});
     }
     catch (e) {
       console.log(e);
@@ -244,9 +261,8 @@ const ActionButton = () => {
     }
     let txid2;
     try {
-      setPrompt("Requesting ISC from Wormhole...")
-      txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes, walletConnection)
-      console.log(txid2);
+      setPrompt("(3 signatures) Requesting ISC from Wormhole...")
+      txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes)
       setPrompt("Bridging Complete")
     }
     catch(e) {

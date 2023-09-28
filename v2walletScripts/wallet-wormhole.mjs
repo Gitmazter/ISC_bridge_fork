@@ -28,7 +28,9 @@ class WalletWormhole {
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
-        this.connection = new Connection(rpcConfig.solana.rpc)
+
+        this.connection = new Connection(rpcConfig.solana.rpc);
+
 
         // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
@@ -134,15 +136,8 @@ class WalletWormhole {
 
     async send_from_solana(amount) {
         const bigAmount = amount*(10**this.config.solana.decimals)
-        console.log("BIG AMOUNT:  ", bigAmount);
-        // const secretKey = Uint8Array.from(this.config.solana.privateKey);
-        const keypair = this.wallets.solana;
-        console.log("works til' here");
-        // console.log(this.wallets[0]);
-        const targetRecipient = Buffer.from(tryNativeToHexString(this.wallets[0]._address, "ethereum"), 'hex');
-        console.log(this.wallets.ethereum);                 
-        console.log("works til' here");
-        const transaction = await transferFromSolana(
+        const targetRecipient = Buffer.from(tryNativeToHexString(this.wallets[0]._address, "ethereum"), 'hex');         
+        let transaction = await transferFromSolana(
             this.connection,
             this.config.solana.bridgeAddress,
             this.config.solana.tokenBridgeAddress, 
@@ -151,11 +146,11 @@ class WalletWormhole {
             this.config.solana.testToken, //mintAddress
             bigAmount,
             targetRecipient, //config.networks[destination_chain].publicKey, //config.networks[destination_chain].tokenBridgeAddress, // targetAddress,
-            this.config.evm0.wormholeChainId, //CHAIN_ID_ETH,
+            this.config.evm0.wormholeChainId,
         );
-        // transaction.partialSign(keypair)
-        console.log('works til return');
-        return transaction;
+        transaction = await this.wallets[1].signTransaction(transaction)
+        const txid = await this.connection.sendRawTransaction(transaction.serialize())
+        return txid
     }
 
     async get_vaa_bytes_solana(txid) {
@@ -188,6 +183,15 @@ class WalletWormhole {
             targetSigner
         );    
         const completeTransferTx = await targetTokenBridge.completeTransfer(Buffer.from(vaaBytes.vaaBytes, "base64"));
+        // completeTransferTx.wait(5)
+        // await (function() {
+        //     return new Promise((resolve, reject) => {
+        //       setTimeout(function() {
+        //         console.log("One: Completed");
+        //         resolve();
+        //       }, 10000);
+        //     });
+        // })();
         return completeTransferTx
     }
 
@@ -264,50 +268,39 @@ class WalletWormhole {
     async complete_transfer_on_solana(vaaBytes) {
         const keypair = this.wallets[1];
         console.log(keypair);
-        console.log(this.connection);
-        console.log(await this.connection.getLatestBlockhash());
         let txid = await postVaaSolanaWithRetry(
             this.connection,
             async (transaction) => {
-                console.log('signing tx');
-
-                // transaction.recentBlockhash = (await this.connection.getLatestBlockhash('finalized')).blockhash;
-                // transaction.lastValidBlockHeight =(await this.connection.getLatestBlockhash('finalized')).lastValidBlockHeight;
-
+                await new Promise((r) => setTimeout(r, 10000));
                 transaction = await keypair.signTransaction(transaction)
-                console.log(transaction);
                 return transaction;
             },
             this.config.solana.bridgeAddress, //srcNetwork.bridgeAddress,
-            keypair.publicKey, //srcKey.publicKey.toString(),
+            keypair.publicKey.toString(), //srcKey.publicKey.toString(),
             Buffer.from(vaaBytes, "base64"),
-            10
+            100
         );
+        
         console.log("Posted VAA to Solana \n", txid[0]['signature'], "\n", txid[1]['signature'])
         // Finally, redeem on Solana
-        const transaction = await redeemOnSolana(
+        let transaction = await redeemOnSolana(
             this.connection,
             this.config.solana.bridgeAddress, //SOL_BRIDGE_ADDRESS,
             this.config.solana.tokenBridgeAddress, //SOL_TOKEN_BRIDGE_ADDRESS,
-            keypair.publicKey, // payerAddress,
+            keypair.publicKey.toString(), // payerAddress,
             Buffer.from(vaaBytes, "base64"), //vaaBytes, //signedVAA,
         );
-        // keypair.sign(transaction)
-        //transaction.partialSign(keypair.signTransaction)
         console.log('ready to send');
-        const signedTransaction = await keypair.signTransaction(transaction)
-        //txid = await keypair.sendTransaction(transaction)
-        // txid = await keypair.sendTransaction(signedTransaction)
-        txid = await this.connection.sendRawTransaction(signedTransaction.serialize());
-        console.log(txid);
-        // await this.connection.confirmTransaction(txid);
+        await new Promise((r) => setTimeout(r, 10000));
+        transaction = await keypair.signTransaction(transaction)
+        transaction = await this.connection.sendRawTransaction(transaction.serialize());
+        await this.connection.confirmTransaction(transaction)
         console.log("Token redeemed", txid)
         return txid
     }
 
     async bridge_to_solana(amount) {
         const txid = await this.send_from_ethereum(amount)
-        //console.log(txid['transactionHash'])
         const vaa = await this.get_vaa_bytes_ethereum(txid)
         const tx = await this.complete_transfer_on_solana(vaa)
         return tx

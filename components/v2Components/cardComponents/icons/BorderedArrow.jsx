@@ -10,6 +10,10 @@ const BorderedArrow = ({type}) => {
       return (
         <img className={styles.swapIcon} src="./new/ArrowInCircle.svg" alt=""/>
       )
+    case 'body':
+      return (
+        <img className={styles.bodyArrow} src="./new/ArrowInCircle.svg" alt=""/>
+      )
   }
 }
 export default BorderedArrow

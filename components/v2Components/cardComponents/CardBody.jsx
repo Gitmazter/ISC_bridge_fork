@@ -12,7 +12,7 @@ const CardBody = () => {
       <div className={styles.CardBodyInner}> 
 
         <ActiveInput/>
-        <BorderedArrow type={'swap'}/>
+        <BorderedArrow type={'body'}/>
         <InactiveInput/>
         <ActionButton/>
         
