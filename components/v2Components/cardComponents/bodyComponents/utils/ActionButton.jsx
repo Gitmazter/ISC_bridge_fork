@@ -40,6 +40,13 @@ const ActionButton = () => {
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
   const [walletSelected, setWalletSelected] = useState(false);
+  const [ successPopup, setSuccessPopup ] = useState()
+  useEffect(() => {
+    setSuccessPopup(document.getElementById('successPopup'))
+  }, [])
+
+
+
 
   useEffect(() => {
     setWalletSelected(false)
@@ -190,6 +197,8 @@ const ActionButton = () => {
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
     setCurrStep(step == 1 ? 2 : 1);
+    successPopup.style.left = '30vw';
+    successPopup.style.opacity = '1'
   }
 
   const handleBridgeSolToEth = async () => {
