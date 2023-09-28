@@ -28,7 +28,9 @@ class WalletWormhole {
         this.programId = new PublicKey(this.config.solana.swap_contract);
         this.isc = new PublicKey(this.config.solana.isc);
         this.oil = new PublicKey(this.config.solana.oil);
+
         this.connection = new Connection(rpcConfig.solana.rpc);
+
 
         // this.connection._rpcWsEndpoint = config.solana.wss;
         this.options = {
