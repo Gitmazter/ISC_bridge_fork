@@ -68,28 +68,28 @@ const BridgeApp = () => {
   const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep} setCurrStep={setCurrStep} key={step}/>  });
   useEffect(() => {setCurrStep(1)},[direction])
   return ( 
-    <>
+    <div className={styles.AppWrapper}>
     
-      {/* Temporary Buttons */}
-{/*         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
-        <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button> */}
-        <div className={styles.dirBtns}>
-          <button type='button' className={direction == 'solToEth' ? styles.dirBtnActive : styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>
-            <SolIcon type={'swap'}/><p>Solana To </p><EthIcon type={'swap'}/><p>Ethereum</p>
-          </button>
-          <button type='button' className={direction == 'solToEth' ? styles.dirBtn : styles.dirBtnActive} onClick={() => {saveDirection('ethToSol')}}>
-            <EthIcon type={'swap'}/><p>Ethereum To </p><SolIcon type={'swap'}/><p>Solana</p>
-          </button>
-        </div>
-      {/* End Temporary Buttons */}
-      {/* Popup */}
-      <TxSuccessPopup/>
-      <TxFailedPopup/>
+        {/* Temporary Buttons */}
+  {/*         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
+          <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button> */}
+          <div className={styles.dirBtns}>
+            <button type='button' className={direction == 'solToEth' ? styles.dirBtnActive : styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>
+              <SolIcon type={'swap'}/><p>Solana To </p><EthIcon type={'swap'}/><p>Ethereum</p>
+            </button>
+            <button type='button' className={direction == 'solToEth' ? styles.dirBtn : styles.dirBtnActive} onClick={() => {saveDirection('ethToSol')}}>
+              <EthIcon type={'swap'}/><p>Ethereum To </p><SolIcon type={'swap'}/><p>Solana</p>
+            </button>
+          </div>
+        {/* End Temporary Buttons */}
+        {/* Popup */}
+        <TxSuccessPopup/>
+        <TxFailedPopup/>
 
-      <div className={styles.v2App}>
-        {html}
-      </div>
-    </>
+        <div className={styles.v2App}>
+          {html}
+        </div>
+    </div>
   )
 }
 

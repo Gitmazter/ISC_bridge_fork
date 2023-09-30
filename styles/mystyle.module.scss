@@ -1,17 +1,14 @@
-
-
+$card-button-disabled-color:#000000;
+$skip-text-color: rgb(239, 245, 162);
+$resume-submit-bg-hover: #515781;
 $isc-bg: #060818bd;
 $token-card-bg: #060818;
 $resume-submit-bg: #273285;
-$resume-submit-bg-hover: #515781;
 $resume-close-bg: #191c35;
-$skip-text-color: rgb(239, 245, 162);
 $background:#181F27;
 $defaultTextColor: #FFFFFF;
 $accentTextColor:#51565C; 
 $mapInfoTxtColor:#C0C0C0;
-$mapBg:#51565C;
-$bodyBg:#2A394B;
 $tokenCardBg:#2A394B;
 $inputActiveBg:#181F27;
 $inputInactiveBg:#222E3D; 
@@ -22,17 +19,24 @@ $card-bg:#0f0113;
 $card-text:#ffffff;
 $card-line:#C0C0C0;
 $card-button-active-color:#000000;
-$card-button-disabled-color:#000000;
+
+/* Color Pallette */
+$standard-blue: #060818;
+$bodyBg:#2A394B;
+$mapBg:#51565C;
+
 
 .header {
   width: 100vw;
-  padding-top: 20px;
-  padding-bottom: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   background-color: #000000;
   z-index: 999;
+  box-shadow: 0px 4px 95px 0px rgba(255, 255, 255, 0.25);
+
   h1 {
     color: white;
   }
@@ -84,12 +88,23 @@ $card-button-disabled-color:#000000;
 .body {
   background-color: $background;
   height: max-content;
-  padding: 100px 0px;
+  padding: 0px 0px;
   width: 100vw;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.AppWrapper {
+  background-image: url("/new/geo.svg");
+  background-repeat: no-repeat;
+  background-size:contain ;
+  background-position: top;
+  transition: all 100s ease;
+  &:hover {
+    background-position: bottom;
+  }
 }
 
 .opacity1 {
@@ -428,6 +443,7 @@ $card-button-disabled-color:#000000;
 
 
 .dirBtns {
+  padding-top: 100px;
   // margin-left: 50px;
   display: flex;
   flex-direction: row;
