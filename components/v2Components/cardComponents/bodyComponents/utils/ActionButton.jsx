@@ -40,24 +40,6 @@ const ActionButton = () => {
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
   const [walletSelected, setWalletSelected] = useState(false);
-  const [ successPopup, setSuccessPopup ] = useState()
-  const [ failedPopup, setFailedPopup ] = useState()
-  useEffect(() => {
-    setSuccessPopup(document.getElementById('successPopup'))
-    setFailedPopup(document.getElementById('failedPopup'))
-  }, [])
-
-  const showSuccessPopup = () => {
-    successPopup.style.left = '30vw';
-    successPopup.style.opacity = '1'
-  }
-
-  const showFailedPopup = () => {
-    failedPopup.style.left = '30vw';
-    failedPopup.style.opacity = '1'
-  }
-
-
 
   useEffect(() => {
     setWalletSelected(false)
@@ -126,9 +108,6 @@ const ActionButton = () => {
                 setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
                 setChecksPassed(true)
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
-            
-            
-            
             } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
           } else {setPrompt(direction == 'solToEth' ? buttonPrompts.sol : buttonPrompts.eth);  setChecksPassed(true)}
           return;
@@ -210,7 +189,6 @@ const ActionButton = () => {
     setPrompt(buttonPrompts.swap)
     setCurrStep(step == 1 ? 2 : 1);
     console.log();
-    confirmation ? showSuccessPopup() : showFailedPopup()
   }
 
   const handleBridgeSolToEth = async () => {
