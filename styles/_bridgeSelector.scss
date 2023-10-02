@@ -1,3 +1,5 @@
+@import './sizeVars';
+@import './colorVars';
 
 .bridgeSelector {
   display: flex;
@@ -6,7 +8,8 @@
   margin-bottom: 3vh;
   transition: all 0.3s ease;
   img {
-    height: 3vh;
+    transition: transform 1s ease;
+    height: 2rem;
   }
   .bridgeInputWrapper{
     height: 60px;
@@ -23,7 +26,7 @@
       margin-left: 1.3vw;
       span {
         color: white;
-        font-size: 2.5vh;
+        font-size: 1.6rem;
       }
     }
     .dropdownBtn {
@@ -44,7 +47,6 @@
     display: flex;
     flex-direction: column;
     gap: 0.2vh;
-    z-index: 9999;
     select {
       height: 6vh;
       width: 20vw;
@@ -65,6 +67,97 @@
     }
   }
 }
+.selectorWrapper {
+  position: relative;
+  // z-index: 100;
+  .inactive {
+    z-index: 9999;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-height: 120px;
+    display: flex;
+    flex-direction: row-reverse;
+    .scrollBar {
+      border-radius: 999px;
+      height: 120px;
+      transform: translateX(10px);
+      div {
+        cursor: pointer;
+        border-radius: 999px;
+        background-color: $bright-blue;
+        height: 30%;
+      }
+    }
+  }
+  .active {
+    z-index: 9999;
+    position: absolute;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0px);
+    transition: all 0.3s ease;
+    width: 100%;
+    max-height: 120px;
+    display: flex;
+    flex-direction: row-reverse;
+    .scrollBar {
+      border-radius: 999px;
+      height: 120px;
+      transform: translateX(10px);
+      div {
+        cursor: pointer;
+        border-radius: 999px;
+        background-color: $bright-blue;
+        height: 30%;
+      }
+    }
+    
+  }
+  .dropdown {
+      width: 100%;
+      max-height: 120px;
+      overflow-y: hidden;
+      position: absolute;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+      margin-top: 1px;
+    .chainCard {
+      z-index: 100;
+      cursor:pointer;
+      border-radius: $standard-border-radius;
+      background-color: $faded-dark-blue-gray;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 80%;
+      img {
+        height: 1em;
+        padding: 5px;
+        margin: 0px;
+      }
+      p {
+        color: $white;
+        margin: 0px;
+      }
+      &:hover {
+        background-color: $faded-blue;
+      }
+    }
+  }
+}
+
+.scrollBar {
+  background-color: $light-gray;
+  width: 10px;
+  height: 120px;
+}
 
 @media (max-width: 700px) {
   .bridgeSelector{
@@ -73,7 +166,7 @@
       width: 75vw;
     }
     .turn270 {
-      transform: rotate(0deg);
+      transform: rotate(1080deg);
     }
   }
 

@@ -10,7 +10,6 @@ export const BridgeSelector = () => {
 
   return (
     <div className={styles.bridgeSelector}>
-      
       <BridgeInput chaindata={chain1}/>
       <img src='/new/ArrowInCircle.svg' className={styles.turn270}/>
       <BridgeInput chaindata={chain2}/>
