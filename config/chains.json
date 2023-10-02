@@ -1,0 +1,7 @@
+{
+  "chains": [
+    {"name": "Solana", "imgUrl":"./solana.svg"},
+    {"name": "Ethereum", "imgUrl":"./ethereum.svg"}
+  ],
+  "establishedBridges":[]
+}
