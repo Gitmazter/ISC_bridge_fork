@@ -14,6 +14,7 @@ import SolIcon from '../cardComponents/icons/SolIcon';
 import EthIcon from '../cardComponents/icons/EthIcon';
 import { TxSuccessPopup } from '../popups/TxSuccess';
 import { TxFailedPopup } from '../popups/TxFail';
+import { BridgeSelector } from '../bridgeSelector/BridgeSelector';
 
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
@@ -70,21 +71,12 @@ const BridgeApp = () => {
   return ( 
     <>
     
-      {/* Temporary Buttons */}
-{/*         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
-        <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button> */}
-        <div className={styles.dirBtns}>
-          <button type='button' className={direction == 'solToEth' ? styles.dirBtnActive : styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>
-            <SolIcon type={'swap'}/><p>Solana To </p><EthIcon type={'swap'}/><p>Ethereum</p>
-          </button>
-          <button type='button' className={direction == 'solToEth' ? styles.dirBtn : styles.dirBtnActive} onClick={() => {saveDirection('ethToSol')}}>
-            <EthIcon type={'swap'}/><p>Ethereum To </p><SolIcon type={'swap'}/><p>Solana</p>
-          </button>
-        </div>
-      {/* End Temporary Buttons */}
-      {/* Popup */}
+      {/* Bridge Selector */}
+      <BridgeSelector/>
+      {/* Popups */}
       <TxSuccessPopup/>
       <TxFailedPopup/>
+      {/* <BridgeWarning/> */}
 
       <div className={styles.v2App}>
         {html}
@@ -94,3 +86,16 @@ const BridgeApp = () => {
 }
 
 export default BridgeApp
+
+{/* End Temporary Buttons */}
+      {/* Temporary Buttons */}
+{/*         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
+        <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button> */}
+        {/* <div className={styles.dirBtns}>
+          <button type='button' className={direction == 'solToEth' ? styles.dirBtnActive : styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>
+            <SolIcon type={'swap'}/><p>Solana To </p><EthIcon type={'swap'}/><p>Ethereum</p>
+          </button>
+          <button type='button' className={direction == 'solToEth' ? styles.dirBtn : styles.dirBtnActive} onClick={() => {saveDirection('ethToSol')}}>
+            <EthIcon type={'swap'}/><p>Ethereum To </p><SolIcon type={'swap'}/><p>Solana</p>
+          </button>
+        </div> */}
