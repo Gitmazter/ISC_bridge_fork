@@ -1,96 +1,8 @@
-
-
-$isc-bg: #060818bd;
-$token-card-bg: #060818;
-$resume-submit-bg: #273285;
-$resume-submit-bg-hover: #515781;
-$resume-close-bg: #191c35;
-$skip-text-color: rgb(239, 245, 162);
-$background:#181F27;
-$defaultTextColor: #FFFFFF;
-$accentTextColor:#51565C; 
-$mapInfoTxtColor:#C0C0C0;
-$mapBg:#51565C;
-$bodyBg:#2A394B;
-$tokenCardBg:#2A394B;
-$inputActiveBg:#181F27;
-$inputInactiveBg:#222E3D; 
-$maxDisplayColor:#617989;
-$maxButtonBg:#263343;
-$card-border:#C0C0C0 ;
-$card-bg:#0f0113;
-$card-text:#ffffff;
-$card-line:#C0C0C0;
-$card-button-active-color:#000000;
-$card-button-disabled-color:#000000;
-
-.header {
-  width: 100vw;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  background-color: #000000;
-  z-index: 999;
-  h1 {
-    color: white;
-  }
-  .logo {
-    padding-left: 40px;
-  }
-}
-
-.headerInfo {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  h1 {
-    margin: 0;
-    font-size: 50px;
-  }
-}
-
-
-.walletContainer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 10px;
-  padding-right: 40px;
-}
-
-.MetaMaskButton {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  height: 3rem;
-  width: max-content;
-  border-radius: 5px;
-  border: 0px;
-  background-color: orange;
-  font-size: 1rem;
-  font-family:monospace;
-  transition: 0.1s ease-in;
-  cursor: pointer;
-  &:hover {
-    background-color: rgb(32, 32, 32);
-    color: orange;
-  }
-  img {
-    height: 100%;
-  }
-}
-.body {
-  background-color: $background;
-  height: max-content;
-  padding: 100px 0px;
-  width: 100vw;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
+// @import url(./_bridgeSelector.scss);
+@import "./colorVars";
+@import "./bridgeSelector";
+@import "./header";
+@import "./sizeVars";
 
 .opacity1 {
   opacity: 1;
@@ -115,65 +27,76 @@ $card-button-disabled-color:#000000;
   transform: rotate(270deg);
 }
 
+
+.body {
+  background-color: $dark-blue-gray;
+  min-height: max-content;
+  padding-top: 3em;
+  width: 100vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
 .mapIcon {
-  width: 18px;
-  height: 18px;
+  width: $mapIconScale;
+  height: $mapIconScale;
   flex-shrink: 0;
 }
 
 .swapIcon {
-  width: 23px;
-  height: 23px;
+  width: $swapiconScale;
+  height: $swapiconScale;
   flex-shrink: 0;
 }
 
 .ActiveInput {
-  background-color: #181F27;
-  border-radius: 10px;
+  background-color: $dark-blue-gray;
+  border-radius: $standard-border-radius;
 }
 
 .InactiveInput {
-  border-radius: 10px;
-  background: #222E3D;
+  border-radius: $standard-border-radius;
+  background: $faded-dark-blue-gray
 }
 
 .v2App {
-  color: $defaultTextColor;
-  min-height: 100vh;
+  max-width: max-content;
+  color: $white;
   display: flex;
-  width: 80vw;
   flex-direction: column;
-  gap: 80px;
-
+  gap: 6vh;
   .v2Card {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 40px;
+    gap: 3vh;
     align-self: stretch;
   }
 }
 
 .v2TokenCardMap{
   display: flex;
-  padding: 8px;
+  padding: 0.8vh;
   justify-content: center;
   align-items: center;
-  gap: 4px;
-  border-radius: 10px;
-  background:$tokenCardBg;
+  gap: 0.5vh;
+  border-radius: $standard-border-radius;
+  background:$faded-dark-blue-gray;
+  font-size: 1.7vh;
   
   .iconsWrapper {
     display:flex;
-    width: 33px;
-    height: 18px;
+    width: $mapIconScale*2;
+    height: $mapIconScale;
   }
   .tokenCardText {
-    margin: 2px;
+    margin: 0.1vh;
   }
   :last-child{
     position: relative;
-    left: -5px;
+    left: -0.5vh;
   }
 }
 
@@ -187,13 +110,13 @@ $card-button-disabled-color:#000000;
     margin-right: 50px;
   }
   .TitleHeading {
-    color: $defaultTextColor;
+    color: $white;
     font-size: 32px;
     font-style: normal;
     font-weight: 700;
     line-height: normal;
     .greyText {
-      color: $accentTextColor;
+      color: $faded-blue;
     }
   }
 }
@@ -214,7 +137,7 @@ $card-button-disabled-color:#000000;
     gap: 20px;
 
     border-radius: 10px;
-    background: $mapBg;
+    background: $faded-blue;
     .Map {
       display: flex;
       justify-content: center;
@@ -243,7 +166,7 @@ $card-button-disabled-color:#000000;
     .MapInfo {
       margin: 0px;
       padding: 0px;
-      color: $mapInfoTxtColor;
+      color: $light-gray;
       p {
         margin: 0px;
       }
@@ -259,7 +182,7 @@ $card-button-disabled-color:#000000;
     align-items: center;
     gap: 10px;
     border-radius: 10px;
-    background: $bodyBg;
+    background: $brighter-dark-blue-gray;
 
     .bodyArrow{
       margin-top: 15px;
@@ -272,7 +195,7 @@ $card-button-disabled-color:#000000;
       flex-direction: column;
       gap: 10px;
       &:focus-within {
-        border:1px solid #9199A2;
+        border:1px solid $light-gray;
         border-radius: 10px;
       }
       input {
@@ -307,14 +230,14 @@ $card-button-disabled-color:#000000;
       gap: 10px;
       border: none;
       border-radius: 10px;
-      background: #131B23;
+      background: $dark-blue-gray;
       p {
         margin: 0px;
         font-size: 18px;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
-        background: linear-gradient(270deg, #29D9FF 0%, #87A1FF 100%);
+        background: $bright-blue-gradient;
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -337,7 +260,7 @@ $card-button-disabled-color:#000000;
         font-style: normal;
         font-weight: 700;
         line-height: normal;
-        background: #51565C ;
+        background: $faded-blue;
         background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
@@ -364,11 +287,11 @@ $card-button-disabled-color:#000000;
   justify-content:space-between;
   align-items: center;
   input {
-    background-color: #00000000;
+    background-color: $transparent;
     width: 200px;
     border: none;
     text-align: end;
-    color: white;
+    color: $white;
     font-size: 20px;
     font-style: normal;
     font-weight: 700;
@@ -394,11 +317,11 @@ $card-button-disabled-color:#000000;
     padding: 0;
   }
   border-radius: 10px;
-  background-color: $tokenCardBg;
+  background-color: $brighter-dark-blue-gray;
 }
 
 .maxDisplay {
-  color: $maxDisplayColor;
+  color: $faded-blue;
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -409,9 +332,9 @@ $card-button-disabled-color:#000000;
   gap: 6px;
   button {
     cursor: pointer;
-    background-color: $maxButtonBg;
-    border: 0.5px solid $maxDisplayColor;
-    color: $maxDisplayColor;
+    background-color: $dark-blue-gray;
+    border: 0.5px solid $light-blue;
+    color: $light-blue;
     display: flex;
     padding: 2px 6px;
     justify-content: center;
@@ -419,208 +342,12 @@ $card-button-disabled-color:#000000;
     border-radius: 10px;
     transition: all 0.2s ease-in-out;
     &:hover {
-      background-color: $maxDisplayColor;
-      border-color: white;
-      color: $maxButtonBg;
+      background-color: $faded-blue;
+      border-color: $white;
+      color: $dark-blue-gray;
     }
   }
 }
-
-
-.dirBtns {
-  // margin-left: 50px;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  margin-bottom: 30px;
-  gap: 20px;
-  .dirBtn {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 5px;
-    cursor: pointer;
-    background-color: $inputInactiveBg;
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #00000000;
-    color: $card-text;
-    font-weight: 700;
-    &:hover {
-      border: 1px solid white;
-    }
-    p {
-      margin: 0px;
-    }
-  }
-  .dirBtnActive {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    gap: 5px;
-    align-items: center;
-    cursor: pointer;
-    background-color: $inputInactiveBg;
-    font-size: 18px;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #00000000;
-    color: $card-text;
-    font-weight: 700;
-    box-shadow: 0 0 5px 5px $maxDisplayColor;
-    p {
-      margin: 0px;
-    }
-  }
-}
-.popupWrapper {
-  height: 100vh;
-  width: 120vw;
-  position: absolute;
-  top: 0;
-  display:flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  left: 100vw;
-  transition: opacity 2s 1s ease-in,  left 2s 0s ease-in;
-}
-.popup {
-  z-index: 1;
-  position: absolute;
-  top: 30%;
-  width: 228px;
-  border-radius: 5px;
-  box-shadow: 3px 3px 1px $tokenCardBg;
-  .txPopupWrapper {
-    color: white;
-    background-color:#222E3D;
-    padding: 20px;
-    border-radius: 0px 0px 5px 5px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    .statusSuccess{
-      text-align: center;
-      word-wrap: break-word;
-      margin: 0;
-      span {
-        color:#2B7A0F ;
-      }
-    }
-    .statusFailed {
-      text-align: center;
-      word-wrap: break-word;
-      margin: 0;
-      span {
-        color:#BB5151 ;
-      }
-    }
-    .txid {
-      text-align: center;
-      word-break: break-all;
-      width: 90%;
-    }
-    button {
-      cursor: pointer;
-      height: 45px;
-      width: 100%;
-      border-radius: 999px;
-      border: none;
-      background-color: $resume-submit-bg-hover;
-      color: white;
-      font-size: 13px;
-      font-weight: bolder;
-      &:hover {
-        transition: all 0.1s ease-in;
-        background-color: #131B23;
-        border: 3px white solid;
-        transform: translateY(-5px);
-      }
-    }
-  }
-}
-
-.successBanner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100px;
-  border-radius: 5px 5px 0px 0px;
-  background-color: #2B7A0F;
-  .line1 {
-    top: 5.6%;
-    right: 17.3%;
-    position: absolute;
-    height: 80px;
-    border-right: 3px solid white;
-    -moz-transform: skew(-45deg);
-    -webkit-transform: skew(-45deg);
-    transform: skew(-45deg);
-  }
-  .line2 {
-
-    top: 0%;
-    right: 75%;
-    position: absolute;
-    height: 100px;
-    border-right: 3px solid white;
-    -moz-transform: skew(45deg);
-    -webkit-transform: skew(45deg);
-    transform: skew(45deg);
-  }
-  img {
-    height: 45px;
-    padding: 10px;
-  }
-}
-
-.failedBanner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100px;
-  border-radius: 5px 5px 0px 0px;
-  background-color: #BB5151;
-  .line1 {
-    top: 5.6%;
-    right: 17.3%;
-    position: absolute;
-    height: 80px;
-    border-right: 3px solid white;
-    -moz-transform: skew(-45deg);
-    -webkit-transform: skew(-45deg);
-    transform: skew(-45deg);
-  }
-  .line2 {
-
-    top: 0%;
-    right: 75%;
-    position: absolute;
-    height: 100px;
-    border-right: 3px solid white;
-    -moz-transform: skew(45deg);
-    -webkit-transform: skew(45deg);
-    transform: skew(45deg);
-  }
-  img {
-    height: 45px;
-    padding: 10px;
-  }
-}
-
-
-
-
-
-
-
-
 
 @media (max-width: 800px) {
   .CardTitle {
@@ -645,7 +372,7 @@ $card-button-disabled-color:#000000;
     }
   }
   .walletContainer {
-    display: none;
+    // display: none;
   }
 }
 
