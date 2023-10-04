@@ -5,8 +5,9 @@ import { ChainCard } from './ChainCard';
 import { SearchField } from "./SearchField";
 import Select from 'react-select'
 
-export const Dropdown = ({selection}) => { 
-  const {selected, setSelected} = selection;
+export const Dropdown = ({_selection, _open, chainList}) => { 
+  const {selected, setSelected} = _selection;
+  const {open, setOpen} = _open
   let mousePosY = 0;
   const [dropdownPosY, setDropdownPosY] = useState(0);
 
@@ -14,13 +15,14 @@ export const Dropdown = ({selection}) => {
   const handleClick = (chain) => {
     console.log("selecting");
     setSelected(chain)
+    setOpen(false)
   }
 
-  const html = chainConfig.chains.map((chain, index) => {
+  const html = chainList.map((chain, index) => {
     console.log(chain.name);
     return (
         <li className={styles.chainCard} key={index} onClick={() => handleClick(chain)}>
-          <img src={chain.imgUrl}></img>
+          <img src={`chains/${chain.name}.svg`}></img>
           <p>{chain.name}</p>
         </li>
     )

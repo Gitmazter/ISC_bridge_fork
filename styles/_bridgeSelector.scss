@@ -24,9 +24,15 @@
       display: flex;
       gap: 1vw;
       margin-left: 1.3vw;
-      span {
+      input {
         color: white;
+        background-color:$transparent;
+        width: 100%;
+        border: none;
         font-size: 1.6rem;
+          &:focus-within {
+            outline: none;
+          }
       }
     }
 

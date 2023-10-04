@@ -24,9 +24,15 @@
   gap: 1vw;
   margin-left: 1.3vw;
 }
-.bridgeSelector .bridgeInputWrapper .bridgeInputChain span {
+.bridgeSelector .bridgeInputWrapper .bridgeInputChain input {
   color: white;
+  background-color: rgba(0, 0, 0, 0);
+  width: 100%;
+  border: none;
   font-size: 1.6rem;
+}
+.bridgeSelector .bridgeInputWrapper .bridgeInputChain input:focus-within {
+  outline: none;
 }
 .bridgeSelector .bridgeInputWrapper .dropdownBtn {
   cursor: pointer;
@@ -104,7 +110,7 @@
 .selectorWrapper .dropdown .chainCard {
   z-index: 100;
   cursor: pointer;
-  border-radius: 1vh;
+  border-radius: 0.5em;
   background-color: #2A394B;
   border: 1px solid #C0C0C0;
   display: flex;
@@ -262,11 +268,11 @@
 
 .ActiveInput {
   background-color: #181F27;
-  border-radius: 1vh;
+  border-radius: 0.5em;
 }
 
 .InactiveInput {
-  border-radius: 1vh;
+  border-radius: 0.5em;
   background: #222E3D;
 }
 
@@ -295,7 +301,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.5vh;
-  border-radius: 1vh;
+  border-radius: 0.5em;
   background: #222E3D;
   font-size: 1.1rem;
 }
