@@ -7,9 +7,15 @@ import { ScrollBar } from './ScrollBar';
 export const BridgeInput = ({chaindata}) => {
 
   const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState(chaindata)
+  const [dropdownYPos, setDropdownYPos] = useState(0)
 
   const toggleDropdown = () => {
     setOpen(!open);
+    const chevron = document.getElementById(`${selected.name}Chevron`);
+    open 
+    ? chevron.style.rotate = '0deg'
+    : chevron.style.rotate = '180deg';
   };
 
 
@@ -17,16 +23,15 @@ export const BridgeInput = ({chaindata}) => {
     <div className={styles.selectorWrapper}>
       <div className={styles.bridgeInputWrapper}>
         <div className={styles.bridgeInputChain}>
-          <img src={chaindata.imgUrl}/>
-          <span>{chaindata.name}</span>
+          <img src={selected.imgUrl}/>
+          <span>{selected.name}</span>
         </div>
-        <img src='/chevronDown.svg' className={styles.dropdownBtn} onClick={toggleDropdown} id=''/>
+        <img src='/chevronDown.svg' className={styles.dropdownBtn} onClick={toggleDropdown} id={`${selected.name}Chevron`}/>
       </div>
       <div className={[open ? styles.active : styles.inactive].join()}> 
-        <div className={styles.dropdown} id={`${chaindata.name}-dropdown`}>
-          <Dropdown open={open}/>
-        </div>
-        <ScrollBar chaindata={chaindata}/>
+        <ul className={styles.dropdown} id={`${selected.name}-dropdown`}>
+          <Dropdown selection={{selected, setSelected}} />
+        </ul>
       </div>
     </div>
   )

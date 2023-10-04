@@ -59,7 +59,11 @@ const App = () => {
                       margin: 0px;
                       padding: 0px;
                       height:100vh;
-                        }
+                    }
+
+
+                  
+                      
                       `}
                   </style>
                 </div>
