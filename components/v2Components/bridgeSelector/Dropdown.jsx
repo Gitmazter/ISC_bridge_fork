@@ -13,13 +13,11 @@ export const Dropdown = ({_selection, _open, chainList}) => {
 
 
   const handleClick = (chain) => {
-    console.log("selecting");
     setSelected(chain)
     setOpen(false)
   }
 
   const html = chainList.map((chain, index) => {
-    console.log(chain.name);
     return (
         <li className={styles.chainCard} key={index} onClick={() => handleClick(chain)}>
           <img src={`chains/${chain.name}.svg`}></img>

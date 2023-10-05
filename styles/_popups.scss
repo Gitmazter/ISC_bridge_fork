@@ -1,0 +1,144 @@
+@import './colorVars';
+
+.txPopupWrapper {
+  position: absolute;
+  height: max-content;
+  width: max-content;
+  padding: 10px;
+  left: 70%;
+  top: 30%;
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+}
+
+.popupSuccess .txPopup {
+  position: relative;
+  background-color: $faded-dark-blue-gray;
+  height: 7em;
+  width: 21em;
+  border-radius: 1em;
+  padding: 1em;
+  overflow: hidden;
+  .ppMessage {
+    font-size: 1.3em;
+    color: white;
+    span {
+     color: $bright-green;
+    }
+  }
+  .diagonalLine1 {
+    border-color: $bright-green;
+  }
+  .diagonalLine2 {
+    border-color: $bright-green;
+  }
+}
+
+.popupFailed .txPopup {
+  position: relative;
+  background-color: $faded-dark-blue-gray;
+  height: 7em;
+  width: 21em;
+  border-radius: 1em;
+  padding: 1em;
+  overflow: hidden;
+  .ppMessage {
+    font-size: 1.3em;
+    color: white;
+    span {
+      color: $light-red;
+    }
+  }
+  .diagonalLine1 {
+    border-color: $light-red;
+  }
+  .diagonalLine2 {
+    border-color: $light-red;
+  }
+}
+
+.closePopup {
+  cursor: pointer;
+  position:absolute;
+  top: 5%;
+  right: 3%;
+  background-color: $transparent;
+  border: 1px solid $light-gray;
+  color: $light-gray;
+  font-weight: 900;
+  border-radius: 999px;
+  &:hover {
+    background-color: white;
+    color: black;
+    border-color: black;
+  }
+}
+
+.popupFailed {
+  opacity: 0;
+  transform: translateX(400px);
+  padding-bottom: 0.3rem;
+  padding-right: 0.3rem;
+  position: relative;
+  background: linear-gradient(to right, $light-red 1%, $transparent);
+  border-radius: 1em;
+  transition: all 0.3s ease;
+}
+.popupSuccess {
+  opacity: 0;
+  transform: translateX(400px);
+  padding-bottom: 0.3rem;
+  padding-right: 0.3em;
+  position: relative;
+  background: linear-gradient(to right, $bright-green 1%, $transparent);
+  border-radius: 1em;
+  transition: all 0.3s ease;
+}
+
+
+.diagonalLine1 {
+  position: absolute;
+  border: 1px solid white;
+  width: 12em;
+  left: 58%;
+  top: 65%;
+  transform: rotate(135deg);
+}
+
+.diagonalLine2 {
+  position: absolute;
+  border: 1px solid white;
+  width: 12em;
+  left: 63%;
+  top: 65%;
+  transform: rotate(135deg);
+}
+
+.statusImg {
+  position: absolute;
+  height: 1.8em;
+  left: 90%;
+  top: 73%;
+}
+.ppMessage {
+  margin: 0px;
+  padding: 0.2em;
+  font-size: 1.1em;
+}
+.ppTxid {
+  margin: 0px;
+
+  margin-top: 10px;
+  font-size: 0.8em;
+  word-wrap:break-word;
+  color: $light-gray;
+  p {
+    margin: 0px;
+    width: 70%;
+  }
+}
+
+@media (max-width: 700px) {
+
+}     

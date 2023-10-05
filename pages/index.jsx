@@ -5,6 +5,7 @@ import { useState } from "react"
 import BalanceContext from "../components/v2Components/contexts/balanceContext"
 import MaxAmountContext from "../components/v2Components/contexts/maxAmountContext"
 import DirectionContext from "../components/v2Components/contexts/directionContext"
+import TransactionContext from "../components/v2Components/contexts/TransactionContext"
 import SolanaContextProvider from "../components/v2Components/app/web3/solConnect"
 import Header from '../components/layout/Header'
 import { Web3Provider } from "@ethersproject/providers"
@@ -23,24 +24,24 @@ const App = () => {
   const [ application, setApplication] = useState()
 
   const saveApplication = (app) => {
-    setApplication(app)
-  }
+    setApplication(app);
+  };
 
   const saveDirection = (dir) => {
-    setDirection(dir)
-  }
+    setDirection(dir);
+  };
 
   const saveBalance = (balances) => {
-    setBalance(balances)
-  }
+    setBalance(balances);
+  };
 
   const saveMaxAmounts = (val) => {
-    setMaxAmounts(val)
-  }
+    setMaxAmounts(val);
+  };
 
   const getLibrary = (provider) => {
-    return new Web3Provider(provider)
-  }
+    return new Web3Provider(provider);
+  };
 
   return(
     <Web3ReactProvider getLibrary={getLibrary}>
@@ -49,32 +50,26 @@ const App = () => {
           <BalanceContext.Provider value={{balance, saveBalance}}>
             <MaxAmountContext.Provider value = {{maxAmounts, saveMaxAmounts}}>
               <ApplicationContext.Provider value={{application, saveApplication}}>
-                <div>
-                  <style jsx global>{`
-                    html {
-                      overflow-x: hidden;
-                    }
-                    body {
-                      overflow-x: hidden;
-                      margin: 0px;
-                      padding: 0px;
-                      height:100vh;
-                    }
-
-
-                  
-                      
+                  <div>
+                    <style jsx global>{`
+                        html {
+                          overflow-x: hidden;
+                        }
+                        body {
+                          overflow-x: hidden;
+                          margin: 0px;
+                          padding: 0px;
+                          height:100vh;
+                        }
                       `}
-                  </style>
-                </div>
-            
-              <main className={inter.className}>
-                <Header/>
-                <div className={styles.body}>
-                  <BridgeApp/>
-                </div>
-              </main>
-
+                    </style>
+                  </div>
+                  <main className={inter.className}>
+                    <Header/>
+                    <div className={styles.body}>
+                      <BridgeApp/>
+                    </div>
+                  </main>
               </ApplicationContext.Provider>
             </MaxAmountContext.Provider>
           </BalanceContext.Provider>

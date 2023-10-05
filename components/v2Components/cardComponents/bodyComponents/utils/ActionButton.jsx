@@ -1,5 +1,4 @@
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { BaseWalletAdapter, WalletName } from '@solana/wallet-adapter-base';
 import styles from '../../../../../styles/mystyle.module.css'
 import bodyConfig from '../../../../../config/BodyConfig'
 import { useContext, useEffect, useState } from 'react';
@@ -15,24 +14,22 @@ import confirmSolanaTx from './confirmSolanaTx';
 const buttonPrompts = bodyConfig.buttonPrompts;
 import {InjectedConnector} from '@web3-react/injected-connector'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
-import { transfer } from '@solana/spl-token';
-import { Provider } from '@ethersproject/providers';
+import TransactionContext from '../../../contexts/TransactionContext';
 const injected = new InjectedConnector()
 
 const ActionButton = () => {
+  const { transactionList, saveTransactions } = useContext(TransactionContext);
   const { step, currStep, setCurrStep } = useContext(StepContext);
-  const { amount } = useContext(AmountContext)
-  const { balance } = useContext(BalanceContext)
-  const { direction } = useContext(DirectionContext)
   const { application } = useContext(ApplicationContext)
+  const { direction } = useContext(DirectionContext)
   const { saveBalance } = useContext(BalanceContext)
+  const { balance } = useContext(BalanceContext)
+  const { amount, saveAmount } = useContext(AmountContext)
 
   const { connected, connect } = useWallet()
   const { connection } = useConnection()
-  const solConnection = new Connection(config.solana.rpc);
+  const solConnection = new Connection(config.solana.rpc, 'confirmed');
   const { active, activate, library: provider, wait_until_finalized} = useWeb3React()
-  // solConnection._rpcWsEndpoint = config.solana.wss;
-  // // solConnection.underlyingSocket.url = config.solana.wss;
   const { setVisible: setModalVisible } = useWalletModal(); 
   const walletConnection = useConnection()
   const solSigner = useWallet();
@@ -69,7 +66,6 @@ const ActionButton = () => {
     return false
   }
 
-
   async function connectEth () {
     try {
       await activate(injected)
@@ -77,7 +73,6 @@ const ActionButton = () => {
     catch(e){
       console.log(e);
     }
-
   }
 
   async function connectSol () {
@@ -94,12 +89,10 @@ const ActionButton = () => {
   }
 
   useEffect(() => {
-    console.log(balance);
       switch (step) {
         case 1:
           if (direction == 'solToEth' ? connected : active) {
             if (balance !== undefined && amount > 0) { 
-              
               if(
                 direction == 'solToEth' && amount <= balance[0].solana
                 ||
@@ -162,57 +155,56 @@ const ActionButton = () => {
     }
 
     let txid;
-    
     try {
-      console.log(tx);
-      console.log(solSigner);
-      tx.recentBlockhash = (await solConnection.getLatestBlockhash()).blockhash
-      txid = await solSigner.signTransaction(tx)
-      txid = await solConnection.sendRawTransaction(txid.serialize(), options)
-      console.log(txid);
+      tx.recentBlockhash = (await solConnection.getLatestBlockhash()).blockhash;
+      txid = await solSigner.signTransaction(tx);
+      txid = await solConnection.sendRawTransaction(txid.serialize(), options);
+    
     }
     catch (e) {
       console.log(e);
     }
-    let confirmation = false;
+    
+    let confirmation;
     try {
-      console.log(solConnection);
-      console.log('works til here');
-      
-      confirmation = (await solConnection.confirmTransaction(txid)).value.confirmationStatus == 'confirmed' ? true : false;
+      confirmation = (await solConnection.confirmTransaction(txid, 'finalized')).value.err == null ? true : false;
+      console.log(confirmation);
+
+      saveTransactions([...transactionList, {txid:txid, status:confirmation, shown:false, time:Date.now()}]);
     }
-    catch (e) {
+    catch (e) { 
       console.log(e);
     }
     await application.updateBalance(saveBalance)
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
-    setCurrStep(step == 1 ? 2 : 1);
-    console.log();
-  }
+    setCurrStep(step == 1 ? 2 : 1);  
+  } 
 
   const handleBridgeSolToEth = async () => {
     setChecksPassed(false)
     let txid;
-    console.log(solConnection);
     try {
         setPrompt("Sending ISC to Wormhole...")
         txid = await application.wormhole.send_from_solana(amount)
+        setPrompt("Awaiting Block Confirmation...");
+        await solConnection.confirmTransaction(txid, 'finalized')
+        saveTransactions([...transactionList, {txid:txid, status:true, shown:false, time:Date.now()}]);
       }
       catch (e) {
         console.log(e);
       }
-    await confirmSolanaTx(txid)
     let VAA;
       try {
-        setPrompt("Fetching VAA...")  
+        setPrompt("Fetching VAA...");
         VAA = await application.wormhole.get_vaa_bytes_solana(txid);
+        saveTransactions([...transactionList, {txid:VAA.vaaBytes, status:true, shown:false, time:Date.now()}]);
+        await new Promise(resolve => {setTimeout(() => {resolve()}, 1000)})
       }
       catch (e) {
         console.log(e);
       }
-    console.log(VAA);
-    const signer = provider.getSigner()
+    const signer = provider.getSigner();
     let txid2;
       try {
         setPrompt("Requesting ISC from Wormhole...");
@@ -220,6 +212,7 @@ const ActionButton = () => {
         console.log(txid2);
         setPrompt("Awaiting Block Confirmation...");
         await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid2.hash});
+        saveTransactions([...transactionList, {txid:txid2.hash, status:true, shown:false, time:Date.now()}]);
       }
       catch(e) {
         console.log(e);
@@ -236,9 +229,11 @@ const ActionButton = () => {
       setPrompt("Sending ISC to Wormhole...")
       txid = await application.wormhole.send_from_ethereum(amount);
       await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid.hash});
+      saveTransactions([...transactionList, {txid:txid.hash, status:true, shown:false}]);
     }
     catch (e) {
       console.log(e);
+      saveTransactions([...transactionList, {txid:txid.hash, status:false, shown:false}]);
     }
     let VAA;
     try {

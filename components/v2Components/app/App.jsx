@@ -9,12 +9,10 @@ import ApplicationContext from '../contexts/applicationContext';
 import updateMaxAmounts from './utils/updateMaxAmounts';
 import MaxAmountContext from '../contexts/maxAmountContext';
 import DirectionContext from '../contexts/directionContext';
-import { sign } from '@certusone/wormhole-sdk';
-import SolIcon from '../cardComponents/icons/SolIcon';
-import EthIcon from '../cardComponents/icons/EthIcon';
 import { TxSuccessPopup } from '../popups/TxSuccess';
 import { TxFailedPopup } from '../popups/TxFail';
 import { BridgeSelector } from '../bridgeSelector/BridgeSelector';
+import TransactionContext from '../contexts/TransactionContext';
 
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
@@ -26,8 +24,16 @@ const BridgeApp = () => {
   const {active, library: provider} = useWeb3React()
   const solSigner = useWallet()
   const {connected} = useWallet()
+  const [ popupHtml, setPopupHtml ] = useState([])
 
   const steps = [1, 2, 3];
+
+  const [ transactionList, setTransactions ] = useState([])
+  const saveTransactions = (val) => {
+    console.log('new tx');
+    setTransactions(val);
+  };
+
 
   useEffect(() => {
     if (active || connected) {
@@ -55,7 +61,7 @@ const BridgeApp = () => {
       wait()
     }
   },[application])
-
+  
   useEffect(() => {
       console.log(balance);
       if (balance != undefined) {
@@ -65,37 +71,51 @@ const BridgeApp = () => {
       }
   }, [balance, direction])
 
+  useEffect(() => {
+    console.log(transactionList);
+    
+    const updatePopupHtml = () => {
+      console.log("new tx 2");
+      let tempHtml = popupHtml
+      console.log(transactionList); 
+      transactionList.map((tx) => {  
+        if(tx.shown !== true) {
+          const now = Date.now()
+          const timeDiff = now - tx.time;
+          console.log(timeDiff);
+          if (timeDiff < 10000) {
+            tx.status === true
+            ?
+              tempHtml.push(<TxSuccessPopup txid={tx.txid} key={tx.txid} counter={timeDiff}/>)
+            :
+              tempHtml.push(<TxFailedPopup txid={tx.txid} key={tx.txid} counter={timeDiff}/>)
+          } 
+        }
+      })  
+      setPopupHtml(tempHtml)
+    } 
+    updatePopupHtml();
+  }, [transactionList])
+
+
+  useEffect(() => {
+    // console.log(transactionList);
+  },[popupHtml])
 
   const html = steps.map(( step ) => {  return <Card step={step} currStep={currStep} setCurrStep={setCurrStep} key={step}/>  });
   useEffect(() => {setCurrStep(1)},[direction])
-  return ( 
-    <>
-    
-      {/* Bridge Selector */}
-      <BridgeSelector/>
-      {/* Popups */}
-      <TxSuccessPopup/>
-      <TxFailedPopup/>
-      {/* <BridgeWarning/> */}
 
+  return (  
+    <TransactionContext.Provider value={{transactionList, saveTransactions}}>
+      <BridgeSelector/>
+      <div className={styles.txPopupWrapper} id='popupWrapper'>
+        {popupHtml}
+      </div>
       <div className={styles.v2App}>
         {html}
       </div>
-    </>
+    </TransactionContext.Provider>
   )
 }
 
 export default BridgeApp
-
-{/* End Temporary Buttons */}
-      {/* Temporary Buttons */}
-{/*         <button onClick={() => {currStep - 1 > 0 ? setCurrStep(currStep-1) : console.log()}}>Step Up</button>
-        <button onClick={() => {currStep + 1 < 4 ? setCurrStep(currStep+1) : console.log()}}>Step Down</button> */}
-        {/* <div className={styles.dirBtns}>
-          <button type='button' className={direction == 'solToEth' ? styles.dirBtnActive : styles.dirBtn} onClick={() => {saveDirection('solToEth')}}>
-            <SolIcon type={'swap'}/><p>Solana To </p><EthIcon type={'swap'}/><p>Ethereum</p>
-          </button>
-          <button type='button' className={direction == 'solToEth' ? styles.dirBtn : styles.dirBtnActive} onClick={() => {saveDirection('ethToSol')}}>
-            <EthIcon type={'swap'}/><p>Ethereum To </p><SolIcon type={'swap'}/><p>Solana</p>
-          </button>
-        </div> */}
