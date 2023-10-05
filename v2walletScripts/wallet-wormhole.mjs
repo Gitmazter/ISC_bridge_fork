@@ -154,7 +154,7 @@ class WalletWormhole {
     }
 
     async get_vaa_bytes_solana(txid) {
-        const info = await this.connection.getTransaction(txid);
+        const info = await this.connection.getTransaction(txid, {maxSupportedTransactionVersion: 1});
         console.log(info);
         const sequence = parseSequenceFromLogSolana(info);
         const emitterAddress = getEmitterAddressSolana(this.config.solana.tokenBridgeAddress);

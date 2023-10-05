@@ -1,27 +1,58 @@
+import { useEffect } from 'react';
 import styles from '../../../styles/mystyle.module.css'
 
-export const TxSuccessPopup = () => {
+export const TxSuccessPopup = ({txid, counter}) => {
+  const slideIn = () => {
+    const popup = document.getElementById(`popupSuccess${txid}`);
+    popup.style.display = 'block';
+    popup.style.opacity = 1;
+    popup.style.transform = "translateX(0)"
+  }  
+  const slideOut = async () => {
+    const popup = document.getElementById(`popupSuccess${txid}`);
+    popup.style.opacity = 0;
+    popup.style.transform = "translateX(400px)"
+    await new Promise(resolve => { 
+      setTimeout(() => {resolve()}, 500)  
+    })
+    popup.style.display = 'none';
+  }  
 
-  const handleClick = () => {
-    const thisComponent = document.getElementById('successPopup');
-    thisComponent.style.left = '100vw';
-    thisComponent.style.opacity = '0'
+
+  const animateBorder = async () => {
+    const popup = document.getElementById(`popupSuccess${txid}`);
+    while (counter <= 1000) {
+      popup.style.background = `linear-gradient(to right, #2B7A0F ${counter/10}%, #00000000 ${counter/10+20}%)`;
+      await new Promise(resolve => { 
+        setTimeout(() => {
+          counter++; 
+          resolve() 
+        }, 5000/1000); 
+        console.log("updating style");
+      });
+    }  
   }
 
+  useEffect(() => {
+    async function loadPopup () {
+      slideIn();
+      await animateBorder();
+      slideOut();   
+    }  
+    loadPopup(); 
+  },[]) 
+   
   return (
-    <div id='successPopup' className={styles.popupWrapper}>
-      <div className={styles.popup}>
-        <div className={styles.successBanner}>
-            <img src='./new/check.svg'/>
-            <div className={styles.line1}></div>
-            <div className={styles.line2}></div>
-
-        </div>
-        <div className={styles.txPopupWrapper}>
-          <p className={styles.statusSuccess}>Transaction <span>Successful!</span></p>
-          <p className={styles.txid}>0x4dfc6ae36750b78dd7bdc7951478718ed4210a852fc159f5148067a49db6ccb5</p>
-          <button onClick={handleClick}>Continue</button>
-        </div>
+    <div className={styles.popupSuccess} id={`popupSuccess${txid}`} key={txid}> 
+      <div className={styles.txPopup}>
+        <p className={styles.ppMessage}>Transaction <span>Successful!</span></p>
+        <a className={styles.ppTxid} href={`https://explorer.solana.com/tx/${txid}`} target='empty'>
+         <p>{txid}</p>
+        </a> 
+        <img className={styles.statusImg} src='./new/success.svg' />
+        <div className={styles.diagonalLine1}></div>
+        <div className={styles.diagonalLine2}></div>
+        <button type='button' onClick={slideOut} className={styles.closePopup}>X</button>
       </div>
     </div>
   )

@@ -1,0 +1,195 @@
+@import './sizeVars';
+@import './colorVars';
+
+.bridgeSelector {
+  display: flex;
+  gap: 3vh;
+  align-items: center;
+  margin-bottom: 3vh;
+  transition: all 0.3s ease;
+  img {
+    transition: transform 1s ease;
+    height: 2rem;
+  }
+  .bridgeInputWrapper{
+    height: 60px;
+    width: 310px;
+    background-color: #222E3D;
+    border-radius: 1vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:1vw;
+    .bridgeInputChain {
+      display: flex;
+      gap: 1vw;
+      margin-left: 1.3vw;
+      input {
+        color: white;
+        background-color:$transparent;
+        width: 100%;
+        border: none;
+        font-size: 1.6rem;
+          &:focus-within {
+            outline: none;
+          }
+      }
+    }
+
+    .dropdownBtn {
+      cursor: pointer;
+      color: white;
+      border-radius: 999px;
+      transition: height 0.3s ease, box-shadow 0.6s ease, transform 0.3s ease;
+      margin-right: 1.3vw;
+      &:hover {
+        height: 2.5em;
+        box-shadow:0px 0px 3em 1px #ffffff;
+      }
+    }
+  }
+
+  // .bridgeDropdown {
+  //   transition: all 0.3s ease;
+  //   display: flex;
+  //   flex-direction: column;
+  //   gap: 0.2vh;
+  //   select {
+  //     height: 6vh;
+  //     width: 20vw;
+  //     background-color: #222E3D;
+  //     border-radius: 1vh;
+  //     border: none;
+  //     color: white;
+  //     option {
+  //       background-color: black;
+  //       color: white;
+  //       display: flex;
+  //       align-items: center;
+  //       border-radius: 1vh;
+  //       &:hover {
+  //         background-color:#486386 ;
+  //       }
+  //     }
+  //   }
+  // }
+}
+.selectorWrapper {
+  position: relative;
+  // z-index: 100;
+  .inactive {
+    z-index: 9999;
+    position: absolute;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    width: 100%;
+    height: 0px;
+    display: flex;
+    flex-direction: row-reverse;
+    .scrollBar {
+      border-radius: 999px;
+      height: 120px;
+      transform: translateX(10px);
+      div {
+        cursor: pointer;
+        border-radius: 999px;
+        background-color: $bright-blue;
+        height: 30%;
+      }
+    }
+  }
+  .active {
+    z-index: 9999;
+    position: absolute;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0px);
+    transition: all 0.3s ease;
+    width: 100%;
+    height: 120px;
+    display: flex;
+    flex-direction: row-reverse;
+    .scrollBar {
+      border-radius: 999px;
+      height: 120px;
+      transform: translateX(10px);
+      div {
+        cursor: pointer;
+        border-radius: 999px;
+        background-color: $bright-blue;
+        height: 30%;
+      }
+    }
+    
+  }
+  .dropdown {
+      width: 100%;
+      max-height: 120px;
+      overflow-y: scroll;
+      position: absolute;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 1px;
+      margin-top: 1px;
+
+    .chainCard {
+      z-index: 100;
+      cursor:pointer;
+      border-radius: $standard-border-radius;
+      background-color: $brighter-dark-blue-gray;
+      border: 1px solid $light-gray;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      width: 80%;
+      opacity: 0.9;
+      img {
+        height: 1em;
+        padding: 5px;
+        margin: 0px;
+      }
+      p {
+        color: $white;
+        margin: 0px;
+      }
+      &:hover {
+        background-color: $faded-blue;
+      }
+    }
+  }
+}
+
+.dropdown::-webkit-scrollbar {
+  width: 0.5em;
+}
+.dropdown::-webkit-scrollbar-track {
+  background-color: $isc-blue;
+  border-radius: 999px;
+}
+.dropdown::-webkit-scrollbar-thumb {
+  background-color: $light-blue;
+  border-radius: 999px;
+}
+
+.scrollBar {
+  background-color: $light-gray;
+  width: 10px;
+  height: 120px;
+}
+
+@media (max-width: 700px) {
+  .bridgeSelector{
+    flex-direction: column;
+    .bridgeInputWrapper {
+      width: 75vw;
+    }
+    .turn270 {
+      transform: rotate(1080deg);
+    }
+  }
+
+}     

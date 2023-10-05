@@ -1,0 +1,16 @@
+{
+  "chains": [
+    {"name": "Anchor", "imgUrl":"./solana.svg"},
+    {"name": "Cardano", "imgUrl":"./ethereum.svg"},
+    {"name": "Ethereum", "imgUrl":"./ethereum.svg"},
+    {"name": "Polkadot", "imgUrl":"./ethereum.svg"},
+    {"name": "Polygon", "imgUrl":"./ethereum.svg"},
+    {"name": "Ripple", "imgUrl":"./ethereum.svg"},
+    {"name": "Solana", "imgUrl":"./ethereum.svg"},
+    {"name": "Sui", "imgUrl":"./ethereum.svg"}
+  ],
+  "establishedBridges":[
+    {"chainOne": "Ethereum", "chainTwo": "Solana", "direction": "ethToSol" },
+    {"chainOne": "Solana", "chainTwo": "Ethereum", "direction": "solToEth"}
+  ]
+}

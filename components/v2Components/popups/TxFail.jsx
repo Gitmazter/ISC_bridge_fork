@@ -1,28 +1,64 @@
+import { useEffect } from 'react';
 import styles from '../../../styles/mystyle.module.css'
+import { resolve } from 'styled-jsx/css';
 
-export const TxFailedPopup = () => {
+export const TxFailedPopup = ({txid, counter}) => {
 
-  const handleClick = () => {
-    const thisComponent = document.getElementById('failedPopup');
-    thisComponent.style.left = '100vw';
-    thisComponent.style.opacity = '0'
+  const slideIn = () => {
+    const popup = document.getElementById(`popupFailed${txid}`);
+    popup.style.opacity = 1;
+    popup.style.transform = "translateX(0)"
+  }  
+  const slideOut = async () => {
+    const popup = document.getElementById(`popupFailed${txid}`);
+    popup.style.opacity = 0;
+    popup.style.transform = "translateX(400px)"
+    popup.style.display = 'none'
+    await new Promise(resolve => { 
+      setTimeout(() => {resolve()}, 500)  
+    })
+    popup.style.display = 'none'
+    popup.style.height = '0px';
+  }  
+
+
+  const animateBorder = async () => {
+    const popup = document.getElementById(`popupFailed${txid}`);
+    while (counter <= 1000) {
+      popup.style.background = `linear-gradient(to right, #BB5151 ${(counter/10)}%, #00000000 ${(counter/10)+20}%)`;
+      await new Promise(resolve => {
+        setTimeout(() => {
+          counter++;
+          resolve()
+        }, 5000/1000); 
+        console.log("updating style");
+      });
+    } 
   }
 
-  return (
-    <div id='failedPopup' className={styles.popupWrapper}>
-      <div className={styles.popup}>
-        <div className={styles.failedBanner}>
-            <img src='./new/check.svg'/>
-            <div className={styles.line1}></div>
-            <div className={styles.line2}></div>
+  useEffect(() => {
+    async function loadPopup () {
+      slideIn();
+      await animateBorder();
+      slideOut();
+    }   
+    loadPopup();
+  },[])
 
-        </div>
-        <div className={styles.txPopupWrapper}>
-          <p className={styles.statusFailed}>Transaction <span>Failed!</span></p>
-          <p className={styles.txid}>0x4dfc6ae36750b78dd7bdc7951478718ed4210a852fc159f5148067a49db6ccb5</p>
-          <button onClick={handleClick}>Continue</button>
-        </div>
-      </div>
+  return (
+    <div className={styles.popupFailed} id={`popupFailed${txid}`} key={txid}>
+      <div className={styles.txPopup}>
+        <p className={styles.ppMessage}>Transaction 
+          <span> Failed!</span>
+        </p>
+        <a className={styles.ppTxid} href={`https://explorer.solana.com/tx/${txid}`} target='empty'>
+          <p>{txid}</p>
+        </a>
+        <img className={styles.statusImg} src='./new/failed.svg' />
+        <div className={styles.diagonalLine1}></div>
+        <div className={styles.diagonalLine2}></div>
+        <button type='button' onClick={slideOut} className={styles.closePopup}>X</button>
+      </div> 
     </div>
   )
 }
