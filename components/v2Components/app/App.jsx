@@ -71,9 +71,9 @@ const BridgeApp = () => {
       }
   }, [balance, direction])
 
-  useEffect(() => {
+  useEffect(() => { 
     console.log(transactionList);
-    
+
     const updatePopupHtml = () => {
       console.log("new tx 2");
       let tempHtml = popupHtml
