@@ -2,6 +2,10 @@ import { useEffect } from 'react';
 import styles from '../../../styles/mystyle.module.css'
 import { resolve } from 'styled-jsx/css';
 
+// Make sure these show up accurately after each addition to Transaction List
+// 
+
+
 export const TxFailedPopup = ({txid, counter}) => {
 
   const slideIn = () => {
