@@ -13,6 +13,7 @@ import { TxSuccessPopup } from '../popups/TxSuccess';
 import { TxFailedPopup } from '../popups/TxFail';
 import { BridgeSelector } from '../bridgeSelector/BridgeSelector';
 import TransactionContext from '../contexts/TransactionContext';
+import { BridgeWarning } from '../popups/BridgeWarning';
 
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
@@ -111,6 +112,7 @@ const BridgeApp = () => {
       <div className={styles.txPopupWrapper} id='popupWrapper'>
         {popupHtml}
       </div>
+      <BridgeWarning/>
       <div className={styles.v2App}>
         {html}
       </div>

@@ -1,0 +1,102 @@
+@import './colorVars';
+
+.bridgeWarningWrapper {
+  $isc-blue-01:#06081874;
+  position: absolute;
+  top: 8vh;
+  height: 92vh;
+  width: 100vw;
+  z-index: 10000;
+  background-color: $isc-blue-01;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .bridgeWarning {
+    color: white;
+
+    background-color: $faded-dark-blue-gray;
+    border-radius: 1em;
+    display: flex;
+    flex-direction: row;
+    .bridgeWarningDecor {
+      width: 12em;
+    }
+    .warningContent {
+      width: 25em;
+      padding: 2em;
+    }
+  }
+}
+
+.warningForm {
+  display: flex;
+  flex-direction: column;
+  .flexRow {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.warningSubmit {
+  background-color: $clear-orange;
+  cursor: pointer;
+  height: 45px;
+  border-radius: 999px;
+  border: none;
+  color: white;
+  font-size: 18px;
+}
+
+.warningContent {
+  h2 {
+    font-size: 2.2em;
+    margin: 0px;
+    span {
+      color: $clear-orange;
+    }
+  }
+}
+
+.bridgeWarningDecor {
+  position: relative;
+  overflow: hidden;
+  .warningIcon {
+    position: absolute;
+   height: 4em;
+   bottom: 0%;
+   right: 5%;
+  }
+  .line1{ 
+    position: absolute;
+    border: 1px solid $clear-orange;
+    bottom: 0px;
+    width: 50em;
+    right: -15em;
+    rotate: 130deg;
+  }
+  .line2{
+    position: absolute;
+    border: 1px solid $clear-orange;
+    bottom: 2em;
+    width: 50em;
+    right: -15em;
+    rotate: 130deg;
+  }
+  .line3{
+    position: absolute;
+    border: 1px solid $clear-orange;
+    top: -1em;
+    width: 60em;
+    right: -20.35em;
+    rotate: 50deg;
+  }
+  .line4{
+    position: absolute;
+    border: 1px solid $clear-orange;
+    top: -3em;
+    width: 50em;
+    right: -15.4em;
+    rotate: 50deg;
+  }
+}
