@@ -234,6 +234,8 @@
   position: relative;
   background-color: #222E3D;
   height: 7em;
+  max-height: -moz-max-content;
+  max-height: max-content;
   width: 21em;
   border-radius: 1em;
   padding: 1em;
@@ -257,6 +259,8 @@
   position: relative;
   background-color: #222E3D;
   height: 7em;
+  max-height: -moz-max-content;
+  max-height: max-content;
   width: 21em;
   border-radius: 1em;
   padding: 1em;
@@ -356,6 +360,103 @@
 .ppTxid p {
   margin: 0px;
   width: 70%;
+}
+
+.bridgeWarningWrapper {
+  position: absolute;
+  top: 8vh;
+  height: 92vh;
+  width: 100vw;
+  z-index: 10000;
+  background-color: rgba(6, 8, 24, 0.4549019608);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.bridgeWarningWrapper .bridgeWarning {
+  color: white;
+  background-color: #222E3D;
+  border-radius: 1em;
+  display: flex;
+  flex-direction: row;
+}
+.bridgeWarningWrapper .bridgeWarning .bridgeWarningDecor {
+  width: 12em;
+}
+.bridgeWarningWrapper .bridgeWarning .warningContent {
+  width: 25em;
+  padding: 2em;
+}
+
+.warningForm {
+  display: flex;
+  flex-direction: column;
+}
+.warningForm .flexRow {
+  display: flex;
+  flex-direction: row;
+}
+
+.warningSubmit {
+  background-color: #B46D03;
+  cursor: pointer;
+  height: 45px;
+  border-radius: 999px;
+  border: none;
+  color: white;
+  font-size: 18px;
+}
+
+.warningContent h2 {
+  font-size: 2.2em;
+  margin: 0px;
+}
+.warningContent h2 span {
+  color: #B46D03;
+}
+
+.bridgeWarningDecor {
+  position: relative;
+  overflow: hidden;
+}
+.bridgeWarningDecor .warningIcon {
+  position: absolute;
+  height: 4em;
+  bottom: 0%;
+  right: 5%;
+}
+.bridgeWarningDecor .line1 {
+  position: absolute;
+  border: 1px solid #B46D03;
+  bottom: 0px;
+  width: 50em;
+  right: -15em;
+  rotate: 130deg;
+}
+.bridgeWarningDecor .line2 {
+  position: absolute;
+  border: 1px solid #B46D03;
+  bottom: 2em;
+  width: 50em;
+  right: -15em;
+  rotate: 130deg;
+}
+.bridgeWarningDecor .line3 {
+  position: absolute;
+  border: 1px solid #B46D03;
+  top: -1em;
+  width: 60em;
+  right: -20.35em;
+  rotate: 50deg;
+}
+.bridgeWarningDecor .line4 {
+  position: absolute;
+  border: 1px solid #B46D03;
+  top: -3em;
+  width: 50em;
+  right: -15.4em;
+  rotate: 50deg;
 }
 
 .opacity1 {
