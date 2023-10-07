@@ -7,10 +7,9 @@ import StepContext from '../../../contexts/stepContext';
 import BalanceContext from '../../../contexts/balanceContext';
 import DirectionContext from '../../../contexts/directionContext';
 import ApplicationContext from '../../../contexts/applicationContext';
-import { Connection, Transaction } from '@solana/web3.js';
+import { Connection } from '@solana/web3.js';
 import AmountContext from '../../../contexts/amountContext';
 import config from '../../../../../config/config.json'
-import confirmSolanaTx from './confirmSolanaTx';
 const buttonPrompts = bodyConfig.buttonPrompts;
 import {InjectedConnector} from '@web3-react/injected-connector'
 import { useWalletModal } from '@solana/wallet-adapter-react-ui';
@@ -33,7 +32,8 @@ const ActionButton = () => {
   const { setVisible: setModalVisible } = useWalletModal(); 
   const walletConnection = useConnection()
   const solSigner = useWallet();
-  
+  const [bridgeWarning, setBridgeWarning ] = useState()
+
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
   const [walletSelected, setWalletSelected] = useState(false);
@@ -42,6 +42,9 @@ const ActionButton = () => {
     setWalletSelected(false)
   },[balance])
 
+  useEffect(() => {
+   setBridgeWarning(document.getElementById('bridgeWarningComponent'))
+  },[])
 
   function amountCheck ()  {
     if (balance !== undefined) {
@@ -182,7 +185,7 @@ const ActionButton = () => {
   } 
 
   const handleBridgeSolToEth = async () => {
-    setChecksPassed(false)
+    setChecksPassed(false);
     let txid;
     try {
         setPrompt("Sending ISC to Wormhole...")
@@ -228,18 +231,19 @@ const ActionButton = () => {
       setChecksPassed(false)
       setPrompt("Sending ISC to Wormhole...")
       txid = await application.wormhole.send_from_ethereum(amount);
+      console.log(txid);
       await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid.hash});
-      saveTransactions([...transactionList, {txid:txid.hash, status:true, shown:false}]);
+      saveTransactions([...transactionList, {txid:txid.hash, status:true, shown:false, time:Date.now()}]);
     }
     catch (e) {
       console.log(e);
-      saveTransactions([...transactionList, {txid:txid.hash, status:false, shown:false}]);
     }
     let VAA;
     try {
       setPrompt("Fetching VAA...")
       VAA = await application.wormhole.get_vaa_bytes_ethereum(txid)
       console.log(VAA);
+      saveTransactions([...transactionList, {txid:VAA.vaaBytes, status:true, shown:false, time:Date.now()}]);
     }
     catch (e) {
       console.log(e);
@@ -248,6 +252,8 @@ const ActionButton = () => {
     try {
       setPrompt("(3 signatures) Requesting ISC from Wormhole...")
       txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes)
+      console.log(txid2);
+      saveTransactions([...transactionList, {txid:txid2, status:true, shown:false, time:Date.now()}]);
       setPrompt("Bridging Complete")
     }
     catch(e) {
@@ -261,19 +267,19 @@ const ActionButton = () => {
   const handleSwapEth = async () => {
     setChecksPassed(false)
     setPrompt("Swapping ISC...")
-    let tx
+    let txid
     try {
       if (direction === 'solToEth'){
-        tx = await application.ethereum_swap.swap_oil_to_isc(amount);
+        txid = await application.ethereum_swap.swap_oil_to_isc(amount);
       }
       else {
-        tx = await application.ethereum_swap.swap_isc_to_oil(amount);
+        txid = await application.ethereum_swap.swap_isc_to_oil(amount);
       }
     }
     catch (e) {
       console.log(e);
     }
-    console.log(tx);
+    saveTransactions([...transactionList, {txid:txid.hash, status:true, shown:false, time:Date.now()}]);
     await application.updateBalance(saveBalance)
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
@@ -287,7 +293,8 @@ const ActionButton = () => {
         case 1:
           console.log('Handling Swap 1');
           if (connected) {
-            handleSwapSol();
+            await handleSwapSol();
+            bridgeWarning.style.display = 'flex';
           }
           else {
             console.log('connecting sol');
@@ -325,7 +332,8 @@ const ActionButton = () => {
         case 1:
           console.log('Handling Swap 1');
           if (active) {
-            handleSwapEth();
+            await handleSwapEth();
+            bridgeWarning.style.display = 'flex';
           }
           else {
             connectEth()

@@ -13,6 +13,8 @@ import { TxSuccessPopup } from '../popups/TxSuccess';
 import { TxFailedPopup } from '../popups/TxFail';
 import { BridgeSelector } from '../bridgeSelector/BridgeSelector';
 import TransactionContext from '../contexts/TransactionContext';
+import { BridgeWarning } from '../popups/BridgeWarning';
+import ContactContext from '../contexts/contactContext';
 
 const BridgeApp = () => {
   const { application, saveApplication } = useContext(ApplicationContext)
@@ -25,6 +27,7 @@ const BridgeApp = () => {
   const solSigner = useWallet()
   const {connected} = useWallet()
   const [ popupHtml, setPopupHtml ] = useState([])
+  const [contactInfo, setContactInfo] = useState({})
 
   const steps = [1, 2, 3];
 
@@ -106,15 +109,18 @@ const BridgeApp = () => {
   useEffect(() => {setCurrStep(1)},[direction])
 
   return (  
-    <TransactionContext.Provider value={{transactionList, saveTransactions}}>
-      <BridgeSelector/>
-      <div className={styles.txPopupWrapper} id='popupWrapper'>
-        {popupHtml}
-      </div>
-      <div className={styles.v2App}>
-        {html}
-      </div>
-    </TransactionContext.Provider>
+    <ContactContext.Provider value={{contactInfo, setContactInfo}}>
+      <TransactionContext.Provider value={{transactionList, saveTransactions}}>
+        <BridgeSelector/>
+        <div className={styles.txPopupWrapper} id='popupWrapper'>
+          {popupHtml}
+        </div>
+        <BridgeWarning/>
+        <div className={styles.v2App}>
+          {html}
+        </div>
+      </TransactionContext.Provider>
+    </ContactContext.Provider>
   )
 }
 
