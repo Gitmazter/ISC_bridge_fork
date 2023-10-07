@@ -3,15 +3,16 @@
 .bridgeWarningWrapper {
   $isc-blue-01:#06081874;
   position: absolute;
-  top: 8vh;
-  height: 92vh;
+  top: 0px;
+  height: 100vh;
   width: 100vw;
-  z-index: 10000;
+  z-index: 998;
   background-color: $isc-blue-01;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  display: none;
   .bridgeWarning {
     color: white;
 
@@ -32,9 +33,82 @@
 .warningForm {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+  input[type=radio],
+  input[type=checkbox] {
+    -webkit-appearance: none;
+    appearance: none;
+    background: #fff; /* this is needed for iOS. Otherwise the background just becomes black. */
+    border: 1px solid #333;
+    height: 1.5em;
+    width: 1.5em;
+    display: inline-block;
+    border-radius: 100%;
+    vertical-align: text-bottom;
+    position: relative;
+    
+    &[disabled],
+    &[aria-disabled=true] {
+      opacity: .4;
+    }
+    
+    &::before {
+      content: '';
+      position: absolute;
+      margin: auto;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      overflow: hidden;
+      top: 0;
+    }
+    
+    &:focus {
+      outline: 2px solid;
+      outline-offset: 2px;
+    }
+  }
+  input[type=radio]::before {
+    height: 0;
+   width: 0;
+  }
+  input[type=radio]:checked::before {
+    border: 5px solid transparent;
+    border-radius: 100%;
+    outline-offset: -6px;
+    background: #000;
+  }
+  input[type=checkbox]:indeterminate::before,
+  input[type=checkbox][aria-checked=mixed]::before {
+    border: 2px solid #222;
+    height: 0;
+    width: 40%;
+  }
+
+  input[type=checkbox]:checked::before {
+    border-right: 3px solid #000;
+    border-bottom: 3px solid #000;
+    height: 50%;
+    width: 30%;
+    transform: rotate(45deg) translateY(-20%) translateX(-10%);
+  }
+  input[type=text] {
+    background-color: $faded-dark-blue-gray;
+    border: 1px solid white;
+    padding: 0.5em;
+    border-radius: 1em;
+    color: white;
+    &:focus-within {
+      border: 2px solid rgba(0, 0, 0, 0.101);
+    }
+  }
   .flexRow {
     display: flex;
     flex-direction: row;
+    font-size: 1rem;
+    font-weight: bold;
+    align-items: center;
+    line-height: 1.1;
   }
 }
 
@@ -64,8 +138,8 @@
   .warningIcon {
     position: absolute;
    height: 4em;
-   bottom: 0%;
-   right: 5%;
+   bottom: 4%;
+   right: 10%;
   }
   .line1{ 
     position: absolute;
@@ -88,7 +162,7 @@
     border: 1px solid $clear-orange;
     top: -1em;
     width: 60em;
-    right: -20.35em;
+    right: -17.8em;
     rotate: 50deg;
   }
   .line4{
@@ -96,7 +170,84 @@
     border: 1px solid $clear-orange;
     top: -3em;
     width: 50em;
-    right: -15.4em;
+    right: -12.8em;
     rotate: 50deg;
+  }
+}
+
+@media screen and ( prefers-color-scheme: dark ) {
+  .warningForm {
+    input[type=radio],
+    input[type=checkbox]{
+      background: $faded-dark-blue-gray;
+      border-color: #fff;
+    }
+    
+   input[type=radio] {
+      &:checked {
+       &::before {
+         background: $light-blue;
+       }
+     }
+    }
+    input[type=checkbox]:checked::before,
+    input[type=checkbox]:indeterminate::before,
+    input[type=checkbox][aria-checked=mixed]::before{
+      border-right-color: $light-blue;
+      border-bottom-color: $light-blue;
+    }
+    
+    input[type=radio],
+    input[type=checkbox] {
+      &:focus {
+        outline-color: $light-blue;
+      }
+   }
+  }
+}
+
+@media (max-width: 700px) {
+  .bridgeWarningWrapper {
+    .bridgeWarning {
+      top: 20vh;
+      .warningContent {
+        width: 20em;
+      }
+      .bridgeWarningDecor {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 400px) {
+  .bridgeWarningWrapper {
+    .bridgeWarning {
+      .warningContent {
+        width: 15em;
+      }
+      .bridgeWarningDecor {
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 320px) {
+  .bridgeWarningWrapper {
+    .bridgeWarning {
+      .warningContent {
+        width: 12em;
+        h2 {
+          font-size: 1.5em;
+        }
+        p {
+          font-size: 0.9em;
+        }
+      }
+      .bridgeWarningDecor {
+        display: none;
+      }
+    }
   }
 }

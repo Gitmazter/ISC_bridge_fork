@@ -364,15 +364,16 @@
 
 .bridgeWarningWrapper {
   position: absolute;
-  top: 8vh;
-  height: 92vh;
+  top: 0px;
+  height: 100vh;
   width: 100vw;
-  z-index: 10000;
+  z-index: 998;
   background-color: rgba(6, 8, 24, 0.4549019608);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  display: none;
 }
 .bridgeWarningWrapper .bridgeWarning {
   color: white;
@@ -392,10 +393,83 @@
 .warningForm {
   display: flex;
   flex-direction: column;
+  gap: 10px;
+}
+.warningForm input[type=radio],
+.warningForm input[type=checkbox] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+       appearance: none;
+  background: #fff; /* this is needed for iOS. Otherwise the background just becomes black. */
+  border: 1px solid #333;
+  height: 1.5em;
+  width: 1.5em;
+  display: inline-block;
+  border-radius: 100%;
+  vertical-align: text-bottom;
+  position: relative;
+}
+.warningForm input[type=radio][disabled], .warningForm input[type=radio][aria-disabled=true],
+.warningForm input[type=checkbox][disabled],
+.warningForm input[type=checkbox][aria-disabled=true] {
+  opacity: 0.4;
+}
+.warningForm input[type=radio]::before,
+.warningForm input[type=checkbox]::before {
+  content: "";
+  position: absolute;
+  margin: auto;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  top: 0;
+}
+.warningForm input[type=radio]:focus,
+.warningForm input[type=checkbox]:focus {
+  outline: 2px solid;
+  outline-offset: 2px;
+}
+.warningForm input[type=radio]::before {
+  height: 0;
+  width: 0;
+}
+.warningForm input[type=radio]:checked::before {
+  border: 5px solid transparent;
+  border-radius: 100%;
+  outline-offset: -6px;
+  background: #000;
+}
+.warningForm input[type=checkbox]:indeterminate::before,
+.warningForm input[type=checkbox][aria-checked=mixed]::before {
+  border: 2px solid #222;
+  height: 0;
+  width: 40%;
+}
+.warningForm input[type=checkbox]:checked::before {
+  border-right: 3px solid #000;
+  border-bottom: 3px solid #000;
+  height: 50%;
+  width: 30%;
+  transform: rotate(45deg) translateY(-20%) translateX(-10%);
+}
+.warningForm input[type=text] {
+  background-color: #222E3D;
+  border: 1px solid white;
+  padding: 0.5em;
+  border-radius: 1em;
+  color: white;
+}
+.warningForm input[type=text]:focus-within {
+  border: 2px solid rgba(0, 0, 0, 0.101);
 }
 .warningForm .flexRow {
   display: flex;
   flex-direction: row;
+  font-size: 1rem;
+  font-weight: bold;
+  align-items: center;
+  line-height: 1.1;
 }
 
 .warningSubmit {
@@ -423,8 +497,8 @@
 .bridgeWarningDecor .warningIcon {
   position: absolute;
   height: 4em;
-  bottom: 0%;
-  right: 5%;
+  bottom: 4%;
+  right: 10%;
 }
 .bridgeWarningDecor .line1 {
   position: absolute;
@@ -447,7 +521,7 @@
   border: 1px solid #B46D03;
   top: -1em;
   width: 60em;
-  right: -20.35em;
+  right: -17.8em;
   rotate: 50deg;
 }
 .bridgeWarningDecor .line4 {
@@ -455,10 +529,63 @@
   border: 1px solid #B46D03;
   top: -3em;
   width: 50em;
-  right: -15.4em;
+  right: -12.8em;
   rotate: 50deg;
 }
 
+@media screen and (prefers-color-scheme: dark) {
+  .warningForm input[type=radio],
+  .warningForm input[type=checkbox] {
+    background: #222E3D;
+    border-color: #fff;
+  }
+  .warningForm input[type=radio]:checked::before {
+    background: #29D9FF;
+  }
+  .warningForm input[type=checkbox]:checked::before,
+  .warningForm input[type=checkbox]:indeterminate::before,
+  .warningForm input[type=checkbox][aria-checked=mixed]::before {
+    border-right-color: #29D9FF;
+    border-bottom-color: #29D9FF;
+  }
+  .warningForm input[type=radio]:focus,
+  .warningForm input[type=checkbox]:focus {
+    outline-color: #29D9FF;
+  }
+}
+@media (max-width: 700px) {
+  .bridgeWarningWrapper .bridgeWarning {
+    top: 20vh;
+  }
+  .bridgeWarningWrapper .bridgeWarning .warningContent {
+    width: 20em;
+  }
+  .bridgeWarningWrapper .bridgeWarning .bridgeWarningDecor {
+    display: none;
+  }
+}
+@media (max-width: 400px) {
+  .bridgeWarningWrapper .bridgeWarning .warningContent {
+    width: 15em;
+  }
+  .bridgeWarningWrapper .bridgeWarning .bridgeWarningDecor {
+    display: none;
+  }
+}
+@media (max-width: 320px) {
+  .bridgeWarningWrapper .bridgeWarning .warningContent {
+    width: 12em;
+  }
+  .bridgeWarningWrapper .bridgeWarning .warningContent h2 {
+    font-size: 1.5em;
+  }
+  .bridgeWarningWrapper .bridgeWarning .warningContent p {
+    font-size: 0.9em;
+  }
+  .bridgeWarningWrapper .bridgeWarning .bridgeWarningDecor {
+    display: none;
+  }
+}
 .opacity1 {
   opacity: 1;
 }

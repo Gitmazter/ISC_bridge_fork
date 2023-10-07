@@ -32,7 +32,8 @@ const ActionButton = () => {
   const { setVisible: setModalVisible } = useWalletModal(); 
   const walletConnection = useConnection()
   const solSigner = useWallet();
-  
+  const [bridgeWarning, setBridgeWarning ] = useState()
+
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false)
   const [walletSelected, setWalletSelected] = useState(false);
@@ -41,6 +42,9 @@ const ActionButton = () => {
     setWalletSelected(false)
   },[balance])
 
+  useEffect(() => {
+   setBridgeWarning(document.getElementById('bridgeWarningComponent'))
+  },[])
 
   function amountCheck ()  {
     if (balance !== undefined) {
@@ -181,7 +185,7 @@ const ActionButton = () => {
   } 
 
   const handleBridgeSolToEth = async () => {
-    setChecksPassed(false)
+    setChecksPassed(false);
     let txid;
     try {
         setPrompt("Sending ISC to Wormhole...")
@@ -289,7 +293,8 @@ const ActionButton = () => {
         case 1:
           console.log('Handling Swap 1');
           if (connected) {
-            handleSwapSol();
+            await handleSwapSol();
+            bridgeWarning.style.display = 'flex';
           }
           else {
             console.log('connecting sol');
@@ -327,7 +332,8 @@ const ActionButton = () => {
         case 1:
           console.log('Handling Swap 1');
           if (active) {
-            handleSwapEth();
+            await handleSwapEth();
+            bridgeWarning.style.display = 'flex';
           }
           else {
             connectEth()
