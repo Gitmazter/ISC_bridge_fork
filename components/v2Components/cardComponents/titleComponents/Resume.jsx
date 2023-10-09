@@ -10,7 +10,7 @@ export const Resume = () => {
   }
 
   useEffect(() => {
-    console.log(showResumeForm);
+    // console.log(showResumeForm);
   }, [showResumeForm])
 
   return (

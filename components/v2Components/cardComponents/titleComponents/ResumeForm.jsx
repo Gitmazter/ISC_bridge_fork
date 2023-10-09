@@ -1,15 +1,42 @@
+import { useContext } from 'react';
 import styles from '../../../../styles/mystyle.module.css';
+import StepContext from '../../contexts/stepContext';
+import DirectionContext from '../../contexts/directionContext';
+import ResumeDataContext from '../../contexts/ResumeDataContext';
+
+
+function getDirection({chain1, chain2}) {
+  let newDirection = "";
+  newDirection += chain1.value.substring(0, 3).toLowerCase();
+  newDirection += "To";
+  newDirection += chain2.value.substring(0, 3);
+  return newDirection;
+}
+
+function getResumeData({ idType, resumeInfo }) {
+  let resumeData = {};
+  resumeData.idType = idType.value;
+  resumeData.resumeInfo = resumeInfo.value;
+  return resumeData
+}
 
 export const ResumeForm = ({ ResumeFormProps }) => {
 
-  const {showResumeForm, setShowResumeForm} = ResumeFormProps
+  const { resumeData, saveResumeData } = useContext(ResumeDataContext);
+  const { direction, saveDirection } = useContext(DirectionContext);
+  const { showResumeForm, setShowResumeForm } = ResumeFormProps;
+  const { setCurrStep } = useContext(StepContext);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(e.target.resumeInfo.value);
-    
+    const newDirection = getDirection(e.target);
+    saveDirection(newDirection);
+    setCurrStep(2);
+    const newResumeData = getResumeData(e.target);
+    saveResumeData(newResumeData);
     setShowResumeForm(!showResumeForm);
   }
+
   const closeForm = () => {
     setShowResumeForm(!showResumeForm);
   }
@@ -22,14 +49,20 @@ export const ResumeForm = ({ ResumeFormProps }) => {
         <section className={styles.resumeDirection}>
           <h3>Direction</h3>  
           <span>
-            <select>
-              <option>Solana</option>
-              <option>Ethereum</option>
+            <select
+              id='resumeChain1'
+              name='chain1'
+            > 
+              <option value={"Solana"}>Solana</option>
+              <option value={"Ethereum"}>Ethereum</option>
             </select>
             <span>{" ---> "}</span>
-            <select>
-              <option>Ethereum</option>
-              <option>Solana</option>
+            <select
+              id='resumeChain2'
+              name='chain2'
+            >
+              <option value={"Ethereum"}>Ethereum</option>
+              <option value={"Solana"}>Solana</option>
             </select>
           </span>
         </section>

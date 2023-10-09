@@ -13,6 +13,7 @@ import StepContext from '../../../contexts/stepContext';
 import config from '../../../../../config/config.json';
 import { useWeb3React } from '@web3-react/core';
 import { Connection } from '@solana/web3.js';
+import ResumeDataContext from '../../../contexts/ResumeDataContext';
 
 const solConnection = new Connection(config.solana.rpc, 'confirmed');
 const buttonPrompts = bodyConfig.buttonPrompts;
@@ -23,6 +24,7 @@ const ActionButton = () => {
   const { step, currStep, setCurrStep } = useContext(StepContext);
   const { amount, saveAmount } = useContext(AmountContext);
   const { application } = useContext(ApplicationContext);
+  const { resumeData } = useContext(ResumeDataContext);
   const { direction } = useContext(DirectionContext);
   const { saveBalance } = useContext(BalanceContext);
   const { balance } = useContext(BalanceContext);
@@ -45,6 +47,29 @@ const ActionButton = () => {
   useEffect(() => {
    setBridgeWarning(document.getElementById('bridgeWarningComponent'));
   },[]);
+
+  useEffect(() => {
+    if (resumeData !== undefined) {
+      switch (resumeData.idType) {
+        case "txid":
+          direction == 'solToEth'
+          ? 
+          resumeSolToEthFromTxidOne(resumeData.resumeInfo)
+          :
+          ResumeEthToSolWithTxidOne(resumeData.resumeInfo)
+          return;
+        case "vaa":
+          direction == 'solToEth'
+          ? 
+          resumeSolToEthFromVAA(resumeData.resumeInfo)
+          :
+          ResumeEthToSolWithVAA(resumeData.resumeInfo)
+          return;
+        default:
+          console.log("no resume data");
+      }
+    }
+  }, [resumeData])
 
   function amountCheck ()  {
     if (balance !== undefined) {
@@ -236,7 +261,8 @@ const ActionButton = () => {
   };
 
   const resumeSolToEthFromTxidOne = async (txid) => {
-    VAA = await fetchSolToEthVAA(txid);
+    const signer = provider.getSigner();
+    const VAA = await fetchSolToEthVAA(txid);
     await completeTransferWithVaaSolToEth(VAA, signer);
     setPrompt("Bridging Complete!");
     await application.updateBalance(saveBalance);
@@ -244,13 +270,12 @@ const ActionButton = () => {
   };
 
   const resumeSolToEthFromVAA = async (VAA) => {
-    await completeTransferWithVaaSolToEth(VAA, signer);
+    const signer = provider.getSigner();
+    await completeTransferWithVaaSolToEth({vaaBytes: VAA}, signer);
     setPrompt("Bridging Complete!");
     await application.updateBalance(saveBalance);
     setCurrStep(3);
   };
-
-
 
   const sendFromEthereum = async () => {
     setChecksPassed(false);
@@ -335,8 +360,7 @@ const ActionButton = () => {
     setPrompt(buttonPrompts.swap);
     setCurrStep(step == 1 ? 2 : 1);
     saveAmount(undefined);
-  }
-
+  };
 
   const clickHandler = async () => {
     if (direction === 'solToEth'){
@@ -372,7 +396,7 @@ const ActionButton = () => {
           handleSwapEth();
         }
         else {
-          connectEth()
+          connectEth();
         }
       }
     }
@@ -386,7 +410,7 @@ const ActionButton = () => {
             bridgeWarning.style.display = 'flex';
           }
           else {
-            connectEth()
+            connectEth();
           }
           return; 
         case 2: 
@@ -410,7 +434,7 @@ const ActionButton = () => {
           }
           else {
             console.log('connecting sol');
-            connectSol()
+            connectSol();
           }
           return; 
       }
