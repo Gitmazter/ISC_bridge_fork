@@ -1,18 +1,23 @@
 import { useContext, useEffect, useState } from 'react'
 import AmountContext from '../../../contexts/amountContext'
+import StepContext from '../../../contexts/stepContext';
 
 const InactiveSwapInput = () => {
-  const [val, setVal] = useState()
-
-  const {amount} = useContext(AmountContext);
+  const { amount } = useContext(AmountContext);
+  const { step } = useContext(StepContext)
 
   useEffect(() => {
-    setVal(amount)
-  }, [amount])
-
+    const input = document.getElementById(`inactiveInput${step}`);
+    if (amount == undefined) {
+      input.value = null;
+    }
+    else {
+      input.value = amount;
+    }
+  },[amount]);
   return (
     <>
-      <input placeholder={'0.00'} disabled="disabled" value={val? val : undefined}/>
+      <input placeholder={'0.00'} disabled="disabled" id={`inactiveInput${step}`} />
     </>
   )
 }

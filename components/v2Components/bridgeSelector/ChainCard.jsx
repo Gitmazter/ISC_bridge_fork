@@ -2,7 +2,7 @@
 import styles from '../../../styles/mystyle.module.css';
 
 export const  ChainCard = ({chaindata}) => {
-  console.log(chaindata);
+  // console.log(chaindata);
   return (
     <option className={styles.chainCard}>
       <div className={styles.chain}>

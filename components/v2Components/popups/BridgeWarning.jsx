@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import ContactContext from '../contexts/contactContext';
 
 // IMPLEMENT POP UP WHEN SELECTING STEP 2 COMPONENT / STARTING FLOW (ASK FOR INPUT)
+// Implement resume bridge support
 // CONTACT INFO CONTEXT 
 // BUILD TG BOT EMAIL BACKEND FOR TXS AND IMPLEMENT API CALLS FOR TX'S
 // implement api calls for bot

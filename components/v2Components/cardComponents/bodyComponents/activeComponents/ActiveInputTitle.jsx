@@ -18,7 +18,7 @@ const ActiveInputTitle = () => {
     return BodyConfig[`${direction}`].activePrompts[step-1]
   }
 
-  useEffect(() => {console.log("updated");}, [maxAmounts])
+  useEffect(() => { /* console.log("updated"); */}, [maxAmounts])
   return (
     <div className={styles.inputTitle}>
       <div>{prompt()}</div>

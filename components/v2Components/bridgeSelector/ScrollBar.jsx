@@ -3,7 +3,7 @@ import styles from '../../../styles/mystyle.module.css';
 export const ScrollBar = ({chaindata}) => {
 
   const handleDrag = (event) => {
-    console.log(event);
+    // console.log(event);
   } 
 
 
