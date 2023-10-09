@@ -5,6 +5,8 @@
 @import "./sizeVars";
 @import "./popups";
 @import "./bridgeWarning";
+@import "./resume";
+
 
 .opacity1 {
   opacity: 1;
@@ -107,11 +109,12 @@
 
 .CardTitle {
   position: relative;
-  left: -180px;
+  left: -1em;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  :first-child {
+  width: 42em;
+  .stepEllipse {
     margin-right: 50px;
   }
   .TitleHeading {

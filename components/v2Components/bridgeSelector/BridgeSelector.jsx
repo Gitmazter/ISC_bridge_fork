@@ -17,7 +17,7 @@ export const BridgeSelector = () => {
         return bridge;
       }
     });
-    console.log(selection);
+    // console.log(selection);
 
     if (selection !== undefined) {
       saveDirection(selection.direction);
@@ -30,7 +30,7 @@ export const BridgeSelector = () => {
   },[chain1, chain2])
 
   useEffect(() => {
-    console.log(direction);
+    // console.log(direction);
   }, [direction])
 
   return (

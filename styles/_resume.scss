@@ -1,0 +1,144 @@
+@import "./colorVars";
+
+.resumeBtn {
+  margin-left: auto;
+  button {
+    cursor: pointer;
+    background-color: $transparent;
+    border: 1px solid $light-blue;
+    color: $light-blue;
+    font-size: 1.5em;
+    height: 1.5em;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+    &:hover {
+      background-color: $light-blue;
+      color: black;
+      border-color: black;
+      height: 1.8em;
+    }
+  }
+}
+
+.resumeForm {
+  height: 90vh;
+  width: 100vw;
+  top: 10vh;
+  left: 0px;
+  position: fixed;
+  background-color: $transparent;
+  z-index: 100;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  h2 {
+    padding: 0px;
+    margin: 0px;
+    text-align: center;
+  }
+  form {
+    position: relative;
+    background-color: $faded-dark-blue-gray;
+    height: 23em;
+    width: 15em;
+    border-radius: 1em;
+    padding: 1em 2em 0em 2em;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 0px 0px 3px 3px $faded-blue;
+
+    .closeForm {
+      position: absolute;
+      right: 2%;
+      top: 2%;
+      cursor: pointer;
+      background-color: $transparent;
+      border: none;
+      color: white;
+      font-size: large;
+      transition: border 0.3s ease;
+      &:hover {
+        background-color: $brighter-dark-blue-gray;
+        border: 1px solid white;
+      }
+    }
+
+    .resumeDirection {
+      margin-top: 1em;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      h3{
+        margin: 0px;
+        color: $light-blue;
+        margin-bottom: 1em;
+        text-decoration: underline;
+      }
+      select {
+        height: 2em;
+        color: white;
+        border-radius: 1em;
+        font-size: 1em;
+        background-color: $brighter-dark-blue-gray;
+      }
+    }
+
+    .resumeInfoType {
+      span {
+        display: flex;
+        width: 100%;
+        margin: 0px;
+        color: $light-blue;
+        align-items: center;
+        h3 {
+          margin-left: auto;
+          margin-right: auto + 15px;
+          text-decoration: underline;
+        }
+        button {
+          margin-left: 10px;
+        }
+      }
+      .help {
+        cursor:help;
+        background-color: $transparent;
+        border: 1px solid $light-blue;
+        color: $light-blue;
+        border-radius: 999px;
+        transition: all 0.3s ease;
+        &:hover {
+          background-color: $light-blue;
+          color: black;
+          border-color: black;
+        }
+      }
+    }
+    textarea {
+      margin-top: 1em;
+      background-color: $brighter-dark-blue-gray;
+      border-color: white;
+      border-radius: 1em;
+      padding: 0.5em;
+      color: white;
+      resize: none;
+    }
+    .resumeSubmitBtn {
+      cursor: pointer;
+      margin-top: 1em;
+      background-color: $dark-blue-gray;
+      color: $light-blue;
+      font-size: 1em;
+      height: 3em;
+      width: 17em;
+      border-radius: 1em;
+      border: 1px solid $transparent;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: $faded-blue;
+      }
+    } 
+  }
+}

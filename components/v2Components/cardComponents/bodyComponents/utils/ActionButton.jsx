@@ -1,50 +1,75 @@
 import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import styles from '../../../../../styles/mystyle.module.css'
-import bodyConfig from '../../../../../config/BodyConfig'
-import { useContext, useEffect, useState } from 'react';
-import { useWeb3React } from '@web3-react/core';
-import StepContext from '../../../contexts/stepContext';
-import BalanceContext from '../../../contexts/balanceContext';
-import DirectionContext from '../../../contexts/directionContext';
-import ApplicationContext from '../../../contexts/applicationContext';
-import { Connection } from '@solana/web3.js';
-import AmountContext from '../../../contexts/amountContext';
-import config from '../../../../../config/config.json'
-const buttonPrompts = bodyConfig.buttonPrompts;
-import {InjectedConnector} from '@web3-react/injected-connector'
-import { useWalletModal } from '@solana/wallet-adapter-react-ui';
 import TransactionContext from '../../../contexts/TransactionContext';
-const injected = new InjectedConnector()
+import ApplicationContext from '../../../contexts/applicationContext';
+import { InjectedConnector } from '@web3-react/injected-connector';
+import DirectionContext from '../../../contexts/directionContext';
+import { useWalletModal } from '@solana/wallet-adapter-react-ui';
+import styles from '../../../../../styles/mystyle.module.css';
+import BalanceContext from '../../../contexts/balanceContext';
+import AmountContext from '../../../contexts/amountContext';
+import bodyConfig from '../../../../../config/BodyConfig';
+import { useContext, useEffect, useState } from 'react';
+import StepContext from '../../../contexts/stepContext';
+import config from '../../../../../config/config.json';
+import { useWeb3React } from '@web3-react/core';
+import { Connection } from '@solana/web3.js';
+import ResumeDataContext from '../../../contexts/ResumeDataContext';
+
+const solConnection = new Connection(config.solana.rpc, 'confirmed');
+const buttonPrompts = bodyConfig.buttonPrompts;
+const injected = new InjectedConnector();
 
 const ActionButton = () => {
   const { transactionList, saveTransactions } = useContext(TransactionContext);
   const { step, currStep, setCurrStep } = useContext(StepContext);
-  const { application } = useContext(ApplicationContext)
-  const { direction } = useContext(DirectionContext)
-  const { saveBalance } = useContext(BalanceContext)
-  const { balance } = useContext(BalanceContext)
-  const { amount, saveAmount } = useContext(AmountContext)
+  const { amount, saveAmount } = useContext(AmountContext);
+  const { application } = useContext(ApplicationContext);
+  const { resumeData } = useContext(ResumeDataContext);
+  const { direction } = useContext(DirectionContext);
+  const { saveBalance } = useContext(BalanceContext);
+  const { balance } = useContext(BalanceContext);
 
-  const { connected, connect } = useWallet()
-  const { connection } = useConnection()
-  const solConnection = new Connection(config.solana.rpc, 'confirmed');
-  const { active, activate, library: provider, wait_until_finalized} = useWeb3React()
+  const { active, activate, library: provider } = useWeb3React();
   const { setVisible: setModalVisible } = useWalletModal(); 
-  const walletConnection = useConnection()
+  const { connected, connect } = useWallet();
+  const { connection } = useConnection();
   const solSigner = useWallet();
-  const [bridgeWarning, setBridgeWarning ] = useState()
-
-  const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
-  const [ checksPassed, setChecksPassed ] = useState(false)
+  
   const [walletSelected, setWalletSelected] = useState(false);
+  const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
+  const [ checksPassed, setChecksPassed ] = useState(false);
+  const [ bridgeWarning, setBridgeWarning ] = useState();
 
   useEffect(() => {
-    setWalletSelected(false)
-  },[balance])
+    setWalletSelected(false);
+  },[balance]);
 
   useEffect(() => {
-   setBridgeWarning(document.getElementById('bridgeWarningComponent'))
-  },[])
+   setBridgeWarning(document.getElementById('bridgeWarningComponent'));
+  },[]);
+
+  useEffect(() => {
+    if (resumeData !== undefined) {
+      switch (resumeData.idType) {
+        case "txid":
+          direction == 'solToEth'
+          ? 
+          resumeSolToEthFromTxidOne(resumeData.resumeInfo)
+          :
+          ResumeEthToSolWithTxidOne(resumeData.resumeInfo)
+          return;
+        case "vaa":
+          direction == 'solToEth'
+          ? 
+          resumeSolToEthFromVAA(resumeData.resumeInfo)
+          :
+          ResumeEthToSolWithVAA(resumeData.resumeInfo)
+          return;
+        default:
+          console.log("no resume data");
+      }
+    }
+  }, [resumeData])
 
   function amountCheck ()  {
     if (balance !== undefined) {
@@ -52,44 +77,42 @@ const ActionButton = () => {
       let tocheck;
       switch (step) {
         case 1:
-          tocheck = balance[0][`${direction == 'solToEth' ? 'solana' : 'ethereum'}`]
+          tocheck = balance[0][`${direction == 'solToEth' ? 'solana' : 'ethereum'}`];
         case 2:
-          tocheck = balance[1][`${direction == 'solToEth' ? 'solana' : 'ethereum'}`]
+          tocheck = balance[1][`${direction == 'solToEth' ? 'solana' : 'ethereum'}`];
         case 3:
-          tocheck = balance[1][`${direction == 'solToEth' ? 'ethereum' : 'solana'}`]
+          tocheck = balance[1][`${direction == 'solToEth' ? 'ethereum' : 'solana'}`];
       }
-      console.log(tocheck);
-      console.log(amount);
       if (amount > 0) { 
         if (amount < tocheck) {
-          return true
-        } else {setPrompt(buttonPrompts.tooMuch)}
-      } else {setPrompt(buttonPrompts.swap)}
-    }
-    return false
-  }
+          return true;
+        } else {setPrompt(buttonPrompts.tooMuch)};
+      } else {setPrompt(buttonPrompts.swap)};
+    };
+    return false;
+  };
 
   async function connectEth () {
     try {
-      await activate(injected)
+      await activate(injected);
     }
     catch(e){
       console.log(e);
-    }
-  }
+    };
+  };
 
   async function connectSol () {
     console.log(connection);
     if (!walletSelected) {
       console.log("selecting Wallet");
-      setModalVisible(true)
-      setWalletSelected(true)
+      setWalletSelected(true);
+      setModalVisible(true);
     }
     else {
       console.log("connecting");
-      connect()
-    }
-  }
+      connect();
+    };
+  };
 
   useEffect(() => {
       switch (step) {
@@ -101,8 +124,8 @@ const ActionButton = () => {
                 ||
                 direction == 'ethToSol' && amount <= balance[0].ethereum
                 ) {
-                setPrompt(buttonPrompts.swap + ` ${amount} ISC`)
-                setChecksPassed(true)
+                setPrompt(buttonPrompts.swap + ` ${amount} ISC`);
+                setChecksPassed(true);
               } else {setPrompt(buttonPrompts.tooMuch);  setChecksPassed(false)}
             } else {setPrompt(buttonPrompts.swap);  setChecksPassed(false)}
           } else {setPrompt(direction == 'solToEth' ? buttonPrompts.sol : buttonPrompts.eth);  setChecksPassed(true)}
@@ -140,11 +163,17 @@ const ActionButton = () => {
           } else {setPrompt(direction == 'solToEth' ? buttonPrompts.eth : buttonPrompts.sol);  setChecksPassed(true)}
           return;
       }
-  }, [amount, balance, step, currStep, active, connected, direction])
+  }, [
+    amount, 
+    balance, 
+    step, 
+    currStep, 
+    active, 
+    connected, 
+    direction
+  ]);
 
   const handleSwapSol = async () => {
-    console.log(solSigner);
-    console.log(walletConnection);
     const options = {
       commitment: 'confirmed'
     };
@@ -156,13 +185,11 @@ const ActionButton = () => {
     } else {
       tx = await application.solana_swap.swap_oil_to_isc(amount);
     }
-
     let txid;
     try {
       tx.recentBlockhash = (await solConnection.getLatestBlockhash()).blockhash;
       txid = await solSigner.signTransaction(tx);
-      txid = await solConnection.sendRawTransaction(txid.serialize(), options);
-    
+      txid = await solConnection.sendRawTransaction(txid.serialize(), options); 
     }
     catch (e) {
       console.log(e);
@@ -171,8 +198,6 @@ const ActionButton = () => {
     let confirmation;
     try {
       confirmation = (await solConnection.confirmTransaction(txid, 'finalized')).value.err == null ? true : false;
-      console.log(confirmation);
-
       saveTransactions([...transactionList, {txid:txid, status:confirmation, shown:false, time:Date.now()}]);
     }
     catch (e) { 
@@ -181,86 +206,136 @@ const ActionButton = () => {
     await application.updateBalance(saveBalance)
     setChecksPassed(true)
     setPrompt(buttonPrompts.swap)
-    setCurrStep(step == 1 ? 2 : 1);  
+    setCurrStep(step == 1 ? 2 : 1); 
+    saveAmount(undefined); 
   } 
 
-  const handleBridgeSolToEth = async () => {
+  const sendFromSolana = async () => {
     setChecksPassed(false);
-    let txid;
-    try {
-        setPrompt("Sending ISC to Wormhole...")
-        txid = await application.wormhole.send_from_solana(amount)
-        setPrompt("Awaiting Block Confirmation...");
-        await solConnection.confirmTransaction(txid, 'finalized')
-        saveTransactions([...transactionList, {txid:txid, status:true, shown:false, time:Date.now()}]);
-      }
-      catch (e) {
-        console.log(e);
-      }
-    let VAA;
-      try {
-        setPrompt("Fetching VAA...");
-        VAA = await application.wormhole.get_vaa_bytes_solana(txid);
-        saveTransactions([...transactionList, {txid:VAA.vaaBytes, status:true, shown:false, time:Date.now()}]);
-        await new Promise(resolve => {setTimeout(() => {resolve()}, 1000)})
-      }
-      catch (e) {
-        console.log(e);
-      }
+    setPrompt("Sending ISC to Wormhole...");
+    const txid = await application.wormhole.send_from_solana(amount);
+    setPrompt("Awaiting Block Confirmation...");
+    await solConnection.confirmTransaction(txid, 'finalized');
+    saveTransactions([...transactionList, {txid:txid, status:true, shown:false, time:Date.now()}]);
+    return txid;
+  };
+ 
+  const fetchSolToEthVAA = async (txid) => {
+    setChecksPassed(false);
+    setPrompt("Fetching VAA...");
+    const VAA = await application.wormhole.get_vaa_bytes_solana(txid);
+    // saveTransactions([...transactionList, {txid:VAA.vaaBytes, status:true, shown:false, time:Date.now()}]); DOESNT DISPLAY WHEN FETCHED
+    await new Promise(resolve => {setTimeout(() => {resolve()}, 1000)});
+    return VAA;
+  };
+
+  const completeTransferWithVaaSolToEth = async (VAA, signer) => {
+    setChecksPassed(false);
+    setPrompt("Requesting ISC from Wormhole...");
+    const txid2 = await application.wormhole.complete_transfer_on_eth(VAA, signer);
+    setPrompt("Awaiting Block Confirmation...");
+    await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid2.hash});
+    saveTransactions([...transactionList, {txid:txid2.hash, status:true, shown:false, time:Date.now()}]);
+    return txid2;
+  };
+
+  const handleBridgeSolToEth = async () => {
+    let txid, VAA;
     const signer = provider.getSigner();
-    let txid2;
-      try {
-        setPrompt("Requesting ISC from Wormhole...");
-        txid2 = await application.wormhole.complete_transfer_on_eth(VAA, signer)
-        console.log(txid2);
-        setPrompt("Awaiting Block Confirmation...");
-        await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid2.hash});
-        saveTransactions([...transactionList, {txid:txid2.hash, status:true, shown:false, time:Date.now()}]);
-      }
-      catch(e) {
-        console.log(e);
-      }
-    setPrompt("Bridging Complete!")
-    await application.updateBalance(saveBalance)
+    try {
+      // step 2.1
+      txid = await sendFromSolana();
+      // step 2.2
+      VAA = await fetchSolToEthVAA(txid);
+      // step 2.3
+      await completeTransferWithVaaSolToEth(VAA, signer);
+      // step 2.4
+      setPrompt("Bridging Complete!");
+      await application.updateBalance(saveBalance);
+      setCurrStep(3);
+      saveAmount(undefined);
+    }
+    catch (e) {
+      console.log(e);
+    };
+  };
+
+  const resumeSolToEthFromTxidOne = async (txid) => {
+    const signer = provider.getSigner();
+    const VAA = await fetchSolToEthVAA(txid);
+    await completeTransferWithVaaSolToEth(VAA, signer);
+    setPrompt("Bridging Complete!");
+    await application.updateBalance(saveBalance);
     setCurrStep(3);
+  };
+
+  const resumeSolToEthFromVAA = async (VAA) => {
+    const signer = provider.getSigner();
+    await completeTransferWithVaaSolToEth({vaaBytes: VAA}, signer);
+    setPrompt("Bridging Complete!");
+    await application.updateBalance(saveBalance);
+    setCurrStep(3);
+  };
+
+  const sendFromEthereum = async () => {
+    setChecksPassed(false);
+    setPrompt("Sending ISC to Wormhole...");
+    const txid = await application.wormhole.send_from_ethereum(amount);
+    await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid.transactionHash});
+    saveTransactions([...transactionList, {txid:txid.transactionHash, status:true, shown:false, time:Date.now()}]);
+    return txid;
+  };
+
+  const fetchEthToSolVaa = async (txid) => {
+    setChecksPassed(false);
+    setPrompt("Fetching VAA...");
+    const VAA = await application.wormhole.get_vaa_bytes_ethereum(txid);
+    saveTransactions([...transactionList, {txid:VAA.vaaBytes, status:true, shown:false, time:Date.now()}]);
+    return VAA
+  };
+
+  const completeTransferWithVaaEthToSol = async (VAA) => {
+    setChecksPassed(false);
+    setPrompt("(3 signatures) Requesting ISC from Wormhole...");
+    const txid2 = await application.wormhole.complete_transfer_on_solana(VAA.vaaBytes);
+    console.log(txid2);
+    saveTransactions([...transactionList, {txid:txid2[0].signature, status:true, shown:false, time:Date.now()}]);
+    setPrompt("Bridging Complete");
   }
 
   const handleBridgeEthToSol = async () => { /* Tested and ready to roll */
-    let txid;
+    let txid, VAA;
     try {
-      setChecksPassed(false)
-      setPrompt("Sending ISC to Wormhole...")
-      txid = await application.wormhole.send_from_ethereum(amount);
-      console.log(txid);
-      await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid.hash});
-      saveTransactions([...transactionList, {txid:txid.hash, status:true, shown:false, time:Date.now()}]);
+      // step 2.1
+      txid = await sendFromEthereum();
+      // step 2.2
+      VAA = await fetchEthToSolVaa(txid);
+      // step 2.3
+      await completeTransferWithVaaEthToSol(VAA);
+      // step.2.4
+      await application.updateBalance(saveBalance);
+      setChecksPassed(true);
+      setCurrStep(3);
     }
     catch (e) {
       console.log(e);
+      setChecksPassed(true);
+      setCurrStep(2);
     }
-    let VAA;
-    try {
-      setPrompt("Fetching VAA...")
-      VAA = await application.wormhole.get_vaa_bytes_ethereum(txid)
-      console.log(VAA);
-      saveTransactions([...transactionList, {txid:VAA.vaaBytes, status:true, shown:false, time:Date.now()}]);
-    }
-    catch (e) {
-      console.log(e);
-    }
-    let txid2;
-    try {
-      setPrompt("(3 signatures) Requesting ISC from Wormhole...")
-      txid2 = await  application.wormhole.complete_transfer_on_solana(VAA.vaaBytes)
-      console.log(txid2);
-      saveTransactions([...transactionList, {txid:txid2, status:true, shown:false, time:Date.now()}]);
-      setPrompt("Bridging Complete")
-    }
-    catch(e) {
-      console.log(e);
-    }
-    await application.updateBalance(saveBalance)
-    setChecksPassed(true)
+  }
+
+  const ResumeEthToSolWithTxidOne = async (txid) => {
+    VAA = await fetchEthToSolVaa(txid);
+    await completeTransferWithVaaEthToSol(VAA);
+    await application.updateBalance(saveBalance);
+    setChecksPassed(true);
+    setCurrStep(3);
+  }
+
+  const ResumeEthToSolWithVAA = async (VAA) => {
+    await completeTransferWithVaaEthToSol(VAA);
+    await application.updateBalance(saveBalance);
+    setChecksPassed(true);
     setCurrStep(3);
   }
 
@@ -280,12 +355,12 @@ const ActionButton = () => {
       console.log(e);
     }
     saveTransactions([...transactionList, {txid:txid.hash, status:true, shown:false, time:Date.now()}]);
-    await application.updateBalance(saveBalance)
-    setChecksPassed(true)
-    setPrompt(buttonPrompts.swap)
+    await application.updateBalance(saveBalance);
+    setChecksPassed(true);
+    setPrompt(buttonPrompts.swap);
     setCurrStep(step == 1 ? 2 : 1);
-  }
-
+    saveAmount(undefined);
+  };
 
   const clickHandler = async () => {
     if (direction === 'solToEth'){
@@ -314,15 +389,14 @@ const ActionButton = () => {
         else{
           connectSol();
         }
-          // handleBridgeSolToEth();
-          return;
+        return;
         case 3: 
         console.log('Handling Swap 2');
         if (active) {
           handleSwapEth();
         }
         else {
-          connectEth()
+          connectEth();
         }
       }
     }
@@ -336,7 +410,7 @@ const ActionButton = () => {
             bridgeWarning.style.display = 'flex';
           }
           else {
-            connectEth()
+            connectEth();
           }
           return; 
         case 2: 
@@ -360,7 +434,7 @@ const ActionButton = () => {
           }
           else {
             console.log('connecting sol');
-            connectSol()
+            connectSol();
           }
           return; 
       }
@@ -371,16 +445,14 @@ const ActionButton = () => {
     <button type='button' onClick={clickHandler} className={styles.ActionButton}>
       <p>{prompt}</p>
     </button>
-    {/* <BaseWalletMultiButton/> */}
     </>
    :
    <>
     <button type='button' className={styles.ActionButtonInactive}>
       <p>{prompt}</p>
     </button>
-     {/*  <BaseWalletMultiButton/> */}
     </>
-  )
-}
+  );
+};
 
-export default ActionButton
+export default ActionButton;

@@ -1,8 +1,10 @@
 
+import styles from '../../../../styles/mystyle.module.css'
+
 const Ellipse = ({ filled }) => {
   return (
-    filled ? <img src="./new/FilledEllipse.svg" alt="active"/>
-    : <img src="./new/Ellipse.svg"/>
+    filled ? <img src="./new/FilledEllipse.svg" alt="active" className={styles.stepEllipse}/>
+    : <img src="./new/Ellipse.svg" className={styles.stepEllipse}/>
   )
 }
 

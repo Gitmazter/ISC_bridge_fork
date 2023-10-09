@@ -46,7 +46,7 @@ export const BridgeInput = ({chaindata, setChainData, order}) => {
   }
 
   useEffect(() => {
-    console.log(chainList);
+    // console.log(chainList);
   }, [chainList]);
   
   return (
