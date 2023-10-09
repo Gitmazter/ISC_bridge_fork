@@ -586,6 +586,91 @@
     display: none;
   }
 }
+.resumeBtn {
+  margin-left: auto;
+}
+.resumeBtn button {
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid #29D9FF;
+  color: #29D9FF;
+  font-size: 1.5em;
+  height: 1.5em;
+  border-radius: 999px;
+  transition: all 0.3s ease;
+}
+.resumeBtn button:hover {
+  background-color: #29D9FF;
+  color: black;
+  border-color: black;
+  height: 1.8em;
+}
+
+.resumeForm {
+  height: 90vh;
+  width: 100vw;
+  top: 10vh;
+  left: 0px;
+  position: fixed;
+  background-color: rgba(0, 0, 0, 0);
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.resumeForm h2 {
+  padding: 0px;
+  margin: 0px;
+  text-align: center;
+}
+.resumeForm form {
+  background-color: #222E3D;
+  height: 20em;
+  width: 30em;
+  border-radius: 1em;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.resumeForm form .resumeDirection {
+  margin-top: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.resumeForm form .resumeDirection h3 {
+  margin: 0px;
+  color: #29D9FF;
+}
+.resumeForm form .resumeInfoType span {
+  display: flex;
+  width: 100%;
+  margin: 0px;
+  color: #29D9FF;
+}
+.resumeForm form .resumeInfoType span h3 {
+  margin-left: auto;
+  margin-right: auto15px;
+}
+.resumeForm form .resumeInfoType span button {
+  margin-left: 10px;
+}
+.resumeForm form .resumeInfoType .help {
+  cursor: help;
+  background-color: rgba(0, 0, 0, 0);
+  border: 1px solid #29D9FF;
+  color: #29D9FF;
+  border-radius: 999px;
+  transition: all 0.3s ease;
+}
+.resumeForm form .resumeInfoType .help:hover {
+  background-color: #29D9FF;
+  color: black;
+  border-color: black;
+}
+
 .opacity1 {
   opacity: 1;
 }
@@ -693,12 +778,13 @@
 
 .CardTitle {
   position: relative;
-  left: -180px;
+  left: -1em;
   display: flex;
   align-items: center;
   justify-content: flex-start;
+  width: 42em;
 }
-.CardTitle :first-child {
+.CardTitle .stepEllipse {
   margin-right: 50px;
 }
 .CardTitle .TitleHeading {

@@ -114,7 +114,7 @@ class EthereumWalletSwap {
 
     async wait_for_fifteen_confirmations(tx) { // Last step only 
         console.log("Waiting for block confirmation")
-        await this.provider.waitForTransaction(tx.transactionHash , 15);
+        await this.provider.waitForTransaction(tx.hash , 15);
     }
 
     async swap(amount, to_native) {

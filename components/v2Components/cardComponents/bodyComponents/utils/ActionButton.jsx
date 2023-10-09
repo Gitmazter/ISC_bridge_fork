@@ -252,14 +252,11 @@ const ActionButton = () => {
 
 
 
-
-
   const sendFromEthereum = async () => {
     setChecksPassed(false);
     setPrompt("Sending ISC to Wormhole...");
     const txid = await application.wormhole.send_from_ethereum(amount);
-    console.log(txid.transactionHash);
-    await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid});
+    await application.ethereum_swap.wait_for_fifteen_confirmations({"hash":txid.transactionHash});
     saveTransactions([...transactionList, {txid:txid.transactionHash, status:true, shown:false, time:Date.now()}]);
     return txid;
   };
@@ -276,7 +273,8 @@ const ActionButton = () => {
     setChecksPassed(false);
     setPrompt("(3 signatures) Requesting ISC from Wormhole...");
     const txid2 = await application.wormhole.complete_transfer_on_solana(VAA.vaaBytes);
-    saveTransactions([...transactionList, {txid:txid2, status:true, shown:false, time:Date.now()}]);
+    console.log(txid2);
+    saveTransactions([...transactionList, {txid:txid2[0].signature, status:true, shown:false, time:Date.now()}]);
     setPrompt("Bridging Complete");
   }
 
@@ -284,14 +282,11 @@ const ActionButton = () => {
     let txid, VAA;
     try {
       // step 2.1
-      console.log('Sending from Ethereum');
-      txid = sendFromEthereum();
+      txid = await sendFromEthereum();
       // step 2.2
-      console.log("Fetching VAA");
-      VAA = fetchEthToSolVaa(txid);
+      VAA = await fetchEthToSolVaa(txid);
       // step 2.3
-      console.log("Completing Transfer");
-      completeTransferWithVaaEthToSol(VAA);
+      await completeTransferWithVaaEthToSol(VAA);
       // step.2.4
       await application.updateBalance(saveBalance);
       setChecksPassed(true);
@@ -299,19 +294,21 @@ const ActionButton = () => {
     }
     catch (e) {
       console.log(e);
+      setChecksPassed(true);
+      setCurrStep(2);
     }
   }
 
   const ResumeEthToSolWithTxidOne = async (txid) => {
-    VAA = fetchEthToSolVaa(txid);
-    completeTransferWithVaaEthToSol(VAA);
+    VAA = await fetchEthToSolVaa(txid);
+    await completeTransferWithVaaEthToSol(VAA);
     await application.updateBalance(saveBalance);
     setChecksPassed(true);
     setCurrStep(3);
   }
 
   const ResumeEthToSolWithVAA = async (VAA) => {
-    completeTransferWithVaaEthToSol(VAA);
+    await completeTransferWithVaaEthToSol(VAA);
     await application.updateBalance(saveBalance);
     setChecksPassed(true);
     setCurrStep(3);
