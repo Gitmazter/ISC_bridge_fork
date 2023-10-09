@@ -10,12 +10,15 @@ export const ResumeForm = ({ ResumeFormProps }) => {
     
     setShowResumeForm(!showResumeForm);
   }
+  const closeForm = () => {
+    setShowResumeForm(!showResumeForm);
+  }
 
   return (
     <div className={styles.resumeForm}>
       <form onSubmit={handleSubmit}>
+        <button type='button' onClick={closeForm} className={styles.closeForm}>X</button>
         <h2>Resume Bridge Flow</h2>
-
         <section className={styles.resumeDirection}>
           <h3>Direction</h3>  
           <span>
@@ -52,11 +55,11 @@ export const ResumeForm = ({ ResumeFormProps }) => {
             value="vaa" 
             required
           />
-          <label for="vaa">VAA</label>
+          <label for="vaa">Vaa</label>
         </div>
-        <textarea name="resumeInfo" id="resumeInfo" cols="30" rows="3" required minLength={64}></textarea>
+        <textarea name="resumeInfo" id="resumeInfo" cols="30" rows="4" required minLength={64}></textarea>
         
-        <button type='submit'>Submit</button>
+        <button type='submit' className={styles.resumeSubmitBtn}>Submit</button>
       </form>
     </div>
   );

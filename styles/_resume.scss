@@ -38,17 +38,35 @@
     text-align: center;
   }
   form {
+    position: relative;
     background-color: $faded-dark-blue-gray;
-    height: 20em;
-    width: 30em;
+    height: 23em;
+    width: 15em;
     border-radius: 1em;
-    padding: 2em;
+    padding: 1em 2em 0em 2em;
     display: flex;
     flex-direction: column;
     align-items: center;
+    box-shadow: 0px 0px 3px 3px $faded-blue;
+
+    .closeForm {
+      position: absolute;
+      right: 2%;
+      top: 2%;
+      cursor: pointer;
+      background-color: $transparent;
+      border: none;
+      color: white;
+      font-size: large;
+      transition: border 0.3s ease;
+      &:hover {
+        background-color: $brighter-dark-blue-gray;
+        border: 1px solid white;
+      }
+    }
 
     .resumeDirection {
-      margin-top: 2em;
+      margin-top: 1em;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -56,6 +74,15 @@
       h3{
         margin: 0px;
         color: $light-blue;
+        margin-bottom: 1em;
+        text-decoration: underline;
+      }
+      select {
+        height: 2em;
+        color: white;
+        border-radius: 1em;
+        font-size: 1em;
+        background-color: $brighter-dark-blue-gray;
       }
     }
 
@@ -65,15 +92,17 @@
         width: 100%;
         margin: 0px;
         color: $light-blue;
+        align-items: center;
         h3 {
           margin-left: auto;
           margin-right: auto + 15px;
+          text-decoration: underline;
         }
         button {
           margin-left: 10px;
         }
       }
-      .help{
+      .help {
         cursor:help;
         background-color: $transparent;
         border: 1px solid $light-blue;
@@ -87,5 +116,29 @@
         }
       }
     }
+    textarea {
+      margin-top: 1em;
+      background-color: $brighter-dark-blue-gray;
+      border-color: white;
+      border-radius: 1em;
+      padding: 0.5em;
+      color: white;
+      resize: none;
+    }
+    .resumeSubmitBtn {
+      cursor: pointer;
+      margin-top: 1em;
+      background-color: $dark-blue-gray;
+      color: $light-blue;
+      font-size: 1em;
+      height: 3em;
+      width: 17em;
+      border-radius: 1em;
+      border: 1px solid $transparent;
+      transition: all 0.3s ease;
+      &:hover {
+        background-color: $faded-blue;
+      }
+    } 
   }
 }

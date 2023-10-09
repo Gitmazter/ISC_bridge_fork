@@ -624,17 +624,34 @@
   text-align: center;
 }
 .resumeForm form {
+  position: relative;
   background-color: #222E3D;
-  height: 20em;
-  width: 30em;
+  height: 23em;
+  width: 15em;
   border-radius: 1em;
-  padding: 2em;
+  padding: 1em 2em 0em 2em;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 0px 0px 3px 3px #51565C;
+}
+.resumeForm form .closeForm {
+  position: absolute;
+  right: 2%;
+  top: 2%;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, 0);
+  border: none;
+  color: white;
+  font-size: large;
+  transition: border 0.3s ease;
+}
+.resumeForm form .closeForm:hover {
+  background-color: #2A394B;
+  border: 1px solid white;
 }
 .resumeForm form .resumeDirection {
-  margin-top: 2em;
+  margin-top: 1em;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -643,16 +660,27 @@
 .resumeForm form .resumeDirection h3 {
   margin: 0px;
   color: #29D9FF;
+  margin-bottom: 1em;
+  text-decoration: underline;
+}
+.resumeForm form .resumeDirection select {
+  height: 2em;
+  color: white;
+  border-radius: 1em;
+  font-size: 1em;
+  background-color: #2A394B;
 }
 .resumeForm form .resumeInfoType span {
   display: flex;
   width: 100%;
   margin: 0px;
   color: #29D9FF;
+  align-items: center;
 }
 .resumeForm form .resumeInfoType span h3 {
   margin-left: auto;
   margin-right: auto15px;
+  text-decoration: underline;
 }
 .resumeForm form .resumeInfoType span button {
   margin-left: 10px;
@@ -669,6 +697,30 @@
   background-color: #29D9FF;
   color: black;
   border-color: black;
+}
+.resumeForm form textarea {
+  margin-top: 1em;
+  background-color: #2A394B;
+  border-color: white;
+  border-radius: 1em;
+  padding: 0.5em;
+  color: white;
+  resize: none;
+}
+.resumeForm form .resumeSubmitBtn {
+  cursor: pointer;
+  margin-top: 1em;
+  background-color: #181F27;
+  color: #29D9FF;
+  font-size: 1em;
+  height: 3em;
+  width: 17em;
+  border-radius: 1em;
+  border: 1px solid rgba(0, 0, 0, 0);
+  transition: all 0.3s ease;
+}
+.resumeForm form .resumeSubmitBtn:hover {
+  background-color: #51565C;
 }
 
 .opacity1 {
