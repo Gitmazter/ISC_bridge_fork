@@ -43,6 +43,11 @@
   align-items: center;
 }
 
+.displayNoneCardBody {
+  display: none;
+  height: 0px;
+}
+
 .mapIcon {
   width: $mapIconScale;
   height: $mapIconScale;
@@ -70,7 +75,7 @@
   color: $white;
   display: flex;
   flex-direction: column;
-  gap: 6vh;
+  gap: 0;
   transition: all 0.3 ease;
   .v2Card {
     transition: all 0.3 ease;

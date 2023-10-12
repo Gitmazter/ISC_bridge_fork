@@ -24,7 +24,7 @@
       width: 12em;
     }
     .warningContent {
-      width: 25em;
+      width: 50em;
       padding: 2em;
     }
   }
@@ -33,15 +33,15 @@
 .warningForm {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1em;
   input[type=radio],
   input[type=checkbox] {
     -webkit-appearance: none;
     appearance: none;
     background: #fff; /* this is needed for iOS. Otherwise the background just becomes black. */
     border: 1px solid #333;
-    height: 1.5em;
-    width: 1.5em;
+    height: 3em;
+    width: 3em;
     display: inline-block;
     border-radius: 100%;
     vertical-align: text-bottom;
@@ -73,7 +73,7 @@
    width: 0;
   }
   input[type=radio]:checked::before {
-    border: 5px solid transparent;
+    border: 0.9em solid transparent;
     border-radius: 100%;
     outline-offset: -6px;
     background: #000;
@@ -94,9 +94,11 @@
   }
   input[type=text] {
     background-color: $faded-dark-blue-gray;
+    // height: 3em;
+    font-size: 2em;
     border: 1px solid white;
     padding: 0.5em;
-    border-radius: 1em;
+    border-radius: 999em;
     color: white;
     &:focus-within {
       border: 2px solid rgba(0, 0, 0, 0.101);
@@ -105,30 +107,53 @@
   .flexRow {
     display: flex;
     flex-direction: row;
-    font-size: 1rem;
+    font-size: 1rem * 2;
     font-weight: bold;
     align-items: center;
     line-height: 1.1;
+    gap: 0.5em;
+  }
+  input {
+    cursor: pointer;
+  }
+  label {
+    cursor: pointer;
+  }
+  .agreeBox {
+    display: flex;
+    align-items: center;
+    gap: 1em;
+    label {
+      font-size: 2em;
+    }
   }
 }
 
 .warningSubmit {
   background-color: $clear-orange;
   cursor: pointer;
-  height: 45px;
+  height: 2em;
   border-radius: 999px;
   border: none;
   color: white;
-  font-size: 18px;
+  font-size: 18px *2;
+  &:hover {
+    border: 2px inset white;
+    background-color: #744500;
+  }
 }
 
 .warningContent {
   h2 {
-    font-size: 2.2em;
+    font-size: 2.2em * 2;
     margin: 0px;
     span {
       color: $clear-orange;
     }
+  }
+  .warningParagraph {
+    font-size: 1.5em;
+    line-height: 1.6em;
   }
 }
 
@@ -143,34 +168,34 @@
   }
   .line1{ 
     position: absolute;
-    border: 1px solid $clear-orange;
+    border: 3px solid $clear-orange;
     bottom: 0px;
     width: 50em;
-    right: -15em;
+    right: -12em;
     rotate: 130deg;
   }
   .line2{
     position: absolute;
-    border: 1px solid $clear-orange;
+    border: 3px solid $clear-orange;
     bottom: 2em;
     width: 50em;
-    right: -15em;
+    right: -10.2em;
     rotate: 130deg;
   }
   .line3{
     position: absolute;
-    border: 1px solid $clear-orange;
+    border: 3px solid $clear-orange;
     top: -1em;
     width: 60em;
-    right: -17.8em;
+    right: -13.2em;
     rotate: 50deg;
   }
   .line4{
     position: absolute;
-    border: 1px solid $clear-orange;
+    border: 3px solid $clear-orange;
     top: -3em;
-    width: 50em;
-    right: -12.8em;
+    width: 60em;
+    right: -15em;
     rotate: 50deg;
   }
 }

@@ -386,14 +386,14 @@
   width: 12em;
 }
 .bridgeWarningWrapper .bridgeWarning .warningContent {
-  width: 25em;
+  width: 50em;
   padding: 2em;
 }
 
 .warningForm {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 1em;
 }
 .warningForm input[type=radio],
 .warningForm input[type=checkbox] {
@@ -402,8 +402,8 @@
        appearance: none;
   background: #fff; /* this is needed for iOS. Otherwise the background just becomes black. */
   border: 1px solid #333;
-  height: 1.5em;
-  width: 1.5em;
+  height: 3em;
+  width: 3em;
   display: inline-block;
   border-radius: 100%;
   vertical-align: text-bottom;
@@ -435,7 +435,7 @@
   width: 0;
 }
 .warningForm input[type=radio]:checked::before {
-  border: 5px solid transparent;
+  border: 0.9em solid transparent;
   border-radius: 100%;
   outline-offset: -6px;
   background: #000;
@@ -455,9 +455,10 @@
 }
 .warningForm input[type=text] {
   background-color: #222E3D;
+  font-size: 2em;
   border: 1px solid white;
   padding: 0.5em;
-  border-radius: 1em;
+  border-radius: 999em;
   color: white;
 }
 .warningForm input[type=text]:focus-within {
@@ -466,28 +467,51 @@
 .warningForm .flexRow {
   display: flex;
   flex-direction: row;
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: bold;
   align-items: center;
   line-height: 1.1;
+  gap: 0.5em;
+}
+.warningForm input {
+  cursor: pointer;
+}
+.warningForm label {
+  cursor: pointer;
+}
+.warningForm .agreeBox {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+}
+.warningForm .agreeBox label {
+  font-size: 2em;
 }
 
 .warningSubmit {
   background-color: #B46D03;
   cursor: pointer;
-  height: 45px;
+  height: 2em;
   border-radius: 999px;
   border: none;
   color: white;
-  font-size: 18px;
+  font-size: 36px;
+}
+.warningSubmit:hover {
+  border: 2px inset white;
+  background-color: #744500;
 }
 
 .warningContent h2 {
-  font-size: 2.2em;
+  font-size: 4.4em;
   margin: 0px;
 }
 .warningContent h2 span {
   color: #B46D03;
+}
+.warningContent .warningParagraph {
+  font-size: 1.5em;
+  line-height: 1.6em;
 }
 
 .bridgeWarningDecor {
@@ -502,34 +526,34 @@
 }
 .bridgeWarningDecor .line1 {
   position: absolute;
-  border: 1px solid #B46D03;
+  border: 3px solid #B46D03;
   bottom: 0px;
   width: 50em;
-  right: -15em;
+  right: -12em;
   rotate: 130deg;
 }
 .bridgeWarningDecor .line2 {
   position: absolute;
-  border: 1px solid #B46D03;
+  border: 3px solid #B46D03;
   bottom: 2em;
   width: 50em;
-  right: -15em;
+  right: -10.2em;
   rotate: 130deg;
 }
 .bridgeWarningDecor .line3 {
   position: absolute;
-  border: 1px solid #B46D03;
+  border: 3px solid #B46D03;
   top: -1em;
   width: 60em;
-  right: -17.8em;
+  right: -13.2em;
   rotate: 50deg;
 }
 .bridgeWarningDecor .line4 {
   position: absolute;
-  border: 1px solid #B46D03;
+  border: 3px solid #B46D03;
   top: -3em;
-  width: 50em;
-  right: -12.8em;
+  width: 60em;
+  right: -15em;
   rotate: 50deg;
 }
 
@@ -698,6 +722,26 @@
   color: black;
   border-color: black;
 }
+.resumeForm form .resumeInfoType .help .tooltiptext {
+  opacity: 0;
+  width: 20em;
+  background-color: white;
+  color: #000;
+  text-align: left;
+  border-radius: 6px;
+  padding: 2em;
+  font-size: 15px;
+  word-wrap: normal;
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+  top: -5px;
+  left: 105%;
+  transition: all 0.7s ease;
+}
+.resumeForm form .resumeInfoType .help:hover .tooltiptext {
+  opacity: 1;
+}
 .resumeForm form textarea {
   margin-top: 1em;
   background-color: #2A394B;
@@ -764,6 +808,11 @@
   align-items: center;
 }
 
+.displayNoneCardBody {
+  display: none;
+  height: 0px;
+}
+
 .mapIcon {
   width: 1.5rem;
   height: 1.5rem;
@@ -792,7 +841,7 @@
   color: #FFFFFF;
   display: flex;
   flex-direction: column;
-  gap: 6vh;
+  gap: 0;
   transition: all 0.3 ease;
 }
 .v2App .v2Card {

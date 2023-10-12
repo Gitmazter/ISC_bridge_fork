@@ -26,8 +26,21 @@ const Card = ({step, currStep, setCurrStep}) => {
 
           <div className={styles.v2Card}>         
             <CardTitle/>
-            <CardMap/>
-            <CardBody/>                              
+            {currStep == step 
+            ?
+            <>
+              <CardMap/>
+              <CardBody/>  
+            </>
+            :
+            <div className={styles.displayNoneCardBody}>
+              <CardMap/>
+              <CardBody/>  
+            </div>
+            }
+
+
+
           </div>
           
         </ResumeDataContext.Provider>
