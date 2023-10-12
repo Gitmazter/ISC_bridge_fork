@@ -35,7 +35,7 @@ const ActionButton = () => {
   const { connection } = useConnection();
   const solSigner = useWallet();
   
-  const [walletSelected, setWalletSelected] = useState(false);
+  const [ walletSelected, setWalletSelected ] = useState(false);
   const [ prompt, setPrompt ] = useState(buttonPrompts.swap);
   const [ checksPassed, setChecksPassed ] = useState(false);
   const [ bridgeWarning, setBridgeWarning ] = useState();
@@ -56,6 +56,7 @@ const ActionButton = () => {
           ? 
           resumeSolToEthFromTxidOne(resumeData.resumeInfo)
           :
+          console.log('ResumingEThToSolTxid');
           ResumeEthToSolWithTxidOne(resumeData.resumeInfo)
           return;
         case "vaa":
@@ -63,6 +64,7 @@ const ActionButton = () => {
           ? 
           resumeSolToEthFromVAA(resumeData.resumeInfo)
           :
+          console.log('ResumingEThToSolVaa');
           ResumeEthToSolWithVAA(resumeData.resumeInfo)
           return;
         default:
@@ -262,6 +264,7 @@ const ActionButton = () => {
 
   const resumeSolToEthFromTxidOne = async (txid) => {
     const signer = provider.getSigner();
+    console.log(txid);
     const VAA = await fetchSolToEthVAA(txid);
     await completeTransferWithVaaSolToEth(VAA, signer);
     setPrompt("Bridging Complete!");
@@ -325,7 +328,9 @@ const ActionButton = () => {
   }
 
   const ResumeEthToSolWithTxidOne = async (txid) => {
-    VAA = await fetchEthToSolVaa(txid);
+    const receipt = await provider.getTransactionReceipt(txid);
+    console.log(receipt);
+    const VAA = await fetchEthToSolVaa(receipt);
     await completeTransferWithVaaEthToSol(VAA);
     await application.updateBalance(saveBalance);
     setChecksPassed(true);
@@ -333,7 +338,7 @@ const ActionButton = () => {
   }
 
   const ResumeEthToSolWithVAA = async (VAA) => {
-    await completeTransferWithVaaEthToSol(VAA);
+    await completeTransferWithVaaEthToSol({vaaBytes:VAA});
     await application.updateBalance(saveBalance);
     setChecksPassed(true);
     setCurrStep(3);

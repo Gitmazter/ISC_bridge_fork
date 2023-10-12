@@ -114,6 +114,30 @@
           color: black;
           border-color: black;
         }
+        
+      }
+
+      .help .tooltiptext {
+        opacity: 0;
+        width: 20em;
+        background-color: white;
+        color: #000;
+        text-align:left;
+        border-radius: 6px;
+        padding: 2em;
+        font-size: 15px;
+        word-wrap:normal;
+        
+        /* Position the tooltip */
+        position: absolute;
+        z-index: 1;
+        top: -5px;
+        left: 105%;
+        transition: all 0.7s ease;
+      }
+
+      .help:hover .tooltiptext {
+        opacity: 1;
       }
     }
     textarea {
