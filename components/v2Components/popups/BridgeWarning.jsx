@@ -84,7 +84,7 @@ export const BridgeWarning = () => {
     <div className={styles.bridgeWarningWrapper} id='bridgeWarningComponent'>
       <div className={styles.bridgeWarning}>
         <div className={styles.warningContent}>
-          <h2 className={styles.warningHeading}>Before you <span>Bridge!</span></h2>
+          <h2 className={styles.warningHeading}>Step 1 <span>Complete!</span></h2>
           <p className={styles.warningParagraph}>
             To bridge your ISC you will have to complete several steps. These steps may take up to 20 minutes and/or fail. If you wish to receive updates and links to resume the process, please enter your Telegram ID or E-mail below and indicate your choice.
           </p>
